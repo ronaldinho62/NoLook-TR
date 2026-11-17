@@ -134,7 +134,7 @@ const String? firefoxStoreUrl = null;
 const String? chromeStoreUrl = null;
 const String? edgeStoreUrl = null;
 
-const storesFileUrl = 'https://raw.githubusercontent.com/ItsZedK/NoLook/main/stores.json';
+const storesFileUrl = 'https://raw.githubusercontent.com/ronaldinho62/NoLook-TR/main/stores.json';
 
 /// from stores.json, empty until loaded (or offline)
 final storeLinks = ValueNotifier<Map<String, String>>(const {});
@@ -148,7 +148,12 @@ const _storeHosts = {
 
 Future<void>? _storesLoad;
 
-Future<void> loadStoreLinks() => _storesLoad ??= _readStores();
+/// Türkçe sürüm: mağazalardaki NoLook eklentisi özgün sürümdür ve Türkçe "*" kelimelerini tanımaz,
+/// bu yüzden mağaza linkleri hiç yüklenmez, eklenti her zaman uygulamanın klasöründen kurulur.
+/// Türkçe eklenti bir mağazaya çıkarsa bunu true yap ve stores.json'u doldur.
+const useStoreLinks = false;
+
+Future<void> loadStoreLinks() => _storesLoad ??= useStoreLinks ? _readStores() : Future<void>.value();
 
 Future<void> _readStores() async {
   final client = HttpClient()..connectionTimeout = const Duration(seconds: 8);

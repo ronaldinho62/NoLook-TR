@@ -44,7 +44,7 @@ class _AppPickerState extends State<_AppPicker> {
     if (!t.toLowerCase().endsWith('.exe')) t = '$t.exe';
     final exe = t.split(RegExp(r'[\\/]')).last.toLowerCase();
     if (win.protectedExes.contains(exe)) {
-      setState(() => _error = tr("That's part of Windows, so it can't be blocked.", 'Ez a Windows része, ezért nem tiltható.'));
+      setState(() => _error = tr("That's part of Windows, so it can't be blocked.", 'Bu Windows\'un bir parçası, bu yüzden engellenemez.'));
       return;
     }
     final base = exe.substring(0, exe.length - 4);
@@ -59,9 +59,9 @@ class _AppPickerState extends State<_AppPicker> {
   Widget build(BuildContext context) {
     final c = context.nl;
     return Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Text(tr('Add apps', 'Appok hozzáadása'), style: body(24, weight: FontWeight.w500, color: c.onSurface)),
+      Text(tr('Add apps', 'Uygulama ekle'), style: body(24, weight: FontWeight.w500, color: c.onSurface)),
       const SizedBox(height: 6),
-      Text(tr('Your open apps show up here, if one is missing, open it and come back or type its program name.', 'Itt látod a megnyitott appokat, ha valamelyik hiányzik, nyisd meg és gyere vissza, vagy írd be a programja nevét.'),
+      Text(tr('Your open apps show up here, if one is missing, open it and come back or type its program name.', 'Açık uygulamaların burada görünür, biri eksikse onu açıp geri gel ya da program adını yaz.'),
           style: body(15, color: c.onSurfaceVariant, height: 1.5)),
       const SizedBox(height: 12),
       ConstrainedBox(
@@ -74,7 +74,7 @@ class _AppPickerState extends State<_AppPicker> {
                   ? null
                   : (v) => setState(() => v! ? _picked[a.exe] = AppRef(name: a.name, ids: [a.exe]) : _picked.remove(a.exe)),
               title: Text(a.name, style: body(16, color: c.onSurface)),
-              subtitle: Text(_has(a.exe) ? tr('Already in this block', 'Már ebben a tiltásban van') : a.exe, style: body(13, color: c.onSurfaceVariant)),
+              subtitle: Text(_has(a.exe) ? tr('Already in this block', 'Zaten bu engelde') : a.exe, style: body(13, color: c.onSurfaceVariant)),
               controlAffinity: ListTileControlAffinity.leading,
               contentPadding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -94,22 +94,22 @@ class _AppPickerState extends State<_AppPicker> {
       Row(children: [
         Expanded(
           child: NlField(
-            label: tr('Program name', 'Program neve'),
-            hint: tr('e.g. discord.exe', 'pl. discord.exe'),
+            label: tr('Program name', 'Program adı'),
+            hint: tr('e.g. discord.exe', 'ör. discord.exe'),
             controller: _typed,
             dense: true,
             onSubmitted: (_) => _addTyped(),
           ),
         ),
         const SizedBox(width: 8),
-        Btn(tr('Add', 'Hozzáadás'), kind: BtnKind.tonal, onPressed: _addTyped),
+        Btn(tr('Add', 'Ekle'), kind: BtnKind.tonal, onPressed: _addTyped),
       ]),
       if (_error != null) Padding(padding: const EdgeInsets.only(top: 8), child: Text(_error!, style: body(14, color: c.error))),
       const SizedBox(height: 24),
       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-        Btn(tr('Cancel', 'Mégse'), kind: BtnKind.text, onPressed: () => Navigator.pop(context)),
+        Btn(tr('Cancel', 'İptal'), kind: BtnKind.text, onPressed: () => Navigator.pop(context)),
         const SizedBox(width: 8),
-        Btn(_picked.isEmpty ? tr('Add', 'Hozzáadás') : tr('Add ${_picked.length}', '${_picked.length} hozzáadása'),
+        Btn(_picked.isEmpty ? tr('Add', 'Ekle') : tr('Add ${_picked.length}', '${_picked.length} tane ekle'),
             icon: Symbols.check_rounded,
             onPressed: _picked.isEmpty ? null : () => Navigator.pop(context, _picked.values.toList())),
       ]),

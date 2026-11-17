@@ -58,7 +58,7 @@ class NlSwitch extends StatelessWidget {
         onTap: onTap,
         child: Semantics(
           toggled: on,
-          label: locked ? tr('Locked, click to unlock early', 'Zárolva, kattints a korábbi feloldáshoz') : null,
+          label: locked ? tr('Locked, click to unlock early', 'Kilitli, erken açmak için tıkla') : null,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             width: 52 * scale,

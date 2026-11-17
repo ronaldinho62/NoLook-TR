@@ -11,7 +11,7 @@ enum ThemeChoice { system, light, dark }
 
 enum BlurStrength { light, strong }
 
-enum LangChoice { system, en, hu }
+enum LangChoice { system, en, tr }
 
 class Settings {
   Settings({
@@ -151,7 +151,7 @@ class NoLookState {
   void applyLanguage(String systemLocale) {
     currentLang = switch (settings.language) {
       LangChoice.en => Lang.en,
-      LangChoice.hu => Lang.hu,
+      LangChoice.tr => Lang.tr,
       LangChoice.system => langForLocale(systemLocale),
     };
   }
@@ -230,13 +230,13 @@ class NoLookFile {
     try {
       data = jsonDecode(text);
     } on FormatException {
-      throw FormatException(tr("This isn't a NoLook file.", 'Ez nem NoLook fájl.'));
+      throw FormatException(tr("This isn't a NoLook file.", 'Bu bir NoLook dosyası değil.'));
     }
     if (data is! Map || data['format'] != 'nolook' || data['blocks'] is! List) {
-      throw FormatException(tr("This isn't a NoLook file.", 'Ez nem NoLook fájl.'));
+      throw FormatException(tr("This isn't a NoLook file.", 'Bu bir NoLook dosyası değil.'));
     }
     if ((data['version'] as num? ?? 1) > 1) {
-      throw FormatException(tr('This file is from a newer NoLook, update NoLook to open it.', 'Ez a fájl egy újabb NoLookból jön, frissítsd a NoLookot a megnyitásához.'));
+      throw FormatException(tr('This file is from a newer NoLook, update NoLook to open it.', 'Bu dosya daha yeni bir NoLook sürümünden, açmak için NoLook\'u güncelle.'));
     }
     return [for (final b in data['blocks'] as List) Block.fromJson((b as Map).cast())];
   }

@@ -61,11 +61,18 @@ class KeywordMatcher(keywords: Iterable<String>) {
     companion object {
         private val special = Regex("[\\\\^$.|?*+()\\[\\]{}]")
 
+        private val dotted = mapOf("i" to "[iİ]", "I" to "[Iı]", "ı" to "[ıI]", "İ" to "[İi]")
+
         fun patternFor(keyword: String): String {
-            val parts = keyword.trim().replace('’', '\'').split(Regex("[\\s\\-_]+")).filter { it.isNotEmpty() }.map { p ->
-                p.replace(special) { "\\" + it.value }.replace("'", "['’]")
+            var k = keyword.trim().replace('’', '\'')
+            // "final*": Türkçe ekli halleri de yakala (finali, finalde)
+            val bare = k.replace(Regex("\\*+$"), "")
+            val stem = bare != k && bare.isNotBlank()
+            if (stem) k = bare
+            val parts = k.split(Regex("[\\s\\-_]+")).filter { it.isNotEmpty() }.map { p ->
+                p.replace(special) { "\\" + it.value }.replace(Regex("[iIıİ]")) { dotted.getValue(it.value) }.replace("'", "['’]")
             }
-            return "(?<![\\p{L}\\p{N}])" + parts.joinToString("[\\s\\-_.]*") + "(?:['’]s|s|es)?(?![\\p{L}\\p{N}])"
+            return "(?<![\\p{L}\\p{N}])" + parts.joinToString("[\\s\\-_.]*") + (if (stem) "" else "(?:['’]s|s|es)?(?![\\p{L}\\p{N}])")
         }
     }
 

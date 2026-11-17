@@ -54,11 +54,11 @@ object Notices {
 
     /** blocker got turned off */
     fun blockerOff(context: Context) {
-        val hu = Rules.hungarian
+        val turkce = Rules.turkish
         show(
             context, BLOCKER_OFF,
-            if (hu) "A NoLook tiltója ki van kapcsolva" else "NoLook's blocker is off",
-            if (hu) "Ezen a telefonon semmi sincs tiltva, amíg vissza nem kapcsolod, koppints a NoLook megnyitásához."
+            if (turkce) "NoLook engelleyicisi kapalı" else "NoLook's blocker is off",
+            if (turkce) "Sen yeniden açana kadar bu telefonda hiçbir şey engellenmez, NoLook'u açmak için dokun."
             else "Nothing gets blocked on this phone until it's back on, tap to open NoLook.",
         )
     }

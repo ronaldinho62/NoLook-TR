@@ -75,14 +75,14 @@ class _UpdateBannerState extends State<UpdateBanner> {
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(tr('NoLook ${u.version} is out', 'Megjelent a NoLook ${u.version}'), style: body(16, weight: FontWeight.w600, color: c.onPrimaryContainer)),
+                    Text(tr('NoLook ${u.version} is out', 'NoLook ${u.version} çıktı'), style: body(16, weight: FontWeight.w600, color: c.onPrimaryContainer)),
                     const SizedBox(height: 2),
                     Text(
                       _failed
-                          ? tr("Couldn't update, try again or download it from GitHub", 'Nem sikerült frissíteni, próbáld újra, vagy töltsd le a GitHubról')
+                          ? tr("Couldn't update, try again or download it from GitHub", 'Güncellenemedi, tekrar dene ya da GitHub\'dan indir')
                           : busy
-                              ? (onAndroid ? tr('Downloading, then Android asks to update', 'Letöltés, utána az Android rákérdez a frissítésre') : tr('Downloading, NoLook restarts by itself', 'Letöltés, a NoLook magától újraindul'))
-                              : tr('Your blocks stay as they are', 'A tiltásaid megmaradnak'),
+                              ? (onAndroid ? tr('Downloading, then Android asks to update', 'İndiriliyor, sonra Android güncellemeyi soracak') : tr('Downloading, NoLook restarts by itself', 'İndiriliyor, NoLook kendiliğinden yeniden başlayacak'))
+                              : tr('Your blocks stay as they are', 'Engellerin olduğu gibi kalır'),
                       style: body(14, color: c.onPrimaryContainer),
                     ),
                     if (busy) ...[
@@ -92,7 +92,7 @@ class _UpdateBannerState extends State<UpdateBanner> {
                   ]),
                 ),
                 const SizedBox(width: 12),
-                Btn(tr('Update', 'Frissítés'), onPressed: busy ? null : () => _update(u)),
+                Btn(tr('Update', 'Güncelle'), onPressed: busy ? null : () => _update(u)),
               ]),
             ),
           );

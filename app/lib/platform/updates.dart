@@ -54,7 +54,7 @@ Future<Update?> _ask(String current, String repo) async {
 }
 
 /// uninstall key, AppId from tools/installer/nolook.iss
-const _uninstallKey = r'HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\{7E3C9B52-4A1D-4F6B-9C0E-5B2F8A41D6C3}_is1';
+const _uninstallKey = r'HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\{B447EA2B-B7E9-431E-B534-E3F8CC16DE6F}_is1';
 
 /// windows: download, script waits for exit, copies files, restarts. false if prep failed
 Future<bool> installWindowsUpdate(Update u, {void Function(double)? progress, String? installDir, bool restart = true}) async {

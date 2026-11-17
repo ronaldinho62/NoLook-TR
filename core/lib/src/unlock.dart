@@ -19,7 +19,7 @@ class Unlocker {
 
   static String sentenceFor(Block b) => b.sentence.trim().isNotEmpty
       ? b.sentence.trim()
-      : tr('I really want to turn off ${b.name} right now', 'Most tényleg ki akarom kapcsolni ezt: ${b.name}');
+      : tr('I really want to turn off ${b.name} right now', 'Şu an gerçekten ${b.name} engelini kapatmak istiyorum');
 
   static UnlockSteps stepsFor(Block b) {
     final (wait, type) = switch (b.lock) {
@@ -122,35 +122,35 @@ class Unlocker {
       return a.any((s) => !kept.contains(s.toLowerCase()));
     }
 
-    if (removed(before.keywords, after.keywords)) problems.add(tr("Keywords can't be removed while it's locked.", 'Zárolás alatt nem törölhetsz kulcsszót.'));
+    if (removed(before.keywords, after.keywords)) problems.add(tr("Keywords can't be removed while it's locked.", 'Kilitliyken anahtar kelimeler kaldırılamaz.'));
     if (removed(before.spoilerWords, after.spoilerWords) || removed(before.topicWords, after.topicWords)) {
-      problems.add(tr("Words can't be removed while it's locked.", 'Zárolás alatt nem törölhetsz szót.'));
+      problems.add(tr("Words can't be removed while it's locked.", 'Kilitliyken kelimeler kaldırılamaz.'));
     }
-    if (removed(before.sites, after.sites)) problems.add(tr("Sites can't be removed while it's locked.", 'Zárolás alatt nem törölhetsz oldalt.'));
+    if (removed(before.sites, after.sites)) problems.add(tr("Sites can't be removed while it's locked.", 'Kilitliyken siteler kaldırılamaz.'));
     if (removed([for (final a in before.apps) a.name], [for (final a in after.apps) a.name])) {
-      problems.add(tr("Apps can't be removed while it's locked.", 'Zárolás alatt nem törölhetsz appot.'));
+      problems.add(tr("Apps can't be removed while it's locked.", 'Kilitliyken uygulamalar kaldırılamaz.'));
     }
-    if (after.lock != before.lock) problems.add(tr("The lock type can't change while it's locked.", 'Zárolás alatt nem változhat a zárolás módja.'));
+    if (after.lock != before.lock) problems.add(tr("The lock type can't change while it's locked.", 'Kilitliyken kilit türü değiştirilemez.'));
     if (before.lock == LockKind.untilDate &&
         (after.lockedUntil == null || after.lockedUntil!.isBefore(before.lockedUntil!))) {
-      problems.add(tr("The date can only move later while it's locked.", 'Zárolás alatt a dátum csak későbbre tehető.'));
+      problems.add(tr("The date can only move later while it's locked.", 'Kilitliyken tarih yalnızca ileri alınabilir.'));
     }
     final s1 = stepsFor(before), s2 = stepsFor(after);
-    if ((s1.wait && !s2.wait) || (s1.type && !s2.type)) problems.add(tr("Unlocking early can't get easier while it's locked.", 'Zárolás alatt a korábbi feloldás nem lehet könnyebb.'));
-    if (s1.wait && after.waitMinutes < before.waitMinutes) problems.add(tr("The wait can't get shorter while it's locked.", 'Zárolás alatt a várakozás nem lehet rövidebb.'));
+    if ((s1.wait && !s2.wait) || (s1.type && !s2.type)) problems.add(tr("Unlocking early can't get easier while it's locked.", 'Kilitliyken erken açma kolaylaştırılamaz.'));
+    if (s1.wait && after.waitMinutes < before.waitMinutes) problems.add(tr("The wait can't get shorter while it's locked.", 'Kilitliyken bekleme kısaltılamaz.'));
     final e1 = before.emergencyPerMonth, e2 = after.emergencyPerMonth;
-    if (e1 != null && (e2 == null || e2 > e1)) problems.add(tr("Emergency unlocks can't go up while it's locked.", 'Zárolás alatt nem lehet több vészfeloldás.'));
+    if (e1 != null && (e2 == null || e2 > e1)) problems.add(tr("Emergency unlocks can't go up while it's locked.", 'Kilitliyken acil kilit açma sayısı artırılamaz.'));
     final r1 = before.relockMinutes, r2 = after.relockMinutes;
-    if (r1 != null && (r2 == null || r2 > r1)) problems.add(tr("It can't stay off for longer while it's locked.", 'Zárolás alatt nem maradhat tovább kikapcsolva.'));
-    if (after.schedule != before.schedule) problems.add(tr("The schedule can't change while it's locked.", 'Zárolás alatt nem változhat az időbeosztás.'));
+    if (r1 != null && (r2 == null || r2 > r1)) problems.add(tr("It can't stay off for longer while it's locked.", 'Kilitliyken daha uzun süre kapalı kalamaz.'));
+    if (after.schedule != before.schedule) problems.add(tr("The schedule can't change while it's locked.", 'Kilitliyken zamanlama değiştirilemez.'));
     if (before.devices.isEmpty && after.devices.isNotEmpty ||
         before.devices.isNotEmpty && after.devices.isNotEmpty && !after.devices.toSet().containsAll(before.devices)) {
-      problems.add(tr("Devices can't be taken off while it's locked.", 'Zárolás alatt nem vehetsz le eszközt.'));
+      problems.add(tr("Devices can't be taken off while it's locked.", 'Kilitliyken cihazlar çıkarılamaz.'));
     }
     if (before.matchMode == MatchMode.hide && after.matchMode == MatchMode.blur) {
-      problems.add(tr("Matches can't go from hidden to blurred while it's locked.", 'Zárolás alatt a rejtés nem válthat homályosításra.'));
+      problems.add(tr("Matches can't go from hidden to blurred while it's locked.", 'Kilitliyken eşleşmeler gizliden bulanığa geçemez.'));
     }
-    if (before.imageText && !after.imageText) problems.add(tr("Checking images can't be turned off while it's locked.", 'Zárolás alatt a képek ellenőrzése nem kapcsolható ki.'));
+    if (before.imageText && !after.imageText) problems.add(tr("Checking images can't be turned off while it's locked.", 'Kilitliyken görsel kontrolü kapatılamaz.'));
     return problems;
   }
 }

@@ -143,24 +143,24 @@ class _EditBlockPageState extends State<EditBlockPage> {
     final c = context.nl;
     final phone = context.isPhone;
     final locked = widget.editing?.isLocked(app.now) ?? false;
-    final title = _isNew ? tr('New block', 'Új tiltás') : tr('Edit block', 'Tiltás szerkesztése');
-    final saveLabel = _isNew ? tr('Create block', 'Tiltás létrehozása') : tr('Save', 'Mentés');
+    final title = _isNew ? tr('New block', 'Yeni engel') : tr('Edit block', 'Engeli düzenle');
+    final saveLabel = _isNew ? tr('Create block', 'Engel oluştur') : tr('Save', 'Kaydet');
     var n = 0;
 
     final steps = <Widget>[
       if (_isNew)
         _Step(
           number: ++n,
-          title: tr('Start from', 'Kiindulás'),
-          text: tr('A preset comes with keywords and sites already in, you can still change everything.', 'A sablonban már benne vannak a kulcsszavak és oldalak, de mindent módosíthatsz.'),
+          title: tr('Start from', 'Başlangıç'),
+          text: tr('A preset comes with keywords and sites already in, you can still change everything.', 'Hazır listede anahtar kelimeler ve siteler zaten var, yine de her şeyi değiştirebilirsin.'),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             ChoiceGrid(children: [
               ChoiceTile(
-                  icon: Symbols.add_box_rounded, title: tr('Empty block', 'Üres tiltás'), text: tr('Add everything yourself', 'Mindent te adsz hozzá'), selected: !_fromPreset, onTap: _useEmpty),
+                  icon: Symbols.add_box_rounded, title: tr('Empty block', 'Boş engel'), text: tr('Add everything yourself', 'Her şeyi kendin ekle'), selected: !_fromPreset, onTap: _useEmpty),
               ChoiceTile(
                   icon: Symbols.auto_awesome_motion_rounded,
-                  title: tr('A preset', 'Sablon'),
-                  text: tr('Pick a ready-made list', 'Válassz egy kész listát'),
+                  title: tr('A preset', 'Hazır liste'),
+                  text: tr('Pick a ready-made list', 'Hazır bir liste seç'),
                   selected: _fromPreset,
                   onTap: () => _usePreset(_preset ?? presets.first)),
             ]),
@@ -171,15 +171,15 @@ class _EditBlockPageState extends State<EditBlockPage> {
         ),
       _Step(
         number: ++n,
-        title: tr('Name it', 'Nevezd el'),
+        title: tr('Name it', 'Ad ver'),
         child: Flex(
           direction: phone ? Axis.vertical : Axis.horizontal,
           crossAxisAlignment: phone ? CrossAxisAlignment.start : CrossAxisAlignment.center,
           children: [
             if (phone)
-              NlField(label: tr('Name', 'Név'), controller: _name, onChanged: (v) => setState(() => d.name = v))
+              NlField(label: tr('Name', 'Ad'), controller: _name, onChanged: (v) => setState(() => d.name = v))
             else
-              Expanded(child: NlField(label: tr('Name', 'Név'), controller: _name, onChanged: (v) => setState(() => d.name = v))),
+              Expanded(child: NlField(label: tr('Name', 'Ad'), controller: _name, onChanged: (v) => setState(() => d.name = v))),
             SizedBox(width: 12, height: phone ? 12 : 0),
             Row(mainAxisSize: MainAxisSize.min, children: [
               for (final col in BlockColor.values)
@@ -209,11 +209,11 @@ class _EditBlockPageState extends State<EditBlockPage> {
       ),
       _Step(
         number: ++n,
-        title: tr('What to block', 'Mit tiltson'),
+        title: tr('What to block', 'Neler engellensin'),
         text: locked
-            ? tr("It's locked, so you can add things but not remove them.", 'Zárolva van, így hozzáadhatsz, de nem törölhetsz.')
-            : onMobile ? tr('Keywords get covered, sites and apps get blocked.', 'A kulcsszavakat eltakarja, az oldalakat és appokat tiltja.')
-            : !closesApps ? tr('Keywords get blurred and sites get blocked.', 'A kulcsszavak el lesznek rejtve, az oldalak tiltva.') : tr('Keywords get blurred, sites and apps get blocked.', 'A kulcsszavak el lesznek rejtve, az oldalak és appok tiltva.'),
+            ? tr("It's locked, so you can add things but not remove them.", 'Kilitli, bu yüzden ekleme yapabilirsin ama kaldıramazsın.')
+            : onMobile ? tr('Keywords get covered, sites and apps get blocked.', 'Anahtar kelimeler örtülür, siteler ve uygulamalar engellenir.')
+            : !closesApps ? tr('Keywords get blurred and sites get blocked.', 'Anahtar kelimeler bulanıklaştırılır, siteler engellenir.') : tr('Keywords get blurred, sites and apps get blocked.', 'Anahtar kelimeler bulanıklaştırılır, siteler ve uygulamalar engellenir.'),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           WordsEditor(
             block: d,
@@ -223,13 +223,13 @@ class _EditBlockPageState extends State<EditBlockPage> {
               ..spoilerWords = s
               ..topicWords = t),
           ),
-          SubHead(Symbols.language_rounded, tr('Sites', 'Oldalak'), d.sites.length),
+          SubHead(Symbols.language_rounded, tr('Sites', 'Siteler'), d.sites.length),
           SiteEditor(sites: d.sites, canRemove: !locked, onChanged: (s) => setState(() => d.sites = s)),
           if (closesApps) ...[
-          SubHead(Symbols.apps_rounded, tr('Apps', 'Appok'), d.apps.length),
+          SubHead(Symbols.apps_rounded, tr('Apps', 'Uygulamalar'), d.apps.length),
           Wrap(spacing: 8, runSpacing: 8, children: [
             for (final a in d.apps) ItemChip(a.name, onRemove: locked ? null : () => setState(() => d.apps = [...d.apps]..remove(a))),
-            NlChip(tr('Pick apps', 'Appok kiválasztása'), icon: Symbols.add_rounded, onTap: () async {
+            NlChip(tr('Pick apps', 'Uygulama seç'), icon: Symbols.add_rounded, onTap: () async {
               final picked = await pickApps(context, already: d.apps);
               if (picked != null) setState(() => d.apps = [...d.apps, ...picked]);
             }),
@@ -239,8 +239,8 @@ class _EditBlockPageState extends State<EditBlockPage> {
       ),
       _Step(
         number: ++n,
-        title: tr("When it's on", 'Mikor fut'),
-        text: locked ? tr("The schedule can't change while it's locked.", 'Zárolás alatt nem változhat az időbeosztás.') : null,
+        title: tr("When it's on", 'Ne zaman açık'),
+        text: locked ? tr("The schedule can't change while it's locked.", 'Kilitliyken zamanlama değiştirilemez.') : null,
         child: _ScheduleEditor(
           schedule: d.schedule,
           enabled: !locked,
@@ -249,8 +249,8 @@ class _EditBlockPageState extends State<EditBlockPage> {
       ),
       _Step(
         number: ++n,
-        title: tr('Lock', 'Zárolás'),
-        text: tr('How hard it is to turn off early.', 'Mennyire legyen nehéz korábban kikapcsolni.'),
+        title: tr('Lock', 'Kilit'),
+        text: tr('How hard it is to turn off early.', 'Erken kapatmak ne kadar zor olsun.'),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           IgnorePointer(
             ignoring: locked,
@@ -258,10 +258,10 @@ class _EditBlockPageState extends State<EditBlockPage> {
               opacity: locked ? .6 : 1,
               child: ChoiceGrid(children: [
                 for (final (kind, icon, t, s) in [
-                  (LockKind.none, Symbols.lock_open_rounded, tr('No lock', 'Nincs zárolás'), tr('Turn it off any time', 'Bármikor kikapcsolhatod')),
-                  (LockKind.untilDate, Symbols.event_rounded, tr('Until a date', 'Egy dátumig'), tr('Stays on until the date you pick', 'A választott dátumig bekapcsolva marad')),
-                  (LockKind.wait, Symbols.hourglass_top_rounded, tr('Wait to unlock', 'Várakozás'), tr('Unlocking takes a short wait', 'A feloldáshoz várni kell egy kicsit')),
-                  (LockKind.type, Symbols.keyboard_rounded, tr('Type to unlock', 'Begépelés'), tr('Type out a sentence to unlock', 'A feloldáshoz be kell gépelni egy mondatot')),
+                  (LockKind.none, Symbols.lock_open_rounded, tr('No lock', 'Kilit yok'), tr('Turn it off any time', 'İstediğin zaman kapatabilirsin')),
+                  (LockKind.untilDate, Symbols.event_rounded, tr('Until a date', 'Bir tarihe kadar'), tr('Stays on until the date you pick', 'Seçtiğin tarihe kadar açık kalır')),
+                  (LockKind.wait, Symbols.hourglass_top_rounded, tr('Wait to unlock', 'Beklemeyle açılır'), tr('Unlocking takes a short wait', 'Kilidi açmak için kısa bir süre beklemek gerekir')),
+                  (LockKind.type, Symbols.keyboard_rounded, tr('Type to unlock', 'Yazarak açılır'), tr('Type out a sentence to unlock', 'Kilidi açmak için bir cümle yazmak gerekir')),
                 ])
                   ChoiceTile(
                     icon: icon,
@@ -285,7 +285,7 @@ class _EditBlockPageState extends State<EditBlockPage> {
               child: SizedBox(
                 width: 360,
                 child: _PickerField(
-                  label: tr('Locked until', 'Zárolva eddig'),
+                  label: tr('Locked until', 'Kilitli kalacağı tarih'),
                   icon: Symbols.event_rounded,
                   value: d.lockedUntil == null ? '' : Describe.day(d.lockedUntil!, DateTime(0)),
                   onTap: () async {
@@ -311,16 +311,16 @@ class _EditBlockPageState extends State<EditBlockPage> {
       onToggle: () => setState(() => _advanced = !_advanced),
       groups: [
         if (d.lock != LockKind.none)
-          _AdvGroup(tr('Unlocking early', 'Korábbi feloldás'), [
+          _AdvGroup(tr('Unlocking early', 'Erken açma'), [
             if (d.lock == LockKind.untilDate)
-              _AdvOpt(tr('What it takes', 'Mi kell hozzá'),
+              _AdvOpt(tr('What it takes', 'Ne gerekiyor'),
                   control: Seg<EarlyUnlock>(
-                    options: [(EarlyUnlock.wait, tr('Wait', 'Várakozás'), null), (EarlyUnlock.type, tr('Type', 'Gépelés'), null), (EarlyUnlock.both, tr('Both', 'Mindkettő'), null)],
+                    options: [(EarlyUnlock.wait, tr('Wait', 'Bekle'), null), (EarlyUnlock.type, tr('Type', 'Yaz'), null), (EarlyUnlock.both, tr('Both', 'İkisi de'), null)],
                     value: d.earlyUnlock,
                     onChanged: (v) => setState(() => d.earlyUnlock = v),
                   )),
             if (Unlocker.stepsFor(d).wait)
-              _AdvOpt(tr('How long the wait is', 'Milyen hosszú a várakozás'),
+              _AdvOpt(tr('How long the wait is', 'Bekleme süresi'),
                   control: Seg<int>(
                     options: [for (final m in const [5, 15, 30, 60]) (m, Describe.minutes(m), null)],
                     value: d.waitMinutes,
@@ -330,7 +330,7 @@ class _EditBlockPageState extends State<EditBlockPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 12, bottom: 4),
                 child: NlField(
-                  label: tr('Sentence to type', 'A begépelendő mondat'),
+                  label: tr('Sentence to type', 'Yazılacak cümle'),
                   icon: Symbols.keyboard_rounded,
                   controller: _sentence,
                   fill: c.surfaceLow,
@@ -338,28 +338,28 @@ class _EditBlockPageState extends State<EditBlockPage> {
                   onChanged: (v) => d.sentence = v,
                 ),
               ),
-            _AdvOpt(tr('Turns back on after', 'Visszakapcsol ennyi után'),
-                sub: tr("So it doesn't stay off by accident", 'Hogy ne maradjon véletlenül kikapcsolva'),
+            _AdvOpt(tr('Turns back on after', 'Yeniden açılma süresi'),
+                sub: tr("So it doesn't stay off by accident", 'Yanlışlıkla kapalı kalmasın diye'),
                 control: Seg<int?>(
-                  options: [(15, Describe.minutes(15), null), (60, Describe.minutes(60), null), (null, tr('When I turn it on', 'Ha visszakapcsolom'), null)],
+                  options: [(15, Describe.minutes(15), null), (60, Describe.minutes(60), null), (null, tr('When I turn it on', 'Ben açınca'), null)],
                   value: d.relockMinutes,
                   onChanged: (v) => setState(() => d.relockMinutes = v),
                 )),
           ]),
         if (d.lock != LockKind.none)
-          _AdvGroup(tr('Emergency unlocks', 'Vészfeloldások'), [
-            _AdvOpt(tr('How many a month', 'Havonta hány'),
-                sub: tr('Skips the wait and the typing when you really need it', 'Kihagyja a várakozást és a gépelést, ha tényleg kell'),
+          _AdvGroup(tr('Emergency unlocks', 'Acil kilit açma hakları'), [
+            _AdvOpt(tr('How many a month', 'Ayda kaç tane'),
+                sub: tr('Skips the wait and the typing when you really need it', 'Gerçekten gerektiğinde beklemeyi ve yazmayı atlar'),
                 control: Seg<int?>(
-                  options: [(0, tr('None', 'Nincs'), null), (1, '1', null), (3, '3', null), (null, tr('No limit', 'Korlátlan'), null)],
+                  options: [(0, tr('None', 'Yok'), null), (1, '1', null), (3, '3', null), (null, tr('No limit', 'Sınırsız'), null)],
                   value: d.emergencyPerMonth,
                   onChanged: (v) => setState(() => d.emergencyPerMonth = v),
                 )),
           ]),
-        _AdvGroup(tr('Matches', 'Találatok'), [
-          _AdvOpt(tr('When a keyword matches', 'Ha egy kulcsszó egyezik'),
+        _AdvGroup(tr('Matches', 'Eşleşmeler'), [
+          _AdvOpt(tr('When a keyword matches', 'Bir anahtar kelime eşleşince'),
               control: Seg<MatchMode>(
-                options: [(MatchMode.blur, tr('Blur', 'Homály'), null), (MatchMode.hide, tr('Hide', 'Rejtés'), null)],
+                options: [(MatchMode.blur, tr('Blur', 'Bulanık'), null), (MatchMode.hide, tr('Hide', 'Gizle'), null)],
                 value: d.matchMode,
                 onChanged: (v) => setState(() => d.matchMode = v),
               )),
@@ -372,10 +372,10 @@ class _EditBlockPageState extends State<EditBlockPage> {
       child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
         if (!_ready)
           Expanded(
-            child: Text(_name.text.trim().isEmpty ? tr('Give it a name first.', 'Előbb adj neki nevet.') : tr('Add a keyword, site or app first.', 'Előbb adj hozzá egy kulcsszót, oldalt vagy appot.'),
+            child: Text(_name.text.trim().isEmpty ? tr('Give it a name first.', 'Önce bir ad ver.') : tr('Add a keyword, site or app first.', 'Önce bir anahtar kelime, site veya uygulama ekle.'),
                 style: body(14, color: c.onSurfaceVariant)),
           ),
-        Btn(tr('Cancel', 'Mégse'), kind: BtnKind.text, onPressed: () => Navigator.pop(context)),
+        Btn(tr('Cancel', 'İptal'), kind: BtnKind.text, onPressed: () => Navigator.pop(context)),
         const SizedBox(width: 8),
         Btn(saveLabel, icon: Symbols.check_rounded, onPressed: _ready ? _save : null),
       ]),
@@ -390,9 +390,9 @@ class _EditBlockPageState extends State<EditBlockPage> {
     final preview = Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Padding(
         padding: const EdgeInsets.only(left: 4, bottom: 12),
-        child: Text(tr('Preview', 'Előnézet'), style: body(13, weight: FontWeight.w600, color: c.onSurfaceVariant)),
+        child: Text(tr('Preview', 'Önizleme'), style: body(13, weight: FontWeight.w600, color: c.onSurfaceVariant)),
       ),
-      IntrinsicHeight(child: BlockCard(app: app, block: d.copy()..name = _name.text.trim().isEmpty ? tr('New block', 'Új tiltás') : _name.text.trim(), style: BlockCardStyle.home, preview: true)),
+      IntrinsicHeight(child: BlockCard(app: app, block: d.copy()..name = _name.text.trim().isEmpty ? tr('New block', 'Yeni engel') : _name.text.trim(), style: BlockCardStyle.home, preview: true)),
       Padding(
         padding: const EdgeInsets.fromLTRB(4, 16, 4, 0),
         child: Text(Describe.summary(d), style: body(13, color: c.onSurfaceVariant)),
@@ -402,15 +402,15 @@ class _EditBlockPageState extends State<EditBlockPage> {
     return NlPage(
         header: phone
             ? Row(children: [
-                IconBtn(Symbols.close_rounded, tooltip: tr('Close', 'Bezárás'), onPressed: () => Navigator.pop(context)),
+                IconBtn(Symbols.close_rounded, tooltip: tr('Close', 'Kapat'), onPressed: () => Navigator.pop(context)),
                 const SizedBox(width: 8),
                 Expanded(child: Text(title, style: body(22, weight: FontWeight.w500, color: c.onSurface))),
-                Btn(_isNew ? tr('Create', 'Létrehozás') : tr('Save', 'Mentés'), onPressed: _ready ? _save : null),
+                Btn(_isNew ? tr('Create', 'Oluştur') : tr('Save', 'Kaydet'), onPressed: _ready ? _save : null),
               ])
             : null,
         children: [
       if (!phone)
-        PageBar(title: title, leading: IconBtn(Symbols.arrow_back_rounded, tooltip: tr('Back', 'Vissza'), onPressed: () => Navigator.pop(context))),
+        PageBar(title: title, leading: IconBtn(Symbols.arrow_back_rounded, tooltip: tr('Back', 'Geri'), onPressed: () => Navigator.pop(context))),
       if (phone)
         form
       else
@@ -504,7 +504,7 @@ class _PresetTile extends StatelessWidget {
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(preset.name, style: body(16, weight: FontWeight.w600, color: fg)),
-                Text(tr('${preset.description}, ${preset.wordCount} keywords and ${preset.sites.length} sites', '${preset.description}, ${preset.wordCount} kulcsszó és ${preset.sites.length} oldal'),
+                Text(tr('${preset.description}, ${preset.wordCount} keywords and ${preset.sites.length} sites', '${preset.description}, ${preset.wordCount} anahtar kelime ve ${preset.sites.length} site'),
                     style: body(13, color: fg.withValues(alpha: .75))),
               ]),
             ),
@@ -548,7 +548,7 @@ class _ScheduleEditor extends StatelessWidget {
         opacity: enabled ? 1 : .6,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Seg<bool>(
-            options: [(true, tr('Always', 'Mindig'), Symbols.all_inclusive_rounded), (false, tr('On a schedule', 'Időbeosztással'), Symbols.schedule_rounded)],
+            options: [(true, tr('Always', 'Her zaman'), Symbols.all_inclusive_rounded), (false, tr('On a schedule', 'Zamanlamaya göre'), Symbols.schedule_rounded)],
             value: s.always,
             onChanged: (always) => onChanged(always ? const Schedule.always() : on()),
           ),
@@ -576,14 +576,14 @@ class _ScheduleEditor extends StatelessWidget {
             Wrap(spacing: 12, runSpacing: 12, children: [
               SizedBox(
                 width: 160,
-                child: _PickerField(label: tr('From', 'Ettől'), icon: Symbols.schedule_rounded, value: Schedule.clock(start), onTap: () async {
+                child: _PickerField(label: tr('From', 'Başlangıç'), icon: Symbols.schedule_rounded, value: Schedule.clock(start), onTap: () async {
                   final m = await pick(start);
                   if (m != null) onChanged(on(start2: m));
                 }),
               ),
               SizedBox(
                 width: 160,
-                child: _PickerField(label: tr('To', 'Eddig'), icon: Symbols.schedule_rounded, value: Schedule.clock(end), onTap: () async {
+                child: _PickerField(label: tr('To', 'Bitiş'), icon: Symbols.schedule_rounded, value: Schedule.clock(end), onTap: () async {
                   final m = await pick(end);
                   if (m != null) onChanged(on(end2: m));
                 }),
@@ -592,7 +592,7 @@ class _ScheduleEditor extends StatelessWidget {
             if (end <= start)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
-                child: Text(tr('Runs overnight, into the next morning.', 'Éjszakán át fut, másnap reggelig.'), style: body(13, color: c.onSurfaceVariant)),
+                child: Text(tr('Runs overnight, into the next morning.', 'Gece boyunca, ertesi sabaha kadar sürer.'), style: body(13, color: c.onSurfaceVariant)),
               ),
           ],
         ]),
@@ -658,8 +658,8 @@ class _Advanced extends StatelessWidget {
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(tr('Advanced options', 'Speciális beállítások'), style: body(16, weight: FontWeight.w600, color: c.onSurface)),
-                    Text(onMobile ? tr('Unlocking early, emergency unlocks and covering', 'Korai feloldás, vészfeloldások és takarás') : tr('Unlocking early, emergency unlocks and blur', 'Korábbi feloldás, vészfeloldások és homályosítás'), style: body(13, color: c.onSurfaceVariant)),
+                    Text(tr('Advanced options', 'Gelişmiş seçenekler'), style: body(16, weight: FontWeight.w600, color: c.onSurface)),
+                    Text(onMobile ? tr('Unlocking early, emergency unlocks and covering', 'Erken açma, acil kilit açma ve örtme') : tr('Unlocking early, emergency unlocks and blur', 'Erken açma, acil kilit açma ve bulanıklık'), style: body(13, color: c.onSurfaceVariant)),
                   ]),
                 ),
                 AnimatedRotation(

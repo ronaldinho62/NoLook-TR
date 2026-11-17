@@ -177,7 +177,7 @@ class ShellState extends State<Shell> {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(
-        content: Text(tr('Press back again to close NoLook', 'Nyomd meg újra a vissza gombot a bezáráshoz')),
+        content: Text(tr('Press back again to close NoLook', 'NoLook\'u kapatmak için tekrar geri tuşuna bas')),
         behavior: SnackBarBehavior.floating,
         margin: const EdgeInsets.fromLTRB(16, 0, 16, 112),
         duration: const Duration(seconds: 2),
@@ -215,10 +215,10 @@ class ShellState extends State<Shell> {
 }
 
 List<(NavTab, IconData, String)> get _dests => [
-      (NavTab.home, Symbols.home_rounded, tr('Home', 'Kezdőlap')),
-      (NavTab.blocks, Symbols.block_rounded, tr('Blocks', 'Tiltások')),
-      (NavTab.devices, Symbols.devices_rounded, tr('Devices', 'Eszközök')),
-      (NavTab.settings, Symbols.settings_rounded, tr('Settings', 'Beállítások')),
+      (NavTab.home, Symbols.home_rounded, tr('Home', 'Ana sayfa')),
+      (NavTab.blocks, Symbols.block_rounded, tr('Blocks', 'Engeller')),
+      (NavTab.devices, Symbols.devices_rounded, tr('Devices', 'Cihazlar')),
+      (NavTab.settings, Symbols.settings_rounded, tr('Settings', 'Ayarlar')),
     ];
 
 class _Fab extends StatelessWidget {
@@ -232,7 +232,7 @@ class _Fab extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.nl;
     return Tooltip(
-      message: tr('New block', 'Új tiltás'),
+      message: tr('New block', 'Yeni engel'),
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius),

@@ -1,4 +1,4 @@
-# mac/linux/windows builds. runs on v* tags or by hand, files go to the run's artifacts
+# mac/linux/windows builds. runs on v* tags or by hand, files go to the run's artifacts (and a release on tags)
 name: Desktop builds
 
 on:
@@ -163,3 +163,24 @@ jobs:
           path: |
             NoLook-windows.zip
             NoLook-setup.exe
+
+  # v* etiketinde Windows dosyalarını GitHub sürümü olarak yayımlar (uygulama güncellemeleri buradan alır)
+  release:
+    needs: windows
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: NoLook-windows
+          path: out
+      - name: Publish the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" out/NoLook-setup.exe out/NoLook-windows.zip \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "NoLook TR $GITHUB_REF_NAME" \
+            --notes "Türkçe NoLook sürümü. Windows için **NoLook-setup.exe** dosyasını indirip çalıştır. Kurulumsuz kullanmak istersen **NoLook-windows.zip** dosyasını aç."

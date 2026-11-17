@@ -50,7 +50,7 @@ class BlockPage extends StatelessWidget {
           const SizedBox(width: 14),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(tr('The ${preset.name} preset has $n new ${n == 1 ? 'entry' : 'entries'}', 'A(z) ${preset.name} sablonban $n új elem van'),
+              Text(tr('The ${preset.name} preset has $n new ${n == 1 ? 'entry' : 'entries'}', '${preset.name} hazır listesinde $n yeni öğe var'),
                   style: body(16, weight: FontWeight.w600, color: c.onPrimaryContainer)),
               Text(
                 [...m.keywords, ...m.topicWords, ...m.spoilerWords, ...m.sites].take(6).join(', ') + (n > 6 ? '...' : ''),
@@ -60,7 +60,7 @@ class BlockPage extends StatelessWidget {
             ]),
           ),
           const SizedBox(width: 12),
-          Btn(tr('Add them', 'Hozzáadás'), onPressed: () => _change(context, b, (x) => x
+          Btn(tr('Add them', 'Ekle'), onPressed: () => _change(context, b, (x) => x
             ..keywords = [...x.keywords, ...m.keywords]
             ..spoilerWords = [...x.spoilerWords, ...m.spoilerWords]
             ..topicWords = [...x.topicWords, ...m.topicWords]
@@ -102,7 +102,7 @@ class BlockPage extends StatelessWidget {
                     if (preset != null)
                       Padding(
                         padding: const EdgeInsets.only(top: 4),
-                        child: Text(tr('From the ${preset.name} preset', 'A(z) ${preset.name} sablonból'), style: body(15, color: fg.withValues(alpha: .75))),
+                        child: Text(tr('From the ${preset.name} preset', '${preset.name} hazır listesinden'), style: body(15, color: fg.withValues(alpha: .75))),
                       ),
                   ]),
                 ),
@@ -110,16 +110,16 @@ class BlockPage extends StatelessWidget {
                   value: b.isOn(now),
                   locked: locked,
                   scale: 1.2,
-                  tooltip: locked ? tr('Locked, click to unlock early', 'Zárolva, kattints a korábbi feloldáshoz') : null,
+                  tooltip: locked ? tr('Locked, click to unlock early', 'Kilitli, erken açmak için tıkla') : null,
                   onTap: () => tapSwitch(context, app, b),
                 ),
               ]),
               const SizedBox(height: 20),
               Wrap(spacing: 28, runSpacing: 12, children: [
                 for (final (n, label) in [
-                  ('${app.stats.hiddenTodayFor(b.id)}', tr('hidden today', 'elrejtve ma')),
-                  ('${app.state.totals[b.id] ?? 0}', tr('hidden in total', 'elrejtve összesen')),
-                  ('$devices', devices == 1 ? tr('device', 'eszköz') : tr('devices', 'eszköz')),
+                  ('${app.stats.hiddenTodayFor(b.id)}', tr('hidden today', 'bugün gizlendi')),
+                  ('${app.state.totals[b.id] ?? 0}', tr('hidden in total', 'toplam gizlendi')),
+                  ('$devices', devices == 1 ? tr('device', 'cihaz') : tr('devices', 'cihaz')),
                 ])
                   Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(n, style: display(30, color: fg)),
@@ -135,7 +135,7 @@ class BlockPage extends StatelessWidget {
                   const SizedBox(width: 10),
                   Expanded(child: lockText(b, now, fg, size: 15)),
                   if (locked && !phone)
-                    Text(tr('Tap the switch to unlock early', 'A kapcsolóval oldhatod fel korábban'), style: body(13, color: fg.withValues(alpha: .75))),
+                    Text(tr('Tap the switch to unlock early', 'Erken açmak için anahtara dokun'), style: body(13, color: fg.withValues(alpha: .75))),
                 ]),
               ),
             ]),
@@ -184,13 +184,13 @@ class BlockPage extends StatelessWidget {
           ]),
         );
 
-    final change = Btn(tr('Change', 'Módosítás'), kind: BtnKind.text, onPressed: () => go(context, EditBlockPage(app: app, editing: b, openAdvanced: true)));
+    final change = Btn(tr('Change', 'Değiştir'), kind: BtnKind.text, onPressed: () => go(context, EditBlockPage(app: app, editing: b, openAdvanced: true)));
 
     final left = Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       ?presetBanner,
-      sect(tr('Keywords', 'Kulcsszavak'),
+      sect(tr('Keywords', 'Anahtar kelimeler'),
           count: '${b.wordCount}',
-          text: onMobile ? tr('Anything that mentions these gets covered.', 'Ami ezeket említi, azt eltakarja.') : tr('Anything that mentions these gets blurred.', 'Ami ezeket említi, el lesz rejtve.'),
+          text: onMobile ? tr('Anything that mentions these gets covered.', 'Bunlardan bahseden her şey örtülür.') : tr('Anything that mentions these gets blurred.', 'Bunlardan bahseden her şey bulanıklaştırılır.'),
           child: WordsEditor(
             block: b,
             canRemove: !locked,
@@ -201,24 +201,24 @@ class BlockPage extends StatelessWidget {
               ..spoilerWords = s
               ..topicWords = t),
           )),
-      sect(tr('Sites', 'Oldalak'),
+      sect(tr('Sites', 'Siteler'),
           count: '${b.sites.length}',
-          text: tr('These sites get blocked.', 'Ezek az oldalak le lesznek tiltva.'),
+          text: tr('These sites get blocked.', 'Bu siteler engellenir.'),
           child: SiteEditor(
             sites: b.sites,
             rows: true,
             canRemove: !locked,
-            hint: tr('e.g. reddit.com/r/GTA6', 'pl. reddit.com/r/GTA6'),
+            hint: tr('e.g. reddit.com/r/GTA6', 'ör. reddit.com/r/GTA6'),
             fill: c.surfaceMid,
             onChanged: (s) => _change(context, b, (x) => x.sites = s),
           )),
       // mac/linux can still get apps via sync
       if (closesApps || b.apps.isNotEmpty)
-      sect(tr('Apps', 'Appok'),
+      sect(tr('Apps', 'Uygulamalar'),
           count: '${b.apps.length}',
           text: closesApps
-              ? tr('These apps get closed as soon as they open.', 'Ezek az appok bezáródnak, amint megnyitod őket.')
-              : tr('These get closed on your Windows PCs and Android phones, not on this computer.', 'Ezek a Windowsos gépeiden és androidos telefonjaidon záródnak be, ezen a gépen nem.'),
+              ? tr('These apps get closed as soon as they open.', 'Bu uygulamalar açılır açılmaz kapatılır.')
+              : tr('These get closed on your Windows PCs and Android phones, not on this computer.', 'Bunlar bu bilgisayarda değil, Windows bilgisayarlarında ve Android telefonlarında kapatılır.'),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             for (final a in b.apps)
               Padding(
@@ -239,12 +239,12 @@ class BlockPage extends StatelessWidget {
                   ),
                   if (!locked)
                     IconBtn(Symbols.close_rounded,
-                        tooltip: tr('Remove', 'Eltávolítás'), onPressed: () => _change(context, b, (x) => x.apps = [...x.apps]..remove(a))),
+                        tooltip: tr('Remove', 'Kaldır'), onPressed: () => _change(context, b, (x) => x.apps = [...x.apps]..remove(a))),
                 ]),
               ),
             const SizedBox(height: 4),
             if (closesApps)
-            Btn(tr('Add an app', 'App hozzáadása'), icon: Symbols.add_rounded, kind: BtnKind.outlined, onPressed: () async {
+            Btn(tr('Add an app', 'Uygulama ekle'), icon: Symbols.add_rounded, kind: BtnKind.outlined, onPressed: () async {
               final picked = await pickApps(context, already: b.apps);
               if (picked != null && context.mounted) _change(context, b, (x) => x.apps = [...x.apps, ...picked]);
             }),
@@ -261,20 +261,20 @@ class BlockPage extends StatelessWidget {
             Ms(Symbols.info_rounded, size: 20, color: c.primary),
             const SizedBox(width: 10),
             Expanded(
-              child: Text(tr("While it's locked, you can add things but not remove them.", 'Zárolás alatt hozzáadhatsz, de nem törölhetsz.'),
+              child: Text(tr("While it's locked, you can add things but not remove them.", 'Kilitliyken ekleme yapabilirsin ama kaldıramazsın.'),
                   style: body(14, color: c.onSurfaceVariant)),
             ),
           ]),
         ),
-      sect(tr("When it's on", 'Mikor fut'),
+      sect(tr("When it's on", 'Ne zaman açık'),
           low: true,
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Seg<bool>(
-              options: [(true, tr('Always', 'Mindig'), Symbols.all_inclusive_rounded), (false, tr('On a schedule', 'Időbeosztással'), Symbols.schedule_rounded)],
+              options: [(true, tr('Always', 'Her zaman'), Symbols.all_inclusive_rounded), (false, tr('On a schedule', 'Zamanlamaya göre'), Symbols.schedule_rounded)],
               value: b.schedule.always,
               onChanged: (always) {
                 if (locked) {
-                  toast(context, tr("The schedule can't change while it's locked.", 'Zárolás alatt nem változhat az időbeosztás.'));
+                  toast(context, tr("The schedule can't change while it's locked.", 'Kilitliyken zamanlama değiştirilemez.'));
                 } else if (always) {
                   _change(context, b, (x) => x.schedule = const Schedule.always());
                 } else {
@@ -287,11 +287,11 @@ class BlockPage extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 12),
                 child: Row(children: [
                   Expanded(child: Text(b.schedule.describe(), style: body(14, color: c.onSurfaceVariant))),
-                  if (!locked) Btn(tr('Change', 'Módosítás'), kind: BtnKind.text, onPressed: () => go(context, EditBlockPage(app: app, editing: b))),
+                  if (!locked) Btn(tr('Change', 'Değiştir'), kind: BtnKind.text, onPressed: () => go(context, EditBlockPage(app: app, editing: b))),
                 ]),
               ),
           ])),
-      sect(tr('Lock', 'Zárolás'),
+      sect(tr('Lock', 'Kilit'),
           low: true,
           child: Column(children: [
             opt(
@@ -303,58 +303,58 @@ class BlockPage extends StatelessWidget {
               },
               first: true,
               switch (b.lock) {
-                LockKind.none => tr('No lock', 'Nincs zárolás'),
-                LockKind.untilDate => tr('Until a date', 'Egy dátumig'),
-                LockKind.wait => tr('Wait to unlock', 'Várakozás a feloldáshoz'),
-                LockKind.type => tr('Type to unlock', 'Begépelés a feloldáshoz'),
+                LockKind.none => tr('No lock', 'Kilit yok'),
+                LockKind.untilDate => tr('Until a date', 'Bir tarihe kadar'),
+                LockKind.wait => tr('Wait to unlock', 'Beklemeyle açılır'),
+                LockKind.type => tr('Type to unlock', 'Yazarak açılır'),
               },
               switch (b.lock) {
                 LockKind.untilDate when b.lockedUntil != null => locked
                     ? tr('${Describe.day(b.lockedUntil!, now)} ${b.lockedUntil!.year}, ${b.lockedUntil!.difference(now).inDays + 1} days left',
-                        '${b.lockedUntil!.year}. ${Describe.day(b.lockedUntil!, now)}, még ${b.lockedUntil!.difference(now).inDays + 1} nap')
-                    : tr('Ended ${Describe.day(b.lockedUntil!, now)}', 'Lejárt: ${Describe.day(b.lockedUntil!, now)}'),
-                LockKind.none => tr('Turn it off any time', 'Bármikor kikapcsolhatod'),
-                _ => tr("Always locked while it's on", 'Amíg be van kapcsolva, zárolva van'),
+                        '${Describe.day(b.lockedUntil!, now)} ${b.lockedUntil!.year}, ${b.lockedUntil!.difference(now).inDays + 1} gün kaldı')
+                    : tr('Ended ${Describe.day(b.lockedUntil!, now)}', 'Bitti: ${Describe.day(b.lockedUntil!, now)}'),
+                LockKind.none => tr('Turn it off any time', 'İstediğin zaman kapatabilirsin'),
+                _ => tr("Always locked while it's on", 'Açıkken her zaman kilitli'),
               },
               end: change,
             ),
             if (b.lock != LockKind.none) ...[
-              opt(Symbols.hourglass_top_rounded, tr('To unlock early', 'Korábbi feloldás'), Describe.unlockSteps(b), end: change),
-              opt(Symbols.replay_rounded, tr('After unlocking early', 'Korábbi feloldás után'), Describe.relock(b), end: change),
-              opt(Symbols.emergency_rounded, tr('Emergency unlocks', 'Vészfeloldások'), Describe.emergency(b, now), end: change),
+              opt(Symbols.hourglass_top_rounded, tr('To unlock early', 'Erken açmak için'), Describe.unlockSteps(b), end: change),
+              opt(Symbols.replay_rounded, tr('After unlocking early', 'Erken açtıktan sonra'), Describe.relock(b), end: change),
+              opt(Symbols.emergency_rounded, tr('Emergency unlocks', 'Acil kilit açma hakları'), Describe.emergency(b, now), end: change),
             ],
           ])),
-      sect(tr('Matches', 'Találatok'),
+      sect(tr('Matches', 'Eşleşmeler'),
           low: true,
           child: Column(children: [
             opt(first: true, null, b.matchMode == MatchMode.blur
-                    ? (onMobile ? tr('Cover, tap Show to see it', 'Eltakarás, a Mutasd gombbal látszik') : tr('Blur, click to reveal', 'Homályosítás, kattintásra látszik'))
-                    : tr('Hide completely', 'Teljes elrejtés'),
+                    ? (onMobile ? tr('Cover, tap Show to see it', 'Ört, görmek için Göster\'e dokun') : tr('Blur, click to reveal', 'Bulanıklaştır, görmek için tıkla'))
+                    : tr('Hide completely', 'Tamamen gizle'),
                 b.matchMode == MatchMode.blur
-                    ? tr('Or hide them completely', 'Vagy teljesen elrejtheted')
-                    : (onMobile ? tr('Or cover them, with a Show button', 'Vagy eltakarhatod, Mutasd gombbal') : tr('Or blur them with click to reveal', 'Vagy homályosíthatod, kattintásra látszik')),
+                    ? tr('Or hide them completely', 'Ya da tamamen gizle')
+                    : (onMobile ? tr('Or cover them, with a Show button', 'Ya da Göster düğmesiyle ört') : tr('Or blur them with click to reveal', 'Ya da bulanıklaştır, tıklayınca görünsün')),
                 end: Seg<MatchMode>(
-                  options: [(MatchMode.blur, onMobile ? tr('Cover', 'Takarás') : tr('Blur', 'Homály'), null), (MatchMode.hide, tr('Hide', 'Rejtés'), null)],
+                  options: [(MatchMode.blur, onMobile ? tr('Cover', 'Örtme') : tr('Blur', 'Bulanık'), null), (MatchMode.hide, tr('Hide', 'Gizle'), null)],
                   value: b.matchMode,
                   onChanged: (v) => _change(context, b, (x) => x.matchMode = v),
                 )),
           ])),
-      sect(tr('Devices', 'Eszközök'),
+      sect(tr('Devices', 'Cihazlar'),
           low: true,
           child: opt(first: true, deviceIcon, app.state.deviceName,
               onMobile
-                  ? tr('Runs on this phone', 'Ezen a telefonon fut')
-                  : app.state.browsersSeen.isEmpty ? tr('Runs on this PC', 'Ezen a gépen fut') : tr('Runs on this PC and in ${browsers.where(app.state.browsersSeen.containsKey).join(', ')}', 'Ezen a gépen és itt fut: ${browsers.where(app.state.browsersSeen.containsKey).join(', ')}'))),
+                  ? tr('Runs on this phone', 'Bu telefonda çalışıyor')
+                  : app.state.browsersSeen.isEmpty ? tr('Runs on this PC', 'Bu bilgisayarda çalışıyor') : tr('Runs on this PC and in ${browsers.where(app.state.browsersSeen.containsKey).join(', ')}', 'Bu bilgisayarda ve şuralarda çalışıyor: ${browsers.where(app.state.browsersSeen.containsKey).join(', ')}'))),
     ]);
 
     return NlPage(children: [
       PageBar(
-        title: phone ? null : tr('Blocks', 'Tiltások'),
-        leading: IconBtn(Symbols.arrow_back_rounded, tooltip: tr('Back', 'Vissza'), onPressed: () => Navigator.pop(context)),
+        title: phone ? null : tr('Blocks', 'Engeller'),
+        leading: IconBtn(Symbols.arrow_back_rounded, tooltip: tr('Back', 'Geri'), onPressed: () => Navigator.pop(context)),
         actions: [
-          IconBtn(Symbols.ios_share_rounded, tooltip: tr('Share as file', 'Megosztás fájlként'), onPressed: () => exportBlocks(context, app, only: [b])),
+          IconBtn(Symbols.ios_share_rounded, tooltip: tr('Share as file', 'Dosya olarak paylaş'), onPressed: () => exportBlocks(context, app, only: [b])),
           PopupMenuButton<String>(
-            tooltip: tr('More', 'Továbbiak'),
+            tooltip: tr('More', 'Diğer'),
             icon: Ms(Symbols.more_vert_rounded, color: c.onSurfaceVariant),
             color: c.surfaceMid,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -369,11 +369,11 @@ class BlockPage extends StatelessWidget {
               }
             },
             itemBuilder: (_) => [
-              PopupMenuItem(value: 'edit', child: Text(tr('Edit block', 'Tiltás szerkesztése'), style: body(15, color: c.onSurface))),
+              PopupMenuItem(value: 'edit', child: Text(tr('Edit block', 'Engeli düzenle'), style: body(15, color: c.onSurface))),
               PopupMenuItem(
                 value: 'delete',
                 enabled: !locked,
-                child: Text(locked ? tr("Delete (not while it's locked)", 'Törlés (zárolás alatt nem)') : tr('Delete block', 'Tiltás törlése'), style: body(15, color: locked ? c.onSurfaceVariant : c.error)),
+                child: Text(locked ? tr("Delete (not while it's locked)", 'Sil (kilitliyken olmaz)') : tr('Delete block', 'Engeli sil'), style: body(15, color: locked ? c.onSurfaceVariant : c.error)),
               ),
             ],
           ),
@@ -400,14 +400,14 @@ class _ConfirmDelete extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.nl;
     return Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Text(tr('Delete $name?', 'Törlöd ezt: $name?'), style: body(24, weight: FontWeight.w500, color: c.onSurface)),
+      Text(tr('Delete $name?', '$name silinsin mi?'), style: body(24, weight: FontWeight.w500, color: c.onSurface)),
       const SizedBox(height: 12),
-      Text(tr('Its keywords, sites and apps stop being blocked straight away.', 'A kulcsszavai, oldalai és appjai azonnal felszabadulnak.'), style: body(15, color: c.onSurfaceVariant, height: 1.5)),
+      Text(tr('Its keywords, sites and apps stop being blocked straight away.', 'Anahtar kelimeleri, siteleri ve uygulamaları hemen serbest kalır.'), style: body(15, color: c.onSurfaceVariant, height: 1.5)),
       const SizedBox(height: 24),
       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-        Btn(tr('Cancel', 'Mégse'), kind: BtnKind.text, onPressed: () => Navigator.pop(context, false)),
+        Btn(tr('Cancel', 'İptal'), kind: BtnKind.text, onPressed: () => Navigator.pop(context, false)),
         const SizedBox(width: 8),
-        Btn(tr('Delete', 'Törlés'), kind: BtnKind.danger, onPressed: () => Navigator.pop(context, true)),
+        Btn(tr('Delete', 'Sil'), kind: BtnKind.danger, onPressed: () => Navigator.pop(context, true)),
       ]),
     ]);
   }

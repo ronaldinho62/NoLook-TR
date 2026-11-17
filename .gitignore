@@ -1,0 +1,6 @@
+extension/node_modules/
+extension/dist/
+build/
+app/build/
+host/build/
+.dart_tool/

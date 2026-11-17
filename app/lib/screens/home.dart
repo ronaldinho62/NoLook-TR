@@ -30,16 +30,16 @@ class HomePage extends StatelessWidget {
     final blocks = app.state.blocks;
     return NlPage(children: [
       PageBar(logo: true, actions: [
-        IconBtn(Symbols.qr_code_2_rounded, tooltip: tr('Pair a device', 'Eszköz párosítása'), onPressed: () => go(context, PairPage(app: app))),
-        IconBtn(Symbols.history_rounded, tooltip: tr('History', 'Előzmények'), onPressed: () => go(context, HistoryPage(app: app))),
+        IconBtn(Symbols.qr_code_2_rounded, tooltip: tr('Pair a device', 'Cihaz eşleştir'), onPressed: () => go(context, PairPage(app: app))),
+        IconBtn(Symbols.history_rounded, tooltip: tr('History', 'Geçmiş'), onPressed: () => go(context, HistoryPage(app: app))),
       ]),
       const UpdateBanner(),
       const BlockerBanner(),
       // android: service off means nothing runs
       ValueListenableBuilder<bool?>(valueListenable: AndroidLink.blocker, builder: (context, _, _) => _Status(app: app)),
       const SizedBox(height: 12),
-      SectionHead(tr('Your blocks', 'Tiltásaid'),
-          action: blocks.isEmpty ? null : Btn(tr('See all', 'Mind'), kind: BtnKind.outlined, onPressed: () => shellOf(context).select(NavTab.blocks))),
+      SectionHead(tr('Your blocks', 'Engellerin'),
+          action: blocks.isEmpty ? null : Btn(tr('See all', 'Tümünü gör'), kind: BtnKind.outlined, onPressed: () => shellOf(context).select(NavTab.blocks))),
       const SizedBox(height: 12),
       if (blocks.isEmpty) _FirstBlock(app: app),
       Builder(builder: (context) {
@@ -73,28 +73,28 @@ class _Status extends StatelessWidget {
 
     final dated = blocks.where((b) => b.isLocked(now) && b.lock == LockKind.untilDate).toList()
       ..sort((a, b) => a.lockedUntil!.compareTo(b.lockedUntil!));
-    final next = dated.isEmpty ? null : tr('Next unlock: ${dated.first.name} on ${Describe.day(dated.first.lockedUntil!, now)}', 'Következő feloldás: ${dated.first.name}, ${Describe.day(dated.first.lockedUntil!, now)}');
+    final next = dated.isEmpty ? null : tr('Next unlock: ${dated.first.name} on ${Describe.day(dated.first.lockedUntil!, now)}', 'Sonraki kilit açılışı: ${dated.first.name}, ${Describe.day(dated.first.lockedUntil!, now)}');
 
     final blockerOff = onAndroid && AndroidLink.blocker.value == false;
     final title = blockerOff
-        ? tr('Blocking is off', 'A tiltás ki van kapcsolva')
-        : running.isNotEmpty ? tr('Blocking is on', 'A tiltás be van kapcsolva') : (on.isNotEmpty ? tr('Waiting to start', 'Hamarosan indul') : tr('Blocking is off', 'A tiltás ki van kapcsolva'));
+        ? tr('Blocking is off', 'Engelleme kapalı')
+        : running.isNotEmpty ? tr('Blocking is on', 'Engelleme açık') : (on.isNotEmpty ? tr('Waiting to start', 'Başlamayı bekliyor') : tr('Blocking is off', 'Engelleme kapalı'));
     final line = blockerOff && blocks.isNotEmpty
-        ? tr('Turn on the blocker to start your blocks', 'Kapcsold be a tiltót, hogy elinduljanak a tiltásaid')
+        ? tr('Turn on the blocker to start your blocks', 'Engellerini başlatmak için engelleyiciyi aç')
         : running.isNotEmpty
         ? tr('${running.length} block${running.length == 1 ? '' : 's'} running, $hidden thing${hidden == 1 ? '' : 's'} hidden today',
-            '${running.length} tiltás fut, ma $hidden dolgot rejtett el')
+            '${running.length} engel çalışıyor, bugün $hidden şey gizlendi')
         : blocks.isEmpty
-            ? tr('Make a block to start', 'Kezdésnek készíts egy tiltást')
+            ? tr('Make a block to start', 'Başlamak için bir engel oluştur')
             : on.isNotEmpty
-                ? tr('Your blocks are on a schedule', 'A tiltásaid időbeosztás szerint futnak')
-                : tr('All your blocks are off', 'Minden tiltásod ki van kapcsolva');
+                ? tr('Your blocks are on a schedule', 'Engellerin zamanlamaya göre çalışıyor')
+                : tr('All your blocks are off', 'Tüm engellerin kapalı');
 
     int count(Iterable<int> n) => n.fold(0, (a, b) => a + b);
     final totals = [
-      (Symbols.language_rounded, count(on.map((b) => b.sites.length)), tr('Sites', 'Oldal')),
-      if (closesApps) (Symbols.apps_rounded, count(on.map((b) => b.apps.length)), tr('Apps', 'App')),
-      (Symbols.text_fields_rounded, count(on.map((b) => b.wordCount)), tr('Keywords', 'Kulcsszó')),
+      (Symbols.language_rounded, count(on.map((b) => b.sites.length)), tr('Sites', 'Site')),
+      if (closesApps) (Symbols.apps_rounded, count(on.map((b) => b.apps.length)), tr('Apps', 'Uygulama')),
+      (Symbols.text_fields_rounded, count(on.map((b) => b.wordCount)), tr('Keywords', 'Anahtar kelime')),
     ];
 
     final text = Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
@@ -170,15 +170,15 @@ class _FirstBlock extends StatelessWidget {
     return NlCard(
       color: c.surfaceLow,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(tr('No blocks yet', 'Még nincs tiltásod'), style: body(19, weight: FontWeight.w600, color: c.onSurface)),
+        Text(tr('No blocks yet', 'Henüz engel yok'), style: body(19, weight: FontWeight.w600, color: c.onSurface)),
         const SizedBox(height: 4),
-        Text(tr('A block is a list of keywords, sites and apps you want gone, with its own lock.', 'Egy tiltás kulcsszavak, oldalak és appok listája, amiket nem akarsz látni, saját zárolással.'),
+        Text(tr('A block is a list of keywords, sites and apps you want gone, with its own lock.', 'Engel; görmek istemediğin anahtar kelimeler, siteler ve uygulamalardan oluşan, kendi kilidi olan bir listedir.'),
             style: body(15, color: c.onSurfaceVariant)),
         const SizedBox(height: 16),
         Wrap(spacing: 8, runSpacing: 8, children: [
-          Btn(tr('Start from a preset', 'Kezdés sablonból'), icon: Symbols.auto_awesome_motion_rounded,
+          Btn(tr('Start from a preset', 'Hazır listeyle başla'), icon: Symbols.auto_awesome_motion_rounded,
               onPressed: () => go(context, EditBlockPage(app: app, startWithPreset: true))),
-          Btn(tr('Empty block', 'Üres tiltás'), kind: BtnKind.outlined, onPressed: () => go(context, EditBlockPage(app: app))),
+          Btn(tr('Empty block', 'Boş engel'), kind: BtnKind.outlined, onPressed: () => go(context, EditBlockPage(app: app))),
         ]),
       ]),
     );
@@ -197,16 +197,16 @@ class _JustNow extends StatelessWidget {
     return NlCard(
       color: c.surfaceLow,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        CardLabel(tr('Just now', 'Az imént')),
+        CardLabel(tr('Just now', 'Az önce')),
         if (events.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Text(onMobile ? tr('Nothing hidden yet, things NoLook covers or blocks show up here.', 'Még semmi, amit a NoLook eltakar vagy letilt, itt jelenik meg.') : tr('Nothing hidden yet, things NoLook blurs or blocks show up here.', 'Még semmi, amit a NoLook elrejt vagy letilt, az itt jelenik meg.'),
+            child: Text(onMobile ? tr('Nothing hidden yet, things NoLook covers or blocks show up here.', 'Henüz gizlenen bir şey yok, NoLook\'un örttüğü veya engellediği şeyler burada görünür.') : tr('Nothing hidden yet, things NoLook blurs or blocks show up here.', 'Henüz gizlenen bir şey yok, NoLook\'un bulanıklaştırdığı veya engellediği şeyler burada görünür.'),
                 style: body(15, color: c.onSurfaceVariant)),
           ),
         for (final e in events) EventRow(e, end: ago(e.time, app.now), sayKeyword: app.state.settings.sayKeyword),
         const SizedBox(height: 4),
-        Btn(tr('See all', 'Mind'), kind: BtnKind.text, onPressed: () => go(context, HistoryPage(app: app))),
+        Btn(tr('See all', 'Tümünü gör'), kind: BtnKind.text, onPressed: () => go(context, HistoryPage(app: app))),
       ]),
     );
   }

@@ -80,7 +80,7 @@ class _ExtensionSetupPageState extends State<ExtensionSetupPage> {
     final (status, ok) = other
         ? ('', widget.app.state.browsersSeen.keys.any((b) => !_seenBefore.contains(b)))
         : browserStatus(widget.app, browser);
-    final name = other ? tr('your browser', 'a böngésződ') : browser;
+    final name = other ? tr('your browser', 'tarayıcın') : browser;
     final page = other ? (firefox ? extensionsPage('Firefox') : 'chrome://extensions') : extensionsPage(browser);
     final storePage = other
         ? (_otherKind == 'firefox' ? storeUrl('Firefox') : _otherKind == 'chromium' ? storeUrl('Chrome') : null)
@@ -100,8 +100,8 @@ class _ExtensionSetupPageState extends State<ExtensionSetupPage> {
         toast(
           context,
           opened && direct
-              ? tr('Opening it in $browser', 'Megnyitás itt: $browser')
-              : tr('Copied $address, paste it into the address bar', 'Kimásolva: $address, illeszd be a címsorba'),
+              ? tr('Opening it in $browser', '$browser ile açılıyor')
+              : tr('Copied $address, paste it into the address bar', '$address kopyalandı, adres çubuğuna yapıştır'),
         );
       }
       mark('open');
@@ -122,41 +122,41 @@ class _ExtensionSetupPageState extends State<ExtensionSetupPage> {
 
     void copyPath() {
       Clipboard.setData(ClipboardData(text: folder.path));
-      toast(context, tr('Copied, paste it into the folder picker', 'Kimásolva, illeszd be a mappaválasztóba'));
+      toast(context, tr('Copied, paste it into the folder picker', 'Kopyalandı, klasör seçiciye yapıştır'));
       mark('folder');
     }
 
     Btn openBtn(String address) => Btn(
           other || exe == null
-              ? tr('Copy the address', 'Cím másolása')
+              ? tr('Copy the address', 'Adresi kopyala')
               : firefox || address.startsWith('http')
-              ? tr('Open in $browser', 'Megnyitás: $browser')
-              : tr('Copy and open $browser', 'Másolás, $browser megnyitása'),
+              ? tr('Open in $browser', '$browser ile aç')
+              : tr('Copy and open $browser', 'Kopyala ve $browser ile aç'),
           icon: other || exe == null ? Symbols.content_copy_rounded : Symbols.open_in_new_rounded,
           kind: BtnKind.tonal,
           onPressed: () => open(address),
         );
     final folderBtns = [
-      Btn(tr('Show the folder', 'Mappa megnyitása'), icon: Symbols.folder_open_rounded, kind: BtnKind.outlined, onPressed: hasFolder ? showFolder : null),
-      Btn(tr('Copy the path', 'Útvonal másolása'), icon: Symbols.content_copy_rounded, kind: BtnKind.text, onPressed: hasFolder ? copyPath : null),
+      Btn(tr('Show the folder', 'Klasörü göster'), icon: Symbols.folder_open_rounded, kind: BtnKind.outlined, onPressed: hasFolder ? showFolder : null),
+      Btn(tr('Copy the path', 'Yolu kopyala'), icon: Symbols.content_copy_rounded, kind: BtnKind.text, onPressed: hasFolder ? copyPath : null),
     ];
-    final pasteHint = tr('Paste it into the address bar, the button copies it for you', 'Illeszd be a címsorba, a gomb kimásolja');
+    final pasteHint = tr('Paste it into the address bar, the button copies it for you', 'Adres çubuğuna yapıştır, düğme senin için kopyalar');
 
     final firefoxSteps = [
       _Step(
-        tr('Go to $page', 'Nyisd meg ezt: $page'),
-        sub: other ? pasteHint : tr("If it doesn't open, paste it into the address bar, it's copied", 'Ha nem nyílik meg, illeszd be a címsorba, ki van másolva'),
+        tr('Go to $page', 'Şu sayfaya git: $page'),
+        sub: other ? pasteHint : tr("If it doesn't open, paste it into the address bar, it's copied", 'Açılmazsa adres çubuğuna yapıştır, zaten kopyalandı'),
         done: isDone('open'),
         actions: [openBtn(page)],
       ),
       _Step(
         tr(
           'Click "Load Temporary Add-on" and pick manifest.json from the NoLook folder',
-          'Kattints a "Load Temporary Add-on" gombra, és válaszd a NoLook mappában lévő manifest.json fájlt',
+          '"Load Temporary Add-on" (Geçici Eklenti Yükle) düğmesine tıkla ve NoLook klasöründeki manifest.json dosyasını seç',
         ),
         sub: tr(
           'Firefox removes it when it closes, the store version that stays is on its way.',
-          'A Firefox bezáráskor eltávolítja, a megmaradó áruházas verzió hamarosan jön.',
+          'Firefox kapanınca bunu kaldırır, kalıcı mağaza sürümü yolda.',
         ),
         done: isDone('folder'),
         actions: folderBtns,
@@ -164,17 +164,17 @@ class _ExtensionSetupPageState extends State<ExtensionSetupPage> {
     ];
     final chromiumSteps = [
       _Step(
-        tr('Turn on "Developer mode"', 'Kapcsold be a "Fejlesztői módot"'),
+        tr('Turn on "Developer mode"', '"Geliştirici modu"nu aç'),
         sub: browser == 'Edge'
-            ? tr('In the menu on the left', 'A bal oldali menüben')
+            ? tr('In the menu on the left', 'Soldaki menüde')
             : other
-            ? tr('Usually at the top right', 'Általában jobb felül')
-            : tr('At the top right', 'Jobb felül'),
+            ? tr('Usually at the top right', 'Genelde sağ üstte')
+            : tr('At the top right', 'Sağ üstte'),
         done: ok,
       ),
       _Step(
-        tr('Drag the NoLook folder onto the page', 'Húzd a NoLook mappát az oldalra'),
-        sub: tr('Or click "Load unpacked" and pick it', 'Vagy kattints a "Kicsomagolt bővítmény betöltése" gombra, és válaszd ki'),
+        tr('Drag the NoLook folder onto the page', 'NoLook klasörünü sayfanın üzerine sürükle'),
+        sub: tr('Or click "Load unpacked" and pick it', 'Ya da "Paketlenmemiş öğe yükle" düğmesine tıklayıp klasörü seç'),
         done: isDone('folder'),
         actions: folderBtns,
       ),
@@ -183,18 +183,18 @@ class _ExtensionSetupPageState extends State<ExtensionSetupPage> {
     final storeSteps = [
       _Step(
         firefox
-            ? tr('Open NoLook on Firefox Add-ons', 'Nyisd meg a NoLookot a Firefox kiegészítők között')
+            ? tr('Open NoLook on Firefox Add-ons', 'NoLook\'u Firefox Eklentileri\'nde aç')
             : browser == 'Edge' && edgeHasOwnListing
-            ? tr('Open NoLook on Edge Add-ons', 'Nyisd meg a NoLookot az Edge bővítmények között')
-            : tr('Open NoLook on the Chrome Web Store', 'Nyisd meg a NoLookot a Chrome Internetes áruházban'),
+            ? tr('Open NoLook on Edge Add-ons', 'NoLook\'u Edge Eklentileri\'nde aç')
+            : tr('Open NoLook on the Chrome Web Store', 'NoLook\'u Chrome Web Mağazası\'nda aç'),
         sub: other ? pasteHint : null,
         done: isDone('open'),
         actions: [if (storePage != null) openBtn(storePage)],
       ),
       _Step(
         firefox
-            ? tr('Click "Add to Firefox", then "Add"', 'Kattints a "Hozzáadás a Firefoxhoz", majd a "Hozzáadás" gombra')
-            : tr('Click "Get" or "Add to Chrome", then "Add extension"', 'Kattints a "Beszerzés" vagy a "Hozzáadás a Chrome-hoz" gombra, majd a "Bővítmény hozzáadása" gombra'),
+            ? tr('Click "Add to Firefox", then "Add"', '"Firefox\'a ekle" düğmesine, sonra "Ekle" düğmesine tıkla')
+            : tr('Click "Get" or "Add to Chrome", then "Add extension"', '"Edinin" veya "Chrome\'a ekle" düğmesine, sonra "Uzantı ekle" düğmesine tıkla'),
       ),
     ];
 
@@ -208,16 +208,16 @@ class _ExtensionSetupPageState extends State<ExtensionSetupPage> {
     final steps = <_Step>[
       if (other) ...[
         _Step(
-          tr('Paste chrome://extensions into its address bar', 'Illeszd be a chrome://extensions címet a címsorába'),
+          tr('Paste chrome://extensions into its address bar', 'Adres çubuğuna chrome://extensions yapıştır'),
           sub: tr(
             "This shows what it's built on. Most browsers are built on Chromium like Chrome and open an extensions page, ones built on Firefox don't.",
-            'Ebből kiderül, mire épül. A legtöbb böngésző a Chrome-hoz hasonlóan Chromiumra épül, és megnyit egy bővítményoldalt, a Firefoxra épülők nem.',
+            'Bu, tarayıcının neye dayandığını gösterir. Çoğu tarayıcı Chrome gibi Chromium tabanlıdır ve bir eklenti sayfası açar, Firefox tabanlı olanlar açmaz.',
           ),
           done: _otherKind != null || ok,
           actions: [
-            Btn(tr('Copy the address', 'Cím másolása'), icon: Symbols.content_copy_rounded, kind: BtnKind.tonal, onPressed: () => open('chrome://extensions')),
-            choice(tr('A page opened', 'Megnyílt egy oldal'), 'chromium'),
-            choice(tr('Nothing opened', 'Nem nyílt meg semmi'), 'firefox'),
+            Btn(tr('Copy the address', 'Adresi kopyala'), icon: Symbols.content_copy_rounded, kind: BtnKind.tonal, onPressed: () => open('chrome://extensions')),
+            choice(tr('A page opened', 'Bir sayfa açıldı'), 'chromium'),
+            choice(tr('Nothing opened', 'Hiçbir şey açılmadı'), 'firefox'),
           ],
         ),
         if (store) ...storeSteps
@@ -228,7 +228,7 @@ class _ExtensionSetupPageState extends State<ExtensionSetupPage> {
       else if (firefox)
         ...firefoxSteps
       else ...[
-        _Step(tr('Go to $page', 'Nyisd meg ezt: $page'), sub: pasteHint, done: isDone('open'), actions: [openBtn(page)]),
+        _Step(tr('Go to $page', 'Şu sayfaya git: $page'), sub: pasteHint, done: isDone('open'), actions: [openBtn(page)]),
         ...chromiumSteps,
       ],
     ];
@@ -236,13 +236,13 @@ class _ExtensionSetupPageState extends State<ExtensionSetupPage> {
     final children = <Widget>[
       if (!widget.embedded) ...[
         PageBar(
-          title: tr('Browser extension', 'Böngészőbővítmény'),
-          leading: IconBtn(Symbols.arrow_back_rounded, tooltip: tr('Back', 'Vissza'), onPressed: () => Navigator.pop(context)),
+          title: tr('Browser extension', 'Tarayıcı eklentisi'),
+          leading: IconBtn(Symbols.arrow_back_rounded, tooltip: tr('Back', 'Geri'), onPressed: () => Navigator.pop(context)),
         ),
         Text(
           tr(
             'The extension blurs keywords and blocks sites. It gets your blocks from this app, so there is nothing to set up inside it.',
-            'A bővítmény elrejti a kulcsszavakat és tiltja az oldalakat. A tiltásaidat ettől az apptól kapja, így benne nincs mit beállítani.',
+            'Eklenti anahtar kelimeleri bulanıklaştırır ve siteleri engeller. Engellerini bu uygulamadan alır, bu yüzden içinde ayarlanacak bir şey yok.',
           ),
           style: body(15, color: c.onSurfaceVariant, height: 1.5),
         ),
@@ -261,17 +261,17 @@ class _ExtensionSetupPageState extends State<ExtensionSetupPage> {
                 SizedBox(
                   width: w,
                   child: _BrowserTile(
-                    name: b == 'Other' ? tr('Other', 'Másik') : b,
+                    name: b == 'Other' ? tr('Other', 'Diğer') : b,
                     selected: b == browser,
                     status: b == 'Other'
-                        ? (tr('Any other browser', 'Bármely más böngésző'), null, false)
+                        ? (tr('Any other browser', 'Başka bir tarayıcı'), null, false)
                         : browserStatus(widget.app, b).$2
-                        ? (tr('Connected', 'Csatlakozva'), Symbols.check_circle_rounded, true)
+                        ? (tr('Connected', 'Bağlı'), Symbols.check_circle_rounded, true)
                         : _installed == null
                         ? ('', null, false)
                         : _installed!.containsKey(b)
-                        ? (tr('Not added yet', 'Még nincs hozzáadva'), null, false)
-                        : (onWindows ? tr('Not on this PC', 'Nincs ezen a gépen') : tr('Not on this computer', 'Nincs ezen a gépen'), null, false),
+                        ? (tr('Not added yet', 'Henüz eklenmedi'), null, false)
+                        : (onWindows ? tr('Not on this PC', 'Bu bilgisayarda yok') : tr('Not on this computer', 'Bu bilgisayarda yok'), null, false),
                     onTap: () => setState(() => _browser = b),
                   ),
                 ),
@@ -305,7 +305,7 @@ class _ExtensionSetupPageState extends State<ExtensionSetupPage> {
                   child: Text(
                     tr(
                       'NoLook is coming to the Chrome Web Store, until then it loads from the NoLook folder.',
-                      'A NoLook hamarosan a Chrome Internetes áruházba is felkerül, addig a NoLook mappából töltődik be.',
+                      'Türkçe eklenti mağazada yok, NoLook klasöründen yüklenir.',
                     ),
                     style: body(14, color: c.onSurfaceVariant, height: 1.45),
                   ),
@@ -314,7 +314,7 @@ class _ExtensionSetupPageState extends State<ExtensionSetupPage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(
-                    tr("This copy of NoLook doesn't have the extension next to it.", 'A NoLook ezen példánya mellett nincs ott a bővítmény.'),
+                    tr("This copy of NoLook doesn't have the extension next to it.", 'NoLook\'un bu kopyasının yanında eklenti yok.'),
                     style: body(14, color: c.error),
                   ),
                 ),
@@ -353,10 +353,10 @@ class _ExtensionSetupPageState extends State<ExtensionSetupPage> {
               child: Text(
                 ok
                     ? (other
-                        ? tr("Your browser is connected, you're all set.", 'A böngésződ csatlakozott, minden kész.')
-                        : tr("$browser is connected, you're all set.", 'A $browser csatlakozott, minden kész.'))
+                        ? tr("Your browser is connected, you're all set.", 'Tarayıcın bağlandı, her şey hazır.')
+                        : tr("$browser is connected, you're all set.", '$browser bağlandı, her şey hazır.'))
                     : other || !widget.app.state.browsersSeen.containsKey(browser == 'Opera GX' ? 'Opera' : browser)
-                    ? tr('Waiting for $name to connect, this updates by itself.', 'Várakozás, hogy $name csatlakozzon, magától frissül.')
+                    ? tr('Waiting for $name to connect, this updates by itself.', '$name bağlantısı bekleniyor, bu kendiliğinden güncellenir.')
                     : '$browser: $status.',
                 style: body(15, color: ok ? c.onTertiaryContainer : c.onSurface),
               ),
@@ -370,7 +370,7 @@ class _ExtensionSetupPageState extends State<ExtensionSetupPage> {
           child: Text(
             tr(
               "NoLook's browser helper (nolook_host.exe) is missing from this copy, so the extension can't connect.",
-              'A NoLook böngészősegédje (nolook_host.exe) hiányzik ebből a példányból, így a bővítmény nem tud csatlakozni.',
+              'NoLook\'un tarayıcı yardımcısı (nolook_host.exe) bu kopyada eksik, bu yüzden eklenti bağlanamıyor.',
             ),
             style: body(14, color: c.error),
           ),

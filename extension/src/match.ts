@@ -64,14 +64,24 @@ export class SiteRule {
 }
 
 /** same as dart patternFor */
+const dotted: Record<string, string> = { i: '[iİ]', I: '[Iı]', ı: '[ıI]', İ: '[İi]' };
+
 export function keywordPattern(keyword: string): string {
-  const parts = keyword
-    .trim()
-    .replace(/\u2019/g, "'")
+  let k = keyword.trim().replace(/’/g, "'");
+  // "final*": Türkçe ekli halleri de yakala (finali, finalde)
+  const bare = k.replace(/\*+$/, '');
+  const stem = bare !== k && bare.trim().length > 0;
+  if (stem) k = bare;
+  const parts = k
     .split(/[\s\-_]+/)
     .filter((p) => p.length > 0)
-    .map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/'/g, "['\u2019]"));
-  return '(?<![\\p{L}\\p{N}])' + parts.join('[\\s\\-_.]*') + "(?:['\u2019]s|s|es)?(?![\\p{L}\\p{N}])";
+    .map((p) =>
+      p
+        .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        .replace(/[iIıİ]/g, (c) => dotted[c])
+        .replace(/'/g, "['’]"),
+    );
+  return '(?<![\\p{L}\\p{N}])' + parts.join('[\\s\\-_.]*') + (stem ? '' : "(?:['’]s|s|es)?(?![\\p{L}\\p{N}])");
 }
 
 export class KeywordMatcher {

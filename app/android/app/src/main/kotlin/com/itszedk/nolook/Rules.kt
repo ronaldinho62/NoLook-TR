@@ -28,7 +28,7 @@ object Rules {
     /** Show needs two taps */
     @Volatile var twoTapShow = false
         private set
-    @Volatile var hungarian = false
+    @Volatile var turkish = false
         private set
 
     private fun file(context: Context) = File(context.filesDir, "android_rules.json")
@@ -49,7 +49,7 @@ object Rules {
         root.optJSONObject("settings")?.let {
             sayKeyword = it.optBoolean("sayKeyword", true)
             twoTapShow = it.optBoolean("twoClickReveal", false)
-            hungarian = it.optString("lang") == "hu"
+            turkish = it.optString("lang") == "tr"
         }
         val list = root.optJSONArray("blocks") ?: JSONArray()
         blocks = (0 until list.length()).map { i ->

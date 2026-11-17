@@ -21,14 +21,14 @@ export interface LocalData {
   settings: NonNullable<Rules['settings']>;
 }
 
-type Lang = 'en' | 'hu';
+type Lang = 'en' | 'tr';
 
 export function browserLang(): Lang {
-  return navigator.language.toLowerCase().startsWith('hu') ? 'hu' : 'en';
+  return navigator.language.toLowerCase().startsWith('en') ? 'en' : 'tr';
 }
 
 export function langOf(settings: LocalData['settings']): Lang {
-  return settings.language === 'en' || settings.language === 'hu' ? settings.language : browserLang();
+  return settings.language === 'en' || settings.language === 'tr' ? settings.language : browserLang();
 }
 
 export function newId(): string {
@@ -69,7 +69,7 @@ export function summary(b: LocalBlock, lang: Lang): string {
   // count like the app
   const k = b.keywords.length + b.spoilerWords.length + b.topicWords.length;
   const s = b.sites.length;
-  if (lang === 'hu') return [k && `${k} kulcsszó`, s && `${s} oldal`].filter(Boolean).join(', ') || 'Üres';
+  if (lang === 'tr') return [k && `${k} anahtar kelime`, s && `${s} site`].filter(Boolean).join(', ') || 'Boş';
   return [k && `${k} keyword${k === 1 ? '' : 's'}`, s && `${s} site${s === 1 ? '' : 's'}`].filter(Boolean).join(', ') || 'Empty';
 }
 

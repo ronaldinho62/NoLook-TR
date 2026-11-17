@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="blocker_label">NoLook tiltó</string>
-    <string name="blocker_summary">Bezárja a tiltott appokat, tiltja az oldalakat és elrejti a spoilereket</string>
-    <string name="blocker_description">A NoLook a képernyő tartalmát olvassa, hogy bezárja a tiltott appokat, tiltsa az oldalakat a böngésződben és eltakarja a kulcsszavaidat említő posztokat, de semmi nem hagyja el a telefonodat.</string>
-</resources>

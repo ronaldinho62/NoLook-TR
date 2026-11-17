@@ -2,7 +2,7 @@ name: nolook
 description: "Blocks sites, apps and keywords"
 publish_to: 'none'
 
-version: 0.1.0+1
+version: 0.1.1+2
 
 environment:
   sdk: ^3.13.7

@@ -6,9 +6,9 @@ import 'dart:io';
 import 'package:nolook_core/nolook_core.dart';
 
 String presetsJson() {
-  Map<String, Object> one(Preset p, Preset hu) => {
+  Map<String, Object> one(Preset p, Preset turkce) => {
         'id': p.id,
-        'name': {'en': p.name, 'hu': hu.name},
+        'name': {'en': p.name, 'tr': turkce.name},
         'iconText': p.iconText,
         'color': p.color.name,
         'keywords': p.keywords,
@@ -19,10 +19,10 @@ String presetsJson() {
   final before = currentLang;
   currentLang = Lang.en;
   final en = presets;
-  currentLang = Lang.hu;
-  final hu = presets;
+  currentLang = Lang.tr;
+  final turkce = presets;
   currentLang = before;
-  return '${const JsonEncoder.withIndent('  ').convert([for (var i = 0; i < en.length; i++) one(en[i], hu[i])])}\n';
+  return '${const JsonEncoder.withIndent('  ').convert([for (var i = 0; i < en.length; i++) one(en[i], turkce[i])])}\n';
 }
 
 void main() {

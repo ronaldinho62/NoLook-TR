@@ -63,11 +63,11 @@ class Preset {
 List<Preset> get presets => [
   Preset(
     id: 'gta6-spoilers',
-    name: tr('GTA 6 spoilers', 'GTA 6 spoilerek'),
-    description: tr('The game, its characters and places, and spoiler subreddits', 'A játék, a szereplői, a helyszínei és a spoileres subredditek'),
+    name: tr('GTA 6 spoilers', 'GTA 6 spoilerleri'),
+    description: tr('The game, its characters and places, and spoiler subreddits', 'Oyun, karakterleri, mekânları ve spoiler subreddit\'leri'),
     iconText: 'VI',
     color: BlockColor.teal,
-    sentence: tr('I really want to see GTA 6 spoilers right now', 'Most tényleg látni akarok GTA 6 spoilereket'),
+    sentence: tr('I really want to see GTA 6 spoilers right now', 'Şu an gerçekten GTA 6 spoilerlerini görmek istiyorum'),
     keywords: [
       // the game
       'GTA 6', 'GTA VI', 'Grand Theft Auto 6', 'Grand Theft Auto VI', 'Rockstar Games',
@@ -78,8 +78,26 @@ List<Preset> get presets => [
     spoilerWords: [
       'prologue', 'intro', 'opening', 'ending', 'end', 'final mission', 'cutscene', 'death', 'dies',
       'baby', 'mom', 'leak', 'spoiler',
+      // Türkçe. Sonu * ile bitenler ekli halleri de yakalar (final* -> finali, finalde, finaline)
+      // son, bitiş
+      'final*', 'sonu', 'sonunu', 'sonunda', 'sonuna', 'oyunun son*', 'hikayenin son*', 'iyi son*', 'kötü son*',
+      'gizli son*', 'gerçek son*', 'alternatif son*', 'sürpriz son*', 'son görev*', 'son bölüm*', 'son sahne*',
+      'son boss*', 'jenerik*', 'bitirdi*', 'bitirince', 'oyunu bitir*', 'hikayeyi bitir*',
+      // giriş
+      'prolog*', 'giriş bölüm*', 'giriş görev*', 'açılış sahne*', 'ilk görev*', 'ilk bölüm*', 'ilk saat*',
+      // ölüm
+      'ölü*', 'öldü*', 'ölm*', 'ölecek*', 'öldür*', 'hayatını kayb*', 'can veriyor', 'vuruluyor', 'vuruldu*',
+      // ihanet, olay örgüsü
+      'ihanet*', 'aldat*', 'arkasından vur*', 'sırtından bıçak*', 'satıyor', 'sattı*', 'ters köşe*', 'plot twist',
+      'olay örgüsü*', 'hikaye detay*', 'kötü adam*', 'ana kötü*',
+      // ilişki, aile
+      'hamile*', 'bebe*', 'anne*', 'evlen*', 'ayrılıyor', 'ayrıldı*', 'kaçırıl*',
+      // hapis
+      'tutukla*', 'hapse gir*', 'hapisten çık*', 'hapishane*', 'yakalanıyor', 'yakalandı*',
+      // sızıntı, spoiler
+      'sızıntı*', 'sızdır*', 'sızdı*', 'spoiler*', 'spoyler*', 'spoil*', 'ara sahne*', 'gizli görev*', 'gizli karakter*',
     ],
-    topicWords: ['GTA', 'Rockstar', 'Vice City', 'Liberty City'],
+    topicWords: ['GTA', 'Rockstar', 'Vice City', 'Liberty City', 'Grand Theft Auto'],
     sites: [
       'reddit.com/r/GTA6', 'reddit.com/r/GTAVI', 'reddit.com/r/GTA', 'reddit.com/r/rockstar',
       'reddit.com/r/GamingLeaksAndRumours', 'gtaforums.com', 'gta.fandom.com', 'gtabase.com',

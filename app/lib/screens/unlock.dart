@@ -84,14 +84,14 @@ class _UnlockDialogState extends State<_UnlockDialog> {
 
     final lead = b.lock == LockKind.untilDate && b.lockedUntil != null
         ? tr("It's locked until ${Describe.day(b.lockedUntil!, now)}, here's what it takes to turn it off now:",
-            'Zárolva ${Describe.until(b.lockedUntil!, now)}, így kapcsolhatod ki most:')
-        : tr("Here's what it takes to turn it off now:", 'Így kapcsolhatod ki most:');
+            '${Describe.until(b.lockedUntil!, now)} kilitli, şimdi kapatmak için gerekenler:')
+        : tr("Here's what it takes to turn it off now:", 'Şimdi kapatmak için gerekenler:');
 
     var n = 0;
     return Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Center(child: Ms(Symbols.lock_open_rounded, size: 28, color: c.primary)),
       const SizedBox(height: 16),
-      Text(tr('Unlock ${b.name} early?', 'Korábban feloldod ezt: ${b.name}?'), textAlign: TextAlign.center, style: body(24, weight: FontWeight.w500, color: c.onSurface)),
+      Text(tr('Unlock ${b.name} early?', '${b.name} engelinin kilidi erken açılsın mı?'), textAlign: TextAlign.center, style: body(24, weight: FontWeight.w500, color: c.onSurface)),
       const SizedBox(height: 6),
       Text(lead, textAlign: TextAlign.center, style: body(15, color: c.onSurfaceVariant, height: 1.5)),
       const SizedBox(height: 6),
@@ -99,11 +99,11 @@ class _UnlockDialogState extends State<_UnlockDialog> {
         _StepBox(
           number: ++n,
           state: waitDone ? _StepState.done : _StepState.waiting,
-          title: waitDone ? tr('The wait is over', 'Letelt a várakozás') : tr('Wait ${Describe.minutes(steps.waitMinutes)}', '${Describe.minutes(steps.waitMinutes)} várakozás'),
+          title: waitDone ? tr('The wait is over', 'Bekleme bitti') : tr('Wait ${Describe.minutes(steps.waitMinutes)}', '${Describe.minutes(steps.waitMinutes)} bekle'),
           child: waitDone
               ? null
               : Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                  Text(tr('You can close this, NoLook tells you when the wait is over.', 'Ezt bezárhatod, a NoLook szól, ha letelt a várakozás.'),
+                  Text(tr('You can close this, NoLook tells you when the wait is over.', 'Bunu kapatabilirsin, bekleme bitince NoLook haber verir.'),
                       style: body(14, color: c.onSurfaceVariant)),
                   const SizedBox(height: 12),
                   ClipRRect(
@@ -117,10 +117,10 @@ class _UnlockDialogState extends State<_UnlockDialog> {
                   ),
                   const SizedBox(height: 6),
                   Row(children: [
-                    Text(tr('Started at ${Describe.time(b.unlockStartedAt ?? now)}', 'Kezdés: ${Describe.time(b.unlockStartedAt ?? now)}'), style: body(13, color: c.onSurfaceVariant)),
+                    Text(tr('Started at ${Describe.time(b.unlockStartedAt ?? now)}', 'Başlangıç: ${Describe.time(b.unlockStartedAt ?? now)}'), style: body(13, color: c.onSurfaceVariant)),
                     const Spacer(),
                     Text(_clock(waitLeft ?? Duration.zero), style: display(20, color: c.onSurface)),
-                    Text(tr(' left', ' van hátra'), style: body(13, color: c.onSurfaceVariant)),
+                    Text(tr(' left', ' kaldı'), style: body(13, color: c.onSurfaceVariant)),
                   ]),
                 ]),
         ),
@@ -128,7 +128,7 @@ class _UnlockDialogState extends State<_UnlockDialog> {
         _StepBox(
           number: ++n,
           state: !waitDone ? _StepState.todo : (typedOk ? _StepState.done : _StepState.now),
-          title: tr('Type this sentence', 'Gépeld be ezt a mondatot'),
+          title: tr('Type this sentence', 'Bu cümleyi yaz'),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -142,12 +142,12 @@ class _UnlockDialogState extends State<_UnlockDialog> {
               child: SelectionContainer.disabled(child: Text(steps.sentence, style: body(14, color: c.onSurface))),
             ),
             NlField(
-              label: tr('Type it here', 'Ide gépeld'),
+              label: tr('Type it here', 'Buraya yaz'),
               controller: _typed,
               enabled: waitDone,
               dense: true,
               fill: c.surfaceMid,
-              hint: waitDone ? null : tr('Unlocks after the wait', 'A várakozás után nyílik meg'),
+              hint: waitDone ? null : tr('Unlocks after the wait', 'Beklemeden sonra açılır'),
               onChanged: (_) => setState(() => _error = null),
             ),
           ]),
@@ -161,9 +161,9 @@ class _UnlockDialogState extends State<_UnlockDialog> {
           Expanded(
             child: Text(
               b.relockMinutes == null
-                  ? tr('Either way, it stays off until you turn it back on.', 'Így is, úgy is kikapcsolva marad, amíg vissza nem kapcsolod.')
+                  ? tr('Either way, it stays off until you turn it back on.', 'Her iki durumda da sen yeniden açana kadar kapalı kalır.')
                   : tr('Either way, it turns back on by itself after ${Describe.minutes(b.relockMinutes!)}.',
-                      'Így is, úgy is magától visszakapcsol ${Describe.minutes(b.relockMinutes!)} után.'),
+                      'Her iki durumda da ${Describe.minutes(b.relockMinutes!)} sonra kendiliğinden yeniden açılır.'),
               style: body(14, color: c.onSurfaceVariant),
             ),
           ),
@@ -172,14 +172,14 @@ class _UnlockDialogState extends State<_UnlockDialog> {
       if (_error != null) Padding(padding: const EdgeInsets.only(top: 12), child: Text(_error!, style: body(14, color: c.error))),
       const SizedBox(height: 24),
       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-        _flex(phone, Btn(tr('Keep it locked', 'Maradjon zárolva'), kind: BtnKind.text, onPressed: () {
+        _flex(phone, Btn(tr('Keep it locked', 'Kilitli kalsın'), kind: BtnKind.text, onPressed: () {
           app.cancelUnlock(b);
           Navigator.pop(context);
         })),
         const SizedBox(width: 8),
         _flex(
           phone,
-          Btn(tr('Unlock', 'Feloldás'), onPressed: waitDone && typedOk ? () => _unlock(context) : null),
+          Btn(tr('Unlock', 'Kilidi aç'), onPressed: waitDone && typedOk ? () => _unlock(context) : null),
         ),
       ]),
     ]);
@@ -190,15 +190,15 @@ class _UnlockDialogState extends State<_UnlockDialog> {
   Widget _emergency(BuildContext context, int? left, bool phone) {
     final c = context.nl;
     final text = left == null
-        ? tr('An emergency unlock skips the wait and the typing.', 'A vészfeloldás kihagyja a várakozást és a gépelést.')
+        ? tr('An emergency unlock skips the wait and the typing.', 'Acil kilit açma, beklemeyi ve yazmayı atlar.')
         : tr('An emergency unlock skips the wait and the typing, you have $left left this month.',
-            'A vészfeloldás kihagyja a várakozást és a gépelést, ebben a hónapban még $left van.');
-    final button = Btn(tr('Emergency unlock', 'Vészfeloldás'), kind: BtnKind.outlined, onPressed: () {
+            'Acil kilit açma, beklemeyi ve yazmayı atlar, bu ay $left hakkın kaldı.');
+    final button = Btn(tr('Emergency unlock', 'Acil kilit açma'), kind: BtnKind.outlined, onPressed: () {
       final r = widget.app.emergencyUnlock(widget.block);
       if (r == UnlockResult.unlocked || r == UnlockResult.notLocked) Navigator.pop(context);
     });
     final info = Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(tr('Need it right now?', 'Most rögtön kell?'), style: body(15, weight: FontWeight.w600, color: c.onSurface)),
+      Text(tr('Need it right now?', 'Hemen mi lazım?'), style: body(15, weight: FontWeight.w600, color: c.onSurface)),
       const SizedBox(height: 2),
       Text(text, style: body(13, color: c.onSurfaceVariant)),
     ]);
@@ -218,9 +218,9 @@ class _UnlockDialogState extends State<_UnlockDialog> {
       case UnlockResult.unlocked || UnlockResult.notLocked:
         Navigator.pop(context);
       case UnlockResult.wrongSentence:
-        setState(() => _error = tr("That doesn't match the sentence yet.", 'Ez még nem egyezik a mondattal.'));
+        setState(() => _error = tr("That doesn't match the sentence yet.", 'Bu henüz cümleyle eşleşmiyor.'));
       case UnlockResult.waitNotOver:
-        setState(() => _error = tr("The wait isn't over yet.", 'Még nem telt le a várakozás.'));
+        setState(() => _error = tr("The wait isn't over yet.", 'Bekleme henüz bitmedi.'));
       case UnlockResult.noEmergencyLeft:
         break;
     }

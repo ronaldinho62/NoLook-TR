@@ -1,10 +1,11 @@
-/// en/hu, strings inline: `tr('Blocks', 'Tiltások')`
-enum Lang { en, hu }
+/// en/tr, strings inline: `tr('Blocks', 'Engeller')`
+enum Lang { en, tr }
 
-Lang currentLang = Lang.en;
+Lang currentLang = Lang.tr;
 
-bool get isHu => currentLang == Lang.hu;
+bool get isTr => currentLang == Lang.tr;
 
-String tr(String en, String hu) => currentLang == Lang.hu ? hu : en;
+String tr(String en, String turkce) => currentLang == Lang.tr ? turkce : en;
 
-Lang langForLocale(String locale) => locale.toLowerCase().startsWith('hu') ? Lang.hu : Lang.en;
+/// Türkçe sürüm: sistem dili İngilizce değilse Türkçe açılır
+Lang langForLocale(String locale) => locale.toLowerCase().startsWith('en') ? Lang.en : Lang.tr;

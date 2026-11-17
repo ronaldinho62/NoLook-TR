@@ -57,7 +57,7 @@ class Schedule {
 
   /// Short text like "Every day, 23:00 - 07:00" or "Mon - Fri, 9:00 - 17:00".
   String describe() {
-    if (always) return tr('Always', 'Mindig');
+    if (always) return tr('Always', 'Her zaman');
     return '${describeDays(days)}, ${clock(start)} - ${clock(end)}';
   }
 
@@ -68,17 +68,17 @@ class Schedule {
   }
 
   static const _shortEn = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  static const _shortHu = ['H', 'K', 'Sze', 'Cs', 'P', 'Szo', 'V'];
+  static const _shortTr = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
 
-  static List<String> get dayLetters => isHu ? _shortHu : const ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  static List<String> get dayLetters => isTr ? const ['Pt', 'S', 'Ç', 'P', 'C', 'Ct', 'Pz'] : const ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
   static String describeDays(Set<int> days) {
-    final short = isHu ? _shortHu : _shortEn;
+    final short = isTr ? _shortTr : _shortEn;
     final sorted = days.toList()..sort();
-    if (sorted.length == 7) return tr('Every day', 'Minden nap');
-    if (sorted.isEmpty) return tr('No days', 'Egy nap sem');
-    if (sorted.join() == '12345') return tr('Mon - Fri', 'Hétköznap');
-    if (sorted.join() == '67') return tr('Weekends', 'Hétvégén');
+    if (sorted.length == 7) return tr('Every day', 'Her gün');
+    if (sorted.isEmpty) return tr('No days', 'Hiçbir gün');
+    if (sorted.join() == '12345') return tr('Mon - Fri', 'Pzt - Cum');
+    if (sorted.join() == '67') return tr('Weekends', 'Hafta sonları');
     final contiguous = sorted.last - sorted.first == sorted.length - 1;
     if (contiguous && sorted.length > 2) return '${short[sorted.first - 1]} - ${short[sorted.last - 1]}';
     return sorted.map((d) => short[d - 1]).join(', ');

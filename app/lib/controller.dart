@@ -162,7 +162,7 @@ class NoLook extends ChangeNotifier {
   /// returns what the lock blocks, empty if saved
   List<String> updateBlock(Block edited) {
     final i = state.blocks.indexWhere((b) => b.id == edited.id);
-    if (i == -1) return [tr('That block is gone.', 'Ez a tiltás már nincs meg.')];
+    if (i == -1) return [tr('That block is gone.', 'Bu engel artık yok.')];
     final problems = Unlocker.problemsWithEdit(state.blocks[i], edited, now);
     if (problems.isNotEmpty) return problems;
     state.blocks[i] = edited;
@@ -207,8 +207,8 @@ class NoLook extends ChangeNotifier {
     final result = Unlocker.unlockEarly(b, now, typed: typed);
     if (result == UnlockResult.unlocked) {
       final parts = [
-        if (steps.wait && waited != null) tr('Waited ${Describe.minutes(steps.waitMinutes)}', '${Describe.minutes(steps.waitMinutes)} várakozás'),
-        if (steps.type) tr('typed the sentence', 'begépelte a mondatot'),
+        if (steps.wait && waited != null) tr('Waited ${Describe.minutes(steps.waitMinutes)}', '${Describe.minutes(steps.waitMinutes)} beklendi'),
+        if (steps.type) tr('typed the sentence', 'cümleyi yazdı'),
       ];
       _logUnlock(b, EventKind.unlocked, parts.join(', '));
     }
@@ -218,14 +218,14 @@ class NoLook extends ChangeNotifier {
 
   UnlockResult emergencyUnlock(Block b) {
     final result = Unlocker.emergencyUnlock(b, now);
-    if (result == UnlockResult.unlocked) _logUnlock(b, EventKind.emergency, tr('Emergency unlock', 'Vészfeloldás'));
+    if (result == UnlockResult.unlocked) _logUnlock(b, EventKind.emergency, tr('Emergency unlock', 'Acil kilit açma'));
     save();
     return result;
   }
 
   void _logUnlock(Block b, EventKind kind, String how) {
     final back = b.pausedUntil != null
-        ? tr(', turns back on at ${Describe.time(b.pausedUntil!)}', ', ${Describe.time(b.pausedUntil!)}-kor visszakapcsol')
+        ? tr(', turns back on at ${Describe.time(b.pausedUntil!)}', ', saat ${Describe.at(b.pausedUntil!)} yeniden açılır')
         : '';
     state.addEvent(HistoryEvent(time: now, kind: kind, blockId: b.id, blockName: b.name, where: here, note: '$how$back'));
     _lockedBefore.remove(b.id);
@@ -270,13 +270,13 @@ class NoLook extends ChangeNotifier {
     for (final b in state.blocks) {
       // wait over
       if (b.unlockStartedAt != null && Unlocker.waitOver(b, now) && _waitsNotified.add(b.id)) {
-        if (state.settings.notifyWaitOver) notify?.call(tr('The wait is over', 'Letelt a várakozás'), tr('You can unlock ${b.name} now.', 'Most már feloldhatod: ${b.name}.'));
+        if (state.settings.notifyWaitOver) notify?.call(tr('The wait is over', 'Bekleme bitti'), tr('You can unlock ${b.name} now.', '${b.name} engelinin kilidini artık açabilirsin.'));
       }
       // date lock ended
       final locked = b.isLocked(now);
       if (_lockedBefore.contains(b.id) && !locked && b.lock == LockKind.untilDate && b.enabled) {
         _lockedBefore.remove(b.id);
-        if (state.settings.notifyUnlock) notify?.call(tr('${b.name} is unlocked', '${b.name} feloldva'), tr('The lock date has passed.', 'Lejárt a zárolás dátuma.'));
+        if (state.settings.notifyUnlock) notify?.call(tr('${b.name} is unlocked', '${b.name} engelinin kilidi açıldı'), tr('The lock date has passed.', 'Kilit tarihi geçti.'));
       } else if (locked) {
         _lockedBefore.add(b.id);
       }

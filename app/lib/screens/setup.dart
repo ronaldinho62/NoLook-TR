@@ -183,9 +183,9 @@ class _SetupFlowState extends State<SetupFlow> {
                         }
                       : null,
                   nextLabel: switch (_step) {
-                    SetupStep.browser => (onMobile ? _blockerOn : browsers.any((b) => browserStatus(app, b).$2)) ? tr('Next', 'Tovább') : tr('Skip for now', 'Most kihagyom'),
-                    SetupStep.done => _makesOwn ? tr('Make my block', 'Elkészítem a tiltásom') : tr('Open NoLook', 'NoLook megnyitása'),
-                    _ => tr('Next', 'Tovább'),
+                    SetupStep.browser => (onMobile ? _blockerOn : browsers.any((b) => browserStatus(app, b).$2)) ? tr('Next', 'İleri') : tr('Skip for now', 'Şimdilik atla'),
+                    SetupStep.done => _makesOwn ? tr('Make my block', 'Engelimi oluştur') : tr('Open NoLook', 'NoLook\'u aç'),
+                    _ => tr('Next', 'İleri'),
                   },
                 ),
               ]),
@@ -248,7 +248,7 @@ class _SetupFlowState extends State<SetupFlow> {
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(p.name, style: body(18, weight: FontWeight.w600, color: c.onTertiaryContainer)),
-                Text(tr('${p.wordCount} keywords and ${p.sites.length} sites', '${p.wordCount} kulcsszó és ${p.sites.length} oldal'),
+                Text(tr('${p.wordCount} keywords and ${p.sites.length} sites', '${p.wordCount} anahtar kelime ve ${p.sites.length} site'),
                     style: body(14, color: c.onTertiaryContainer.withValues(alpha: .8))),
               ]),
             ),
@@ -256,11 +256,11 @@ class _SetupFlowState extends State<SetupFlow> {
           const SizedBox(height: 16),
           Wrap(spacing: 6, runSpacing: 6, children: [
             for (final k in shown) chip(k),
-            chip(tr('+${p.wordCount - shown.length} more', '+${p.wordCount - shown.length} további'), more: true),
+            chip(tr('+${p.wordCount - shown.length} more', '+${p.wordCount - shown.length} tane daha'), more: true),
           ]),
           const SizedBox(height: 14),
           Text(tr('Words like "ending" or "leak" only count next to GTA 6, and you can change everything later.',
-                  'Az olyan szavak, mint az „ending” vagy a „leak”, csak a GTA 6 mellett számítanak, és később mindent módosíthatsz.'),
+                  '"final" veya "sızıntı" gibi kelimeler yalnızca GTA 6 ile birlikte geçince sayılır, her şeyi daha sonra değiştirebilirsin.'),
               style: body(14, color: c.onTertiaryContainer.withValues(alpha: .85), height: 1.45)),
         ]),
       ),
@@ -270,15 +270,15 @@ class _SetupFlowState extends State<SetupFlow> {
         NlCard(
         color: c.surfaceLow,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(tr('Lock it', 'Zárold'), style: body(18, weight: FontWeight.w600, color: c.onSurface)),
+          Text(tr('Lock it', 'Kilitle'), style: body(18, weight: FontWeight.w600, color: c.onSurface)),
           const SizedBox(height: 4),
-          Text(tr("So you can't just switch it off when you get curious.", 'Hogy ne kapcsolhasd ki csak úgy, ha kíváncsi leszel.'),
+          Text(tr("So you can't just switch it off when you get curious.", 'Merak edince hemen kapatamayasın diye.'),
               style: body(15, color: c.onSurfaceVariant)),
           const SizedBox(height: 16),
           Seg<bool>(
             options: [
-              (false, tr('No lock', 'Nincs zárolás'), Symbols.lock_open_rounded),
-              (true, tr('Until a date', 'Egy dátumig'), Symbols.lock_rounded),
+              (false, tr('No lock', 'Kilit yok'), Symbols.lock_open_rounded),
+              (true, tr('Until a date', 'Bir tarihe kadar'), Symbols.lock_rounded),
             ],
             value: _lock,
             onChanged: (v) => setState(() => _lock = v),
@@ -297,12 +297,12 @@ class _SetupFlowState extends State<SetupFlow> {
                         const SizedBox(width: 10),
                         Flexible(
                           child: Text.rich(TextSpan(children: [
-                            TextSpan(text: tr('Locked until ', 'Zárolva '), style: body(16, color: c.onSurface)),
+                            TextSpan(text: tr('Locked until ', 'Kilitli: '), style: body(16, color: c.onSurface)),
                             TextSpan(text: Describe.until(_until, app.now), style: body(16, weight: FontWeight.w700, color: c.onSurface)),
                           ])),
                         ),
                         const SizedBox(width: 8),
-                        Btn(tr('Change', 'Módosítás'), kind: BtnKind.text, onPressed: () async {
+                        Btn(tr('Change', 'Değiştir'), kind: BtnKind.text, onPressed: () async {
                           final now = app.now;
                           final picked = await showDatePicker(
                             context: context,
@@ -316,7 +316,7 @@ class _SetupFlowState extends State<SetupFlow> {
                       const SizedBox(height: 8),
                       Text(
                           tr('Turning it off before then takes a 30 min wait and typing a sentence, and you get 3 emergency unlocks a month.',
-                              'Előtte kikapcsolni csak 30 perc várakozás és egy mondat begépelése után lehet, és havonta 3 vészfeloldásod van.'),
+                              'O tarihten önce kapatmak 30 dakika beklemeyi ve bir cümle yazmayı gerektirir, ayrıca ayda 3 acil kilit açma hakkın olur.'),
                           style: body(14, color: c.onSurfaceVariant, height: 1.45)),
                     ]),
                   ),
@@ -333,29 +333,29 @@ class _SetupFlowState extends State<SetupFlow> {
         Ms(Symbols.edit_note_rounded, color: c.primary),
         const SizedBox(width: 14),
         Expanded(
-          child: Text(tr("You'll make it right after setup, with your own keywords, sites and apps.", 'A beállítás után rögtön elkészítheted a saját kulcsszavaiddal, oldalaiddal és appjaiddal.'),
+          child: Text(tr("You'll make it right after setup, with your own keywords, sites and apps.", 'Kurulumdan hemen sonra kendi anahtar kelimelerin, sitelerin ve uygulamalarınla oluşturacaksın.'),
               style: body(15, color: c.onSurface, height: 1.45)),
         ),
       ]),
     );
 
     return [
-      ..._heading(context, tr('Your first block', 'Az első tiltásod'),
-          tr('A block is a list of keywords, sites and apps to keep away, with its own lock.', 'Egy tiltás kulcsszavak, oldalak és appok listája, amiket távol tartasz, saját zárolással.')),
+      ..._heading(context, tr('Your first block', 'İlk engelin'),
+          tr('A block is a list of keywords, sites and apps to keep away, with its own lock.', 'Engel; uzak durmak istediğin anahtar kelimeler, siteler ve uygulamalardan oluşan, kendi kilidi olan bir listedir.')),
       ChoiceGrid(children: [
         ChoiceTile(
           icon: Symbols.sports_esports_rounded,
-          title: tr('Start from GTA 6 spoilers', 'GTA 6 spoilerek sablon'),
+          title: tr('Start from GTA 6 spoilers', 'GTA 6 spoilerleriyle başla'),
           text: _hasPreset
-              ? tr('Already one of your blocks', 'Már a tiltásaid között van')
-              : tr('Ready-made, with the game, its people and places', 'Kész lista a játékkal, a szereplőkkel és helyszínekkel'),
+              ? tr('Already one of your blocks', 'Zaten engellerinden biri')
+              : tr('Ready-made, with the game, its people and places', 'Hazır liste: oyun, karakterleri ve mekânları'),
           selected: _usePreset,
           onTap: () => setState(() => _usePreset = true),
         ),
         ChoiceTile(
           icon: Symbols.add_rounded,
-          title: tr('Make my own', 'Saját tiltás'),
-          text: tr('Start empty and add what you want', 'Üresen indul, te adod hozzá'),
+          title: tr('Make my own', 'Kendim oluşturayım'),
+          text: tr('Start empty and add what you want', 'Boş başla, istediğini ekle'),
           selected: !_usePreset,
           onTap: () => setState(() => _usePreset = false),
         ),
@@ -375,9 +375,9 @@ class _SetupFlowState extends State<SetupFlow> {
   }
 
   List<Widget> _browserStep(BuildContext context) => [
-        ..._heading(context, tr('Add the browser extension', 'Add hozzá a böngészőbővítményt'),
+        ..._heading(context, tr('Add the browser extension', 'Tarayıcı eklentisini ekle'),
             tr("It blurs keywords and blocks sites in your browser, you can also set it up later in Settings.",
-                'Ez rejti el a kulcsszavakat és tiltja az oldalakat a böngésződben, később a Beállításokban is beállíthatod.')),
+                'Tarayıcında anahtar kelimeleri bulanıklaştırır ve siteleri engeller, bunu daha sonra Ayarlar\'dan da kurabilirsin.')),
         ExtensionSetupPage(app: app, embedded: true),
       ];
 
@@ -409,30 +409,30 @@ class _SetupFlowState extends State<SetupFlow> {
           ]),
         );
     return [
-      ..._heading(context, tr('Turn on the blocker', 'Kapcsold be a tiltót'),
+      ..._heading(context, tr('Turn on the blocker', 'Engelleyiciyi aç'),
           tr("Android needs your OK for NoLook to close apps, block sites and cover posts. It reads what's on screen for that, and nothing leaves your phone.",
-              'Az Androidnak engedélyt kell adnod, hogy a NoLook bezárhassa az appokat, tilthassa az oldalakat és eltakarhassa a posztokat. Ehhez olvassa a képernyőt, de semmi nem hagyja el a telefonodat.')),
+              'NoLook\'un uygulamaları kapatması, siteleri engellemesi ve gönderileri örtmesi için Android\'in onayı gerekiyor. Bunun için ekrandakileri okur ve hiçbir şey telefonundan dışarı çıkmaz.')),
       NlCard(
         color: c.surfaceLow,
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          step(1, tr("Open NoLook's Accessibility settings", 'Nyisd meg a NoLook kisegítő beállításait'), null,
-              Btn(tr('Open settings', 'Beállítások megnyitása'), icon: Symbols.open_in_new_rounded, kind: BtnKind.tonal, onPressed: AndroidLink.openBlockerSettings)),
-          step(2, tr('Turn on "NoLook blocker", then tap Allow', 'Kapcsold be a „NoLook tiltó” kapcsolót, majd koppints az Engedélyezés gombra'),
-              tr('Then come back here, this page updates by itself.', 'Aztán gyere vissza, ez az oldal magától frissül.'), null),
+          step(1, tr("Open NoLook's Accessibility settings", 'NoLook\'un Erişilebilirlik ayarlarını aç'), null,
+              Btn(tr('Open settings', 'Ayarları aç'), icon: Symbols.open_in_new_rounded, kind: BtnKind.tonal, onPressed: AndroidLink.openBlockerSettings)),
+          step(2, tr('Turn on "NoLook blocker", then tap Allow', '"NoLook engelleyici" seçeneğini aç, sonra İzin ver\'e dokun'),
+              tr('Then come back here, this page updates by itself.', 'Sonra buraya dön, bu sayfa kendiliğinden güncellenir.'), null),
         ]),
       ),
       const SizedBox(height: 12),
       NlCard(
         color: c.surfaceMid,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(tr('Switch greyed out?', 'Szürke a kapcsoló?'), style: body(16, weight: FontWeight.w600, color: c.onSurface)),
+          Text(tr('Switch greyed out?', 'Anahtar gri mi?'), style: body(16, weight: FontWeight.w600, color: c.onSurface)),
           const SizedBox(height: 4),
           Text(
               tr('Android does that for apps from outside the Play Store. Open App info, tap the three dots at the top right, choose "Allow restricted settings", then try again.',
-                  'Az Android ezt teszi a Play Áruházon kívülről telepített appokkal. Nyisd meg az Alkalmazásinfót, koppints a jobb felső három pontra, válaszd a „Korlátozott beállítások engedélyezése” lehetőséget, és próbáld újra.'),
+                  'Android bunu Play Store dışından yüklenen uygulamalara yapar. Uygulama bilgisi sayfasını aç, sağ üstteki üç noktaya dokun, "Kısıtlanmış ayarlara izin ver" seçeneğini seç ve tekrar dene.'),
               style: body(14, color: c.onSurfaceVariant, height: 1.45)),
           const SizedBox(height: 12),
-          Btn(tr('Open App info', 'Alkalmazásinfó megnyitása'), kind: BtnKind.outlined, onPressed: AndroidLink.openAppInfo),
+          Btn(tr('Open App info', 'Uygulama bilgisini aç'), kind: BtnKind.outlined, onPressed: AndroidLink.openAppInfo),
         ]),
       ),
       const SizedBox(height: 12),
@@ -445,7 +445,7 @@ class _SetupFlowState extends State<SetupFlow> {
           Ms(_blockerOn ? Symbols.check_circle_rounded : Symbols.shield_rounded, color: _blockerOn ? c.onTertiaryContainer : c.onSurfaceVariant, fill: _blockerOn),
           const SizedBox(width: 14),
           Expanded(
-            child: Text(_blockerOn ? tr("The blocker is on, you're protected.", 'A tiltó bekapcsolva, védve vagy.') : tr('The blocker is off.', 'A tiltó ki van kapcsolva.'),
+            child: Text(_blockerOn ? tr("The blocker is on, you're protected.", 'Engelleyici açık, korunuyorsun.') : tr('The blocker is off.', 'Engelleyici kapalı.'),
                 style: body(15, color: _blockerOn ? c.onTertiaryContainer : c.onSurface)),
           ),
         ]),
@@ -473,31 +473,31 @@ class _SetupFlowState extends State<SetupFlow> {
         );
     final divider = Divider(height: 1, color: c.outlineVariant.withValues(alpha: .5));
     return [
-      ..._heading(context, tr('A few more things', 'Még pár dolog'), tr('All of these can be changed later in Settings.', 'Ezeket később a Beállításokban is módosíthatod.')),
+      ..._heading(context, tr('A few more things', 'Birkaç şey daha'), tr('All of these can be changed later in Settings.', 'Bunların hepsi daha sonra Ayarlar\'dan değiştirilebilir.')),
       NlCard(
         color: c.surfaceLow,
         padding: EdgeInsets.fromLTRB(context.isPhone ? 20 : 24, 6, context.isPhone ? 20 : 24, 6),
         child: Column(children: [
           if (onWindows) ...[
-            row(Symbols.power_settings_new_rounded, tr('Start with Windows', 'Indítás a Windowszal'),
-                tr('So blocking is on from the moment you sign in', 'Hogy a tiltás a bejelentkezéstől fusson'),
+            row(Symbols.power_settings_new_rounded, tr('Start with Windows', 'Windows ile başlat'),
+                tr('So blocking is on from the moment you sign in', 'Böylece engelleme oturum açtığın andan itibaren çalışır'),
                 NlSwitch(value: _startWithSystem, onTap: () => setState(() => _startWithSystem = !_startWithSystem))),
             divider,
           ],
           if (!onMobile) ...[
-            row(Symbols.shield_rounded, tr('Stop NoLook being closed', 'A NoLook ne legyen bezárható'), tr('While any block is locked', 'Amíg bármelyik tiltás zárolva van'),
+            row(Symbols.shield_rounded, tr('Stop NoLook being closed', 'NoLook\'un kapatılmasını engelle'), tr('While any block is locked', 'Herhangi bir engel kilitliyken'),
                 NlSwitch(value: _guard, onTap: () => setState(() => _guard = !_guard))),
             divider,
           ],
-          row(Symbols.notifications_rounded, tr('Tell me when a block unlocks', 'Szóljon, ha egy tiltás feloldódik'), null,
+          row(Symbols.notifications_rounded, tr('Tell me when a block unlocks', 'Bir engelin kilidi açılınca bana haber ver'), null,
               NlSwitch(value: _notify, onTap: () => setState(() => _notify = !_notify))),
           divider,
           LayoutBuilder(builder: (context, box) {
             final seg = Seg<ThemeChoice>(
               options: [
-                (ThemeChoice.system, tr('System', 'Rendszer'), null),
-                (ThemeChoice.light, tr('Light', 'Világos'), null),
-                (ThemeChoice.dark, tr('Dark', 'Sötét'), null),
+                (ThemeChoice.system, tr('System', 'Sistem'), null),
+                (ThemeChoice.light, tr('Light', 'Açık'), null),
+                (ThemeChoice.dark, tr('Dark', 'Koyu'), null),
               ],
               value: s.theme,
               onChanged: (v) {
@@ -505,11 +505,11 @@ class _SetupFlowState extends State<SetupFlow> {
                 app.save();
               },
             );
-            if (box.maxWidth >= 520) return row(Symbols.contrast_rounded, tr('Theme', 'Téma'), null, seg);
+            if (box.maxWidth >= 520) return row(Symbols.contrast_rounded, tr('Theme', 'Tema'), null, seg);
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 14),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Row(children: [Ms(Symbols.contrast_rounded, color: c.onSurfaceVariant), const SizedBox(width: 16), Text(tr('Theme', 'Téma'), style: body(16, color: c.onSurface))]),
+                Row(children: [Ms(Symbols.contrast_rounded, color: c.onSurfaceVariant), const SizedBox(width: 16), Text(tr('Theme', 'Tema'), style: body(16, color: c.onSurface))]),
                 const SizedBox(height: 10),
                 Padding(padding: const EdgeInsets.only(left: 40), child: seg),
               ]),
@@ -525,29 +525,29 @@ class _SetupFlowState extends State<SetupFlow> {
     final connected = browsers.where((b) => browserStatus(app, b).$2).toList();
     final lines = <(IconData, String)>[
       if (_imported)
-        (Symbols.download_rounded, tr('Your blocks from the file are on', 'A fájlból betöltött tiltásaid bekapcsoltak'))
+        (Symbols.download_rounded, tr('Your blocks from the file are on', 'Dosyadaki engellerin açık'))
       else if (_skipBlock)
-        (Symbols.block_rounded, tr('No block yet, use + to make one', 'Még nincs tiltás, a + gombbal készíthetsz egyet'))
+        (Symbols.block_rounded, tr('No block yet, use + to make one', 'Henüz engel yok, + ile bir tane oluştur'))
       else if (_usePreset && _hasPreset)
-        (Symbols.block_rounded, tr('${_preset.name} is already one of your blocks', 'A(z) ${_preset.name} már a tiltásaid között van'))
+        (Symbols.block_rounded, tr('${_preset.name} is already one of your blocks', '${_preset.name} zaten engellerinden biri'))
       else if (_usePreset)
         (
           Symbols.block_rounded,
           _lock
-              ? tr('${_preset.name} is on, locked until ${Describe.day(_until, app.now)}', '${_preset.name}: bekapcsolva, zárolva ${Describe.until(_until, app.now)}')
-              : tr('${_preset.name} is on', '${_preset.name}: bekapcsolva'),
+              ? tr('${_preset.name} is on, locked until ${Describe.day(_until, app.now)}', '${_preset.name} açık, ${Describe.until(_until, app.now)} kilitli')
+              : tr('${_preset.name} is on', '${_preset.name} açık'),
         )
       else
-        (Symbols.edit_note_rounded, tr('Your first block is next', 'Következik az első tiltásod')),
+        (Symbols.edit_note_rounded, tr('Your first block is next', 'Sırada ilk engelin var')),
       if (onAndroid)
         _blockerOn
-            ? (Symbols.shield_rounded, tr('The blocker is on', 'A tiltó bekapcsolva'))
-            : (Symbols.shield_rounded, tr('The blocker is off, turn it on from Settings', 'A tiltó ki van kapcsolva, a Beállításokban bekapcsolhatod'))
+            ? (Symbols.shield_rounded, tr('The blocker is on', 'Engelleyici açık'))
+            : (Symbols.shield_rounded, tr('The blocker is off, turn it on from Settings', 'Engelleyici kapalı, Ayarlar\'dan açabilirsin'))
       else if (connected.isEmpty)
-        (Symbols.extension_rounded, tr('No browser yet, you can add one from Settings', 'Még nincs böngésző, a Beállításokban hozzáadhatod'))
+        (Symbols.extension_rounded, tr('No browser yet, you can add one from Settings', 'Henüz tarayıcı yok, Ayarlar\'dan ekleyebilirsin'))
       else
-        (Symbols.extension_rounded, tr('${connected.join(' and ')} connected', '${connected.join(' és ')} csatlakozva')),
-      if (onWindows && _startWithSystem) (Symbols.power_settings_new_rounded, tr('Starts with Windows', 'A Windowszal indul')),
+        (Symbols.extension_rounded, tr('${connected.join(' and ')} connected', '${connected.join(' ve ')} bağlı')),
+      if (onWindows && _startWithSystem) (Symbols.power_settings_new_rounded, tr('Starts with Windows', 'Windows ile başlar')),
     ];
     return [
       SizedBox(height: context.isPhone ? 12 : 32),
@@ -561,13 +561,13 @@ class _SetupFlowState extends State<SetupFlow> {
         ),
       ),
       const SizedBox(height: 28),
-      Text(tr("You're all set", 'Minden kész'), textAlign: TextAlign.center, style: display(context.isPhone ? 34 : 48, color: c.onSurface)),
+      Text(tr("You're all set", 'Her şey hazır'), textAlign: TextAlign.center, style: display(context.isPhone ? 34 : 48, color: c.onSurface)),
       const SizedBox(height: 12),
       Text(
           onMobile
-              ? tr('NoLook keeps running when you close it.', 'A NoLook bezárás után is fut.')
+              ? tr('NoLook keeps running when you close it.', 'NoLook kapatsan da çalışmaya devam eder.')
               : tr('NoLook keeps running in the tray when you close the window.',
-                  'A NoLook az ablak bezárása után is fut a tálcán.'),
+                  'Pencereyi kapatsan da NoLook sistem tepsisinde çalışmaya devam eder.'),
           textAlign: TextAlign.center,
           style: body(context.isPhone ? 16 : 18, color: c.onSurfaceVariant, height: 1.5)),
       const SizedBox(height: 28),
@@ -603,7 +603,7 @@ class _TopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.nl;
     final phone = context.isPhone;
-    final labels = [tr('Tour', 'Bemutató'), tr('First block', 'Első tiltás'), onMobile ? tr('Blocker', 'Tiltó') : tr('Browser', 'Böngésző'), tr('Settings', 'Beállítások')];
+    final labels = [tr('Tour', 'Tanıtım'), tr('First block', 'İlk engel'), onMobile ? tr('Blocker', 'Engelleyici') : tr('Browser', 'Tarayıcı'), tr('Settings', 'Ayarlar')];
     final at = step.index - 1;
     return Padding(
       padding: EdgeInsets.fromLTRB(phone ? 20 : 32, phone ? 14 : 22, phone ? 12 : 24, 8),
@@ -646,7 +646,7 @@ class _TopBar extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerRight,
             widthFactor: 1,
-            child: onSkip == null ? const SizedBox(height: 40) : Btn(phone ? tr('Skip', 'Kihagyás') : tr('Skip the tour', 'Bemutató kihagyása'), kind: BtnKind.text, onPressed: onSkip),
+            child: onSkip == null ? const SizedBox(height: 40) : Btn(phone ? tr('Skip', 'Atla') : tr('Skip the tour', 'Tanıtımı atla'), kind: BtnKind.text, onPressed: onSkip),
           ),
         ),
       ]),
@@ -670,10 +670,10 @@ class _BottomBar extends StatelessWidget {
       decoration: BoxDecoration(border: Border(top: BorderSide(color: c.outlineVariant.withValues(alpha: .4)))),
       padding: EdgeInsets.fromLTRB(phone ? 16 : 32, 14, phone ? 16 : 32, phone ? 16 : 18),
       child: Row(children: [
-        phone ? IconBtn(Symbols.arrow_back_rounded, tooltip: tr('Back', 'Vissza'), onPressed: onBack) : Btn(tr('Back', 'Vissza'), icon: Symbols.arrow_back_rounded, kind: BtnKind.text, onPressed: onBack),
+        phone ? IconBtn(Symbols.arrow_back_rounded, tooltip: tr('Back', 'Geri'), onPressed: onBack) : Btn(tr('Back', 'Geri'), icon: Symbols.arrow_back_rounded, kind: BtnKind.text, onPressed: onBack),
         const Spacer(),
         if (onSkip != null) ...[
-          Btn(tr('Skip for now', 'Most kihagyom'), kind: BtnKind.text, big: !phone, onPressed: onSkip),
+          Btn(tr('Skip for now', 'Şimdilik atla'), kind: BtnKind.text, big: !phone, onPressed: onSkip),
           SizedBox(width: phone ? 4 : 8),
         ],
         Btn(nextLabel, trailing: Symbols.arrow_forward_rounded, big: !phone, onPressed: onNext),
@@ -733,7 +733,7 @@ class _WelcomeState extends State<_Welcome> with SingleTickerProviderStateMixin 
     final markH = headSize * .86;
     final heading = Text.rich(
       TextSpan(children: [
-        TextSpan(text: '${tr('Welcome to', 'Üdvözöl a')} '),
+        TextSpan(text: '${tr('Welcome to', 'Hoş geldin:')} '),
         // wordmark on the baseline
         WidgetSpan(
           alignment: PlaceholderAlignment.aboveBaseline,
@@ -746,18 +746,18 @@ class _WelcomeState extends State<_Welcome> with SingleTickerProviderStateMixin 
     );
 
     final lang = Seg<Lang>(
-      options: const [(Lang.en, 'English', null), (Lang.hu, 'Magyar', null)],
+      options: const [(Lang.en, 'English', null), (Lang.tr, 'Türkçe', null)],
       value: currentLang,
       onChanged: (v) {
-        widget.app.state.settings.language = v == Lang.hu ? LangChoice.hu : LangChoice.en;
+        widget.app.state.settings.language = v == Lang.tr ? LangChoice.tr : LangChoice.en;
         widget.app.save();
       },
     );
 
     final actions = Column(crossAxisAlignment: phone ? CrossAxisAlignment.stretch : CrossAxisAlignment.center, children: [
-      Btn(tr('Get started', 'Kezdjük'), trailing: Symbols.arrow_forward_rounded, big: true, wide: phone, onPressed: widget.onStart),
+      Btn(tr('Get started', 'Başlayalım'), trailing: Symbols.arrow_forward_rounded, big: true, wide: phone, onPressed: widget.onStart),
       const SizedBox(height: 8),
-      Center(child: Btn(tr('I have a .nolook file', 'Van .nolook fájlom'), kind: BtnKind.text, onPressed: widget.onImport)),
+      Center(child: Btn(tr('I have a .nolook file', 'Bir .nolook dosyam var'), kind: BtnKind.text, onPressed: widget.onImport)),
     ]);
 
     return SafeArea(
@@ -776,7 +776,7 @@ class _WelcomeState extends State<_Welcome> with SingleTickerProviderStateMixin 
             SizedBox(height: phone ? 4 : 8),
             up(0, heading),
             const SizedBox(height: 12),
-            up(130, Text(tr('Hide spoilers and block sites and apps on all your devices.', 'Rejtsd el a spoilereket, és tilts le oldalakat és appokat minden eszközödön.'),
+            up(130, Text(tr('Hide spoilers and block sites and apps on all your devices.', 'Tüm cihazlarında spoilerleri gizle, siteleri ve uygulamaları engelle.'),
                 textAlign: TextAlign.center, style: body(phone ? 16 : 18, color: c.onSurfaceVariant, height: 1.5))),
             if (phone) const Spacer() else const SizedBox(height: 32),
             up(270, actions),
@@ -800,32 +800,32 @@ class _Tour extends StatelessWidget {
     final phone = context.isPhone;
     final (title, text) = switch (feature) {
       0 when onMobile => (
-          tr('Spoilers get covered', 'A spoilereket eltakarja'),
+          tr('Spoilers get covered', 'Spoilerler örtülür'),
           tr('Posts and videos that mention your keywords get covered on YouTube, X, Reddit, TikTok and in your browser, tap Show to see one anyway.',
-              'A kulcsszavaidat említő posztokat és videókat eltakarja a YouTube-on, X-en, Redditen, TikTokon és a böngésződben, a Mutasd gombbal mégis megnézheted őket.'),
+              'Anahtar kelimelerinden bahseden gönderi ve videolar YouTube, X, Reddit, TikTok ve tarayıcında örtülür, yine de görmek istersen Göster\'e dokun.'),
         ),
       0 => (
-          tr('Spoilers get covered', 'A spoilereket eltakarja'),
+          tr('Spoilers get covered', 'Spoilerler örtülür'),
           tr('Posts and videos that mention your keywords get blurred on X, YouTube, Reddit and other sites, click one to see it anyway.',
-              'A kulcsszavaidat említő posztok és videók homályosak lesznek X-en, YouTube-on, Redditen és máshol, egy kattintással mégis megnézheted őket.'),
+              'Anahtar kelimelerinden bahseden gönderi ve videolar X, YouTube, Reddit ve diğer sitelerde bulanıklaştırılır, yine de görmek istersen üzerine tıkla.'),
         ),
       1 => (
-          tr('Sites and apps get blocked', 'Oldalak és appok tiltása'),
+          tr('Sites and apps get blocked', 'Siteler ve uygulamalar engellenir'),
           tr("Spoiler subreddits and fan sites won't load, and apps you block close as soon as they open.",
-              'A spoileres subredditek és rajongói oldalak nem töltenek be, a tiltott appok pedig bezáródnak, amint megnyitod őket.'),
+              'Spoiler subreddit\'leri ve hayran siteleri yüklenmez, engellediğin uygulamalar da açılır açılmaz kapanır.'),
         ),
       2 => (
-          tr('Locks keep you from caving', 'A zárolás nem enged megtörni'),
+          tr('Locks keep you from caving', 'Kilitler pes etmeni önler'),
           tr('Lock a block until a date, turning it off early then takes a wait and typing a sentence, or one of your emergency unlocks.',
-              'Zárold egy dátumig, és a korábbi kikapcsoláshoz várni kell és be kell gépelni egy mondatot, vagy fel kell használnod egy vészfeloldást.'),
+              'Bir engeli bir tarihe kadar kilitle; erken kapatmak için beklemen ve bir cümle yazman ya da acil kilit açma haklarından birini kullanman gerekir.'),
         ),
       _ when onMobile => (
-          tr('Works in every app', 'Minden appban működik'),
-          tr('NoLook reads the screen, so it works in any app and browser on this phone.', 'A NoLook a képernyőt olvassa, így bármelyik appban és böngészőben működik ezen a telefonon.'),
+          tr('Works in every app', 'Her uygulamada çalışır'),
+          tr('NoLook reads the screen, so it works in any app and browser on this phone.', 'NoLook ekranı okur, bu yüzden bu telefondaki her uygulamada ve tarayıcıda çalışır.'),
         ),
       _ => (
-          tr('Works in every browser', 'Minden böngészőben működik'),
-          tr('Chrome, Edge and Firefox get your blocks from this app.', 'A Chrome, az Edge és a Firefox ettől az apptól kapja a tiltásaidat.'),
+          tr('Works in every browser', 'Her tarayıcıda çalışır'),
+          tr('Chrome, Edge and Firefox get your blocks from this app.', 'Chrome, Edge ve Firefox engellerini bu uygulamadan alır.'),
         ),
     };
     final (bg, blob) = switch (feature) {
@@ -854,7 +854,7 @@ class _Tour extends StatelessWidget {
     ]);
 
     final words = Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-      Text(tr('What NoLook does, ${feature + 1} of 4', 'Mit csinál a NoLook, ${feature + 1}/4'), style: body(14, weight: FontWeight.w600, color: c.primary)),
+      Text(tr('What NoLook does, ${feature + 1} of 4', 'NoLook ne yapar, ${feature + 1}/4'), style: body(14, weight: FontWeight.w600, color: c.primary)),
       SizedBox(height: phone ? 8 : 14),
       Text(title, style: display(phone ? 30 : 52, color: c.onSurface, height: 1.05)),
       SizedBox(height: phone ? 10 : 18),

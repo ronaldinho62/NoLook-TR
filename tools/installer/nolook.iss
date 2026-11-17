@@ -14,14 +14,14 @@
 
 [Setup]
 ; Never change the AppId, Windows uses it to know an install is the same app.
-AppId={{7E3C9B52-4A1D-4F6B-9C0E-5B2F8A41D6C3}
-AppName=NoLook
+AppId={{B447EA2B-B7E9-431E-B534-E3F8CC16DE6F}
+AppName=NoLook TR
 AppVersion={#AppVersion}
-AppVerName=NoLook {#AppVersion}
-AppPublisher=ItsZedK
-AppPublisherURL=https://nolook.itszedk.com
-AppSupportURL=https://github.com/ItsZedK/NoLook/issues
-DefaultDirName={localappdata}\Programs\NoLook
+AppVerName=NoLook TR {#AppVersion}
+AppPublisher=NoLook TR (ItsZedK/NoLook çatalı)
+AppPublisherURL=https://github.com/ronaldinho62/NoLook-TR
+AppSupportURL=https://github.com/ronaldinho62/NoLook-TR/issues
+DefaultDirName={localappdata}\Programs\NoLook-TR
 DefaultGroupName=NoLook
 DisableProgramGroupPage=yes
 DisableDirPage=yes
@@ -30,7 +30,7 @@ OutputDir={#OutputDir}
 OutputBaseFilename=NoLook-setup
 SetupIconFile=..\..\app\windows\runner\resources\app_icon.ico
 UninstallDisplayIcon={app}\nolook.exe
-UninstallDisplayName=NoLook
+UninstallDisplayName=NoLook TR
 Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
@@ -40,14 +40,14 @@ CloseApplications=force
 RestartApplications=no
 
 [Languages]
+Name: "tr"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "en"; MessagesFile: "compiler:Default.isl"
-Name: "hu"; MessagesFile: "compiler:Languages\Hungarian.isl"
 
 [CustomMessages]
 en.DesktopIcon=Add a desktop shortcut
-hu.DesktopIcon=Parancsikon az asztalra
+tr.DesktopIcon=Masaüstüne kısayol ekle
 en.RemoveData=Delete your blocks and settings too?%n%nChoose No to keep them in case you install NoLook again.
-hu.RemoveData=A tiltásaidat és a beállításaidat is törlöd?%n%nVálaszd a Nemet, ha megtartanád őket egy újratelepítéshez.
+tr.RemoveData=Engellerin ve ayarların da silinsin mi?%n%nNoLook'u yeniden kurarsan diye saklamak istiyorsan Hayır'ı seç.
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:DesktopIcon}"; Flags: unchecked

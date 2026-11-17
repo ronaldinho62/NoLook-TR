@@ -7,7 +7,7 @@ import { blockIcon, brandmark, esc, icon, lockLineHtml, send } from './ui';
 
 const app = document.getElementById('app')!;
 
-const appUrl = 'https://nolook.itszedk.com';
+const appUrl = 'https://github.com/ronaldinho62/NoLook-TR/releases/latest';
 
 /**
  * main, settings, and (no app) chooser + editor
@@ -43,7 +43,7 @@ async function closeEditor() {
   void render();
 }
 
-function presetRows(lang: 'en' | 'hu'): string {
+function presetRows(lang: 'en' | 'tr'): string {
   return presets
     .map((p) => {
       const b = fromPreset(p, lang);
@@ -56,7 +56,7 @@ function presetRows(lang: 'en' | 'hu'): string {
     .join('');
 }
 
-function wirePresetRows(lang: 'en' | 'hu') {
+function wirePresetRows(lang: 'en' | 'tr') {
   app.querySelectorAll<HTMLElement>('.bl.pick[data-preset]').forEach((row) =>
     row.addEventListener('click', () => {
       const p = presets.find((x) => x.id === row.dataset.preset) as Preset | undefined;
@@ -313,7 +313,7 @@ function renderSettings(saved: Saved) {
   setHtml(app, `
     <div class="ptop sub"><button class="icon-btn" id="back" title="${esc(t.back)}">${icon('arrow_back')}</button><div class="ttl">${esc(t.settings)}</div></div>
     ${ready ? `<div class="sets">
-      <div class="set"><div class="lbl">${esc(t.language)}</div>${seg('language', [['system', t.system], ['en', 'English'], ['hu', 'Magyar']], value('language', 'system'))}</div>
+      <div class="set"><div class="lbl">${esc(t.language)}</div>${seg('language', [['system', t.system], ['en', 'English'], ['tr', 'Türkçe']], value('language', 'system'))}</div>
       <div class="set"><div class="lbl">${esc(t.blur)}</div>${seg('blurStrength', [['light', t.light], ['strong', t.strong]], value('blurStrength', 'strong'))}</div>
       <div class="set"><div class="lbl">${esc(t.revealWith)}</div>${seg('twoClickReveal', [[false, t.oneClick], [true, t.twoClicks]], value('twoClickReveal', false))}</div>
       <div class="set row"><div><div class="lbl">${esc(t.sayKeyword)}</div><div class="sub">${esc(t.sayKeywordSub)}</div></div>

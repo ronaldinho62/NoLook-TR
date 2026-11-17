@@ -244,7 +244,7 @@ class Covers(private val service: AccessibilityService) {
         val pillBg = if (dark) Color.parseColor("#32353A") else Color.WHITE
         val ink = if (dark) Color.parseColor("#E2E2E9") else Color.parseColor("#191C20")
         val chipBg = if (dark) Color.parseColor("#3E4759") else Color.parseColor("#DAE2F9")
-        val hu = Rules.hungarian
+        val turkce = Rules.turkish
 
         val cover = View(service).apply {
             background = GradientDrawable().apply {
@@ -267,9 +267,9 @@ class Covers(private val service: AccessibilityService) {
             }
         }
         val label = TextView(service).apply {
-            val what = if (hu) "A NoLook elrejtette" else "Hidden by NoLook"
+            val what = if (turkce) "NoLook tarafından gizlendi" else "Hidden by NoLook"
             text = if (Rules.sayKeyword && !compact && hit.matched.isNotEmpty()) {
-                what + (if (hu) " · találat: " else " · matched ") + hit.matched.first()
+                what + (if (turkce) " · eşleşen: " else " · matched ") + hit.matched.first()
             } else {
                 what
             }
@@ -284,7 +284,7 @@ class Covers(private val service: AccessibilityService) {
         if (!(narrow && canShow)) pill.addView(label)
         if (canShow) {
             val show = TextView(service).apply {
-                text = if (hu) "Mutasd" else "Show"
+                text = if (turkce) "Göster" else "Show"
                 setTextColor(ink)
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, if (tiny) 12f else 13f)
                 typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
@@ -297,7 +297,7 @@ class Covers(private val service: AccessibilityService) {
                 setOnClickListener {
                     if (Rules.twoTapShow && !armed) {
                         armed = true
-                        text = if (hu) "Még egyszer" else "Tap again"
+                        text = if (turkce) "Tekrar dokun" else "Tap again"
                         // recentre after it grew
                         shown[key]?.let { s ->
                             s.pill.measure(

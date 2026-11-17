@@ -176,9 +176,9 @@ class _Tray with TrayListener {
     _guarded = _cantQuit;
     _lang = currentLang;
     await trayManager.setContextMenu(Menu(items: [
-      MenuItem(key: 'open', label: tr('Open NoLook', 'NoLook megnyitása')),
+      MenuItem(key: 'open', label: tr('Open NoLook', 'NoLook\'u aç')),
       MenuItem.separator(),
-      MenuItem(key: 'quit', label: _cantQuit ? tr('Quit (not while a block is locked)', 'Kilépés (zárolt tiltás mellett nem)') : tr('Quit NoLook', 'Kilépés a NoLookból'), disabled: _cantQuit),
+      MenuItem(key: 'quit', label: _cantQuit ? tr('Quit (not while a block is locked)', 'Çık (kilitli bir engel varken olmaz)') : tr('Quit NoLook', 'NoLook\'tan çık'), disabled: _cantQuit),
     ]));
   }
 

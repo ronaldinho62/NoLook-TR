@@ -75,7 +75,7 @@ class _TourArtState extends State<TourArt> with SingleTickerProviderStateMixin {
     final hidden = Stack(alignment: Alignment.center, children: [
       ImageFiltered(
         imageFilter: ImageFilter.blur(sigmaX: 9 * blur, sigmaY: 9 * blur),
-        child: _post(context, 'gamer_lena', '@lena', tr('The GTA 6 ending is wild, Lucia and Jason end up...', 'A GTA 6 vége őrület, Lucia és Jason a végén...'), const Color(0xFFE08A55)),
+        child: _post(context, 'gamer_lena', '@lena', tr('The GTA 6 ending is wild, Lucia and Jason end up...', 'GTA 6\'nın sonu çılgınca, Lucia ve Jason sonunda...'), const Color(0xFFE08A55)),
       ),
       if (pill > 0)
         _pop(
@@ -86,12 +86,12 @@ class _TourArtState extends State<TourArt> with SingleTickerProviderStateMixin {
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               Ms(Symbols.visibility_off_rounded, size: 18, color: c.primary),
               const SizedBox(width: 8),
-              Text(tr('Hidden by NoLook', 'A NoLook elrejtette'), style: body(14, weight: FontWeight.w600, color: c.onSurface)),
+              Text(tr('Hidden by NoLook', 'NoLook tarafından gizlendi'), style: body(14, weight: FontWeight.w600, color: c.onSurface)),
               const SizedBox(width: 10),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(color: c.secondaryContainer, borderRadius: BorderRadius.circular(999)),
-                child: Text(tr('Show', 'Mutasd'), style: body(13, weight: FontWeight.w600, color: c.onSecondaryContainer)),
+                child: Text(tr('Show', 'Göster'), style: body(13, weight: FontWeight.w600, color: c.onSecondaryContainer)),
               ),
             ]),
           ),
@@ -102,11 +102,11 @@ class _TourArtState extends State<TourArt> with SingleTickerProviderStateMixin {
       _Window(
         title: 'x.com',
         child: Column(children: [
-          _post(context, 'sam', '@samplays', tr('Finally finished my backlog, ready for next week', 'Végre letudtam a lemaradásaimat, jöhet a jövő hét'), const Color(0xFF3F8EA3)),
+          _post(context, 'sam', '@samplays', tr('Finally finished my backlog, ready for next week', 'Sonunda biriken oyunlarımı bitirdim, gelecek haftaya hazırım'), const Color(0xFF3F8EA3)),
           Divider(height: 1, color: c.outlineVariant.withValues(alpha: .5)),
           hidden,
           Divider(height: 1, color: c.outlineVariant.withValues(alpha: .5)),
-          _post(context, 'coffee_maps', '@coffeemaps', tr('New place opened downtown, the oat latte is great', 'Új hely nyílt a belvárosban, a zabtejes latte nagyon jó'), const Color(0xFF7A62B3)),
+          _post(context, 'coffee_maps', '@coffeemaps', tr('New place opened downtown, the oat latte is great', 'Şehir merkezinde yeni bir yer açılmış, yulaf sütlü latte harika'), const Color(0xFF7A62B3)),
         ]),
       ),
     );
@@ -138,7 +138,7 @@ class _TourArtState extends State<TourArt> with SingleTickerProviderStateMixin {
                 Text.rich(
                   TextSpan(children: [
                     TextSpan(text: 'reddit.com/r/GTA6 ', style: display(22, color: c.primary)),
-                    TextSpan(text: tr('is blocked', 'le van tiltva'), style: display(22, color: c.onSurface)),
+                    TextSpan(text: tr('is blocked', 'engellendi'), style: display(22, color: c.onSurface)),
                   ]),
                   textAlign: TextAlign.center,
                 ),
@@ -146,7 +146,7 @@ class _TourArtState extends State<TourArt> with SingleTickerProviderStateMixin {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(color: c.primary, borderRadius: BorderRadius.circular(999)),
-                  child: Text(tr('Go back', 'Vissza'), style: body(14, weight: FontWeight.w600, color: c.onPrimary)),
+                  child: Text(tr('Go back', 'Geri dön'), style: body(14, weight: FontWeight.w600, color: c.onPrimary)),
                 ),
               ]),
             ),
@@ -184,7 +184,7 @@ class _TourArtState extends State<TourArt> with SingleTickerProviderStateMixin {
               const SizedBox(width: 12),
               Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
                 Text('TikTok', style: body(14, weight: FontWeight.w600, color: c.onSurface)),
-                Text(closed > 0 ? tr('Closed by NoLook', 'A NoLook bezárta') : tr('Opening...', 'Megnyitás...'), style: body(13, color: closed > 0 ? c.error : c.onSurfaceVariant)),
+                Text(closed > 0 ? tr('Closed by NoLook', 'NoLook tarafından kapatıldı') : tr('Opening...', 'Açılıyor...'), style: body(13, color: closed > 0 ? c.error : c.onSurfaceVariant)),
               ]),
             ]),
           ),
@@ -228,7 +228,7 @@ class _TourArtState extends State<TourArt> with SingleTickerProviderStateMixin {
                 child: Text('VI', style: display(15, weight: FontWeight.w800, color: c.onTertiaryContainer)),
               ),
               const SizedBox(width: 12),
-              Expanded(child: Text(tr('GTA 6 spoilers', 'GTA 6 spoilerek'), style: body(17, weight: FontWeight.w600, color: c.onTertiaryContainer))),
+              Expanded(child: Text(tr('GTA 6 spoilers', 'GTA 6 spoilerleri'), style: body(17, weight: FontWeight.w600, color: c.onTertiaryContainer))),
               NlSwitch(value: on, locked: locked),
             ]),
             const SizedBox(height: 16),
@@ -240,8 +240,8 @@ class _TourArtState extends State<TourArt> with SingleTickerProviderStateMixin {
                 Ms(locked ? Symbols.lock_rounded : Symbols.lock_open_rounded, size: 18, color: c.onTertiaryContainer, fill: locked),
                 const SizedBox(width: 8),
                 Text.rich(TextSpan(children: [
-                  TextSpan(text: locked ? tr('Locked until ', 'Zárolva ') : tr('No lock', 'Nincs zárolás'), style: body(14, color: c.onTertiaryContainer)),
-                  if (locked) TextSpan(text: tr('19 December', 'december 19-ig'), style: body(14, weight: FontWeight.w700, color: c.onTertiaryContainer)),
+                  TextSpan(text: locked ? tr('Locked until ', 'Kilitli: ') : tr('No lock', 'Kilit yok'), style: body(14, color: c.onTertiaryContainer)),
+                  if (locked) TextSpan(text: tr('19 December', '19 Aralık\'a kadar'), style: body(14, weight: FontWeight.w700, color: c.onTertiaryContainer)),
                 ])),
               ]),
             ),
@@ -249,9 +249,9 @@ class _TourArtState extends State<TourArt> with SingleTickerProviderStateMixin {
         ),
       ),
       const SizedBox(height: 4),
-      rule(chip[0], Symbols.hourglass_top_rounded, tr('To unlock early, wait 30 min', 'Korábbi feloldáshoz 30 perc várakozás')),
-      rule(chip[1], Symbols.keyboard_rounded, tr('Then type a sentence', 'Aztán egy mondat begépelése')),
-      rule(chip[2], Symbols.emergency_rounded, tr('3 emergency unlocks a month', 'Havi 3 vészfeloldás')),
+      rule(chip[0], Symbols.hourglass_top_rounded, tr('To unlock early, wait 30 min', 'Erken açmak için 30 dk bekle')),
+      rule(chip[1], Symbols.keyboard_rounded, tr('Then type a sentence', 'Sonra bir cümle yaz')),
+      rule(chip[2], Symbols.emergency_rounded, tr('3 emergency unlocks a month', 'Ayda 3 acil kilit açma')),
     ]);
   }
 
@@ -288,7 +288,7 @@ class _TourArtState extends State<TourArt> with SingleTickerProviderStateMixin {
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
                   Ms(Symbols.check_circle_rounded, size: 20, color: c.primary, fill: true),
                   const SizedBox(width: 6),
-                  Text(tr('Connected', 'Csatlakozva'), style: body(13, weight: FontWeight.w600, color: c.primary)),
+                  Text(tr('Connected', 'Bağlı'), style: body(13, weight: FontWeight.w600, color: c.primary)),
                 ]),
               ),
             ),
@@ -304,19 +304,19 @@ class _TourArtState extends State<TourArt> with SingleTickerProviderStateMixin {
           const LogoIcon(size: 44),
           const SizedBox(width: 12),
           Expanded(
-              child: Text(onMobile ? tr('Your blocks, in every app', 'A tiltásaid, minden appban') : tr('Your blocks, from this app', 'A tiltásaid, ebből az appból'),
+              child: Text(onMobile ? tr('Your blocks, in every app', 'Engellerin, her uygulamada') : tr('Your blocks, from this app', 'Engellerin, bu uygulamadan'),
                   style: body(15, weight: FontWeight.w600, color: c.onPrimaryContainer))),
         ]),
       ),
       const SizedBox(height: 16),
       if (onMobile) ...[
-        row(0, 'YouTube', tr('Covers matching videos', 'Eltakarja a videókat')),
-        row(1, 'TikTok', tr('Skips matching videos', 'Átugorja a videókat')),
-        row(2, 'Chrome', tr('Covers and blocks', 'Eltakar és tilt')),
+        row(0, 'YouTube', tr('Covers matching videos', 'Eşleşen videoları örter')),
+        row(1, 'TikTok', tr('Skips matching videos', 'Eşleşen videoları atlar')),
+        row(2, 'Chrome', tr('Covers and blocks', 'Örter ve engeller')),
       ] else ...[
-        row(0, 'Chrome', tr('Blurs and blocks', 'Elrejt és tilt')),
-        row(1, 'Edge', tr('Blurs and blocks', 'Elrejt és tilt')),
-        row(2, 'Firefox', tr('Blurs and blocks', 'Elrejt és tilt')),
+        row(0, 'Chrome', tr('Blurs and blocks', 'Bulanıklaştırır ve engeller')),
+        row(1, 'Edge', tr('Blurs and blocks', 'Bulanıklaştırır ve engeller')),
+        row(2, 'Firefox', tr('Blurs and blocks', 'Bulanıklaştırır ve engeller')),
       ],
     ]);
   }

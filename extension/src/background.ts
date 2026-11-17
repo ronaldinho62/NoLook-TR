@@ -229,7 +229,7 @@ chrome.runtime.onMessage.addListener((m: ToBackground, sender, reply) => {
           const lang = rules.settings?.lang ?? 'en';
           let b = d.blocks.find((x) => x.id === 'sites');
           if (!b) {
-            b = { id: 'sites', name: lang === 'hu' ? 'Tiltott oldalak' : 'Blocked sites', color: 'violet', iconText: null, iconName: 'block', on: true, keywords: [], spoilerWords: [], topicWords: [], sites: [] };
+            b = { id: 'sites', name: lang === 'tr' ? 'Engellenen siteler' : 'Blocked sites', color: 'violet', iconText: null, iconName: 'block', on: true, keywords: [], spoilerWords: [], topicWords: [], sites: [] };
             d.blocks.push(b);
           }
           b.on = true;

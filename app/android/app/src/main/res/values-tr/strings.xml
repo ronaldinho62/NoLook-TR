@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blocker_label">NoLook engelleyici</string>
+    <string name="blocker_summary">Engellenen uygulamaları kapatır, siteleri engeller ve spoilerleri gizler</string>
+    <string name="blocker_description">NoLook, engellediğin uygulamaları kapatmak, tarayıcında siteleri engellemek ve anahtar kelimelerinden bahseden gönderileri örtmek için ekrandakileri okur, ama hiçbir şey telefonundan dışarı çıkmaz.</string>
+</resources>

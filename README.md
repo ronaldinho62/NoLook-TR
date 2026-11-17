@@ -5,129 +5,132 @@
   </picture>
 </p>
 
-<p align="center">Hide spoilers and block sites and apps on your PC, phone and browser.<br><a href="https://nolook.itszedk.com">nolook.itszedk.com</a></p>
+<p align="center"><b>NoLook TR</b>: Bilgisayarında, telefonunda ve tarayıcında spoilerleri gizle, siteleri ve uygulamaları engelle.<br><a href="https://github.com/ronaldinho62/NoLook-TR/releases/latest">Son sürümü indir</a></p>
 
-![NoLook running on Windows](docs/images/home.png)
+> Bu depo, [ItsZedK/NoLook](https://github.com/ItsZedK/NoLook) projesinin **Türkçe çatalıdır (fork)**. Uygulama, tarayıcı eklentisi, Android engelleyicisi ve Windows kurulum sihirbazı Türkçeye çevrildi; GTA 6 spoiler listesine Türkçe kelimeler eklendi. Özgün proje GPLv3 lisanslıdır, bu çatal da öyledir.
 
-NoLook lets you make blocks of keywords, websites and apps. When a block is on, matching posts and videos are blurred or hidden, blocked websites are stopped from opening, and selected apps can be closed.
+![Windows'ta çalışan NoLook](docs/images/home.png)
 
-You can make different blocks for different things, set a schedule for each one, or add a lock that makes it harder to switch off.
+NoLook ile anahtar kelimelerden, sitelerden ve uygulamalardan oluşan **engeller** oluşturursun. Bir engel açıkken eşleşen gönderi ve videolar bulanıklaştırılır ya da gizlenir, engellenen siteler açılmaz, seçtiğin uygulamalar kapatılır.
 
-## Features
+Farklı şeyler için farklı engeller oluşturabilir, her birine ayrı zamanlama koyabilir ya da kapatmayı zorlaştıran bir kilit ekleyebilirsin.
 
-### Hide keywords and spoilers
+## Bu Türkçe sürümde neler farklı?
 
-NoLook checks posts, comments and videos for words you've added to a block. Matching content gets blurred or hidden, and you can click **Show** when you want to see it anyway.
+- **Tamamen Türkçe arayüz.** Uygulama, tarayıcı eklentisi, Android bildirimleri ve kurulum sihirbazı Türkçe. Sistem dilin İngilizce değilse uygulama Türkçe açılır; Ayarlar > Dil bölümünden İngilizceye geçebilirsin.
+- **Türkçe GTA 6 spoiler kelimeleri.** Hazır "GTA 6 spoilerleri" listesinde İngilizce kelimelerin yanında "final", "sonu", "öldü", "ihanet", "sızıntı", "hamile", "tutuklandı", "bitirdim" gibi 80'den fazla Türkçe spoiler kelimesi ve kalıbı var.
+- **Türkçe ekleri yakalayan kelimeler.** Bir kelimenin sonuna `*` koyarsan ekli halleri de yakalanır: `final*` yazınca "finali", "finalde", "finaline" de gizlenir. `*` olmadan yalnızca kelimenin kendisi eşleşir.
+- **Büyük/küçük İ-I düzeltmesi.** "İHANET", "ihanet" ile; "SIZINTI", "sızıntı" ile eşleşir.
+- **Güncellemeler bu depodan gelir.** Uygulama yeni sürümleri bu deponun [Releases](https://github.com/ronaldinho62/NoLook-TR/releases) sayfasından denetler.
+- **Eklenti mağazadan değil, klasörden kurulur.** Chrome Web Mağazası'ndaki NoLook eklentisi özgün (İngilizce) sürümdür ve Türkçe `*` kelimelerini tanımaz. Uygulama, Türkçe eklentiyi kendi klasöründen kurmanı adım adım anlatır.
 
-Each block has three kinds of words:
+## Özellikler
 
-- **Keywords** always count as a match.
-- **Spoiler words** only count when the post also mentions one of your keywords or a related topic.
-- **Topic words** provide context for spoiler words, but don't hide anything by themselves.
+### Anahtar kelimeleri ve spoilerleri gizle
 
-This means you can block words like "ending" or "leak" without having them show up everywhere.
+NoLook gönderileri, yorumları ve videoları bir engele eklediğin kelimeler için kontrol eder. Eşleşen içerik bulanıklaştırılır ya da gizlenir; yine de görmek istersen **Göster**'e tıklayabilirsin.
 
-![A post on X hidden by NoLook](docs/images/blur.png)
+Her engelde üç tür kelime vardır:
 
-### Block websites
+- **Anahtar kelimeler** her zaman eşleşme sayılır.
+- **Spoiler kelimeleri** yalnızca gönderi aynı zamanda bir anahtar kelimeden ya da ilgili bir konudan bahsediyorsa sayılır.
+- **Konu kelimeleri** spoiler kelimelerine bağlam sağlar, ama tek başlarına hiçbir şeyi gizlemez.
 
-Block an entire website or get more specific with individual sections. For example, you can block `reddit.com/r/GTA6` without blocking the rest of Reddit.
+Bu sayede "final" ya da "sızıntı" gibi kelimeleri, her yerde karşına çıkmadan engelleyebilirsin. Örneğin "öldü" kelimesi "Lucia girişte öldü" gönderisini gizler, ama GTA ile ilgisi olmayan bir haberi gizlemez.
 
-### Block apps
+![NoLook'un X'te gizlediği bir gönderi](docs/images/blur.png)
 
-NoLook can close selected apps on Windows and Android. On Android, it can also cover matching posts inside apps.
+### Siteleri engelle
 
-### Locks and schedules
+Bir sitenin tamamını ya da yalnızca belirli bölümlerini engelleyebilirsin. Örneğin Reddit'in geri kalanını engellemeden yalnızca `reddit.com/r/GTA6` adresini engelleyebilirsin.
 
-Each block has its own settings. You can leave it unlocked, keep it on until a certain date, or require a waiting period or a sentence before switching it off early.
+### Uygulamaları engelle
 
-You can also set schedules for specific days and hours, and choose whether to allow a limited number of emergency unlocks.
+NoLook, Windows ve Android'de seçtiğin uygulamaları kapatabilir. Android'de uygulamaların içindeki eşleşen gönderileri de örtebilir.
 
-![Creating a block in NoLook](docs/images/new-block.png)
+### Kilitler ve zamanlamalar
 
-### History and device sync
+Her engelin kendi ayarları vardır. Kilitsiz bırakabilir, belirli bir tarihe kadar açık tutabilir ya da erken kapatmak için bekleme süresi veya bir cümle yazma şartı koyabilirsin.
 
-NoLook keeps a history of what it has hidden, which websites or apps it has blocked, and when you've unlocked a block.
+Belirli gün ve saatler için zamanlama ayarlayabilir, sınırlı sayıda acil kilit açma hakkı tanıyıp tanımamayı seçebilirsin.
 
-You can pair devices using a QR code over the same Wi-Fi network to keep your blocks in sync. There's also an option to export and import blocks using a `.nolook` file.
+![NoLook'ta engel oluşturma](docs/images/new-block.png)
 
-### Presets
+### Geçmiş ve cihaz eşitleme
 
-Start with the included GTA 6 spoilers preset, or make your own block from scratch.
+NoLook neleri gizlediğini, hangi siteleri veya uygulamaları engellediğini ve bir engelin kilidini ne zaman açtığını kaydeder.
 
-NoLook is available in English and Hungarian.
+Engellerini eşit tutmak için cihazlarını aynı Wi-Fi ağında bir QR koduyla eşleştirebilirsin. Engelleri `.nolook` dosyası olarak dışa ve içe aktarmak da mümkün.
 
-## The browser extension
+### Hazır listeler
 
-The browser extension works on its own. You can create blocks, add keywords and websites, and manage everything from its popup without installing the NoLook app.
+Hazır "GTA 6 spoilerleri" listesiyle başlayabilir ya da kendi engelini sıfırdan oluşturabilirsin.
 
-When you install the app, the extension can use the blocks you've created there instead. This adds access to features like locks and schedules, and lets NoLook keep a history of what's been blocked.
+NoLook TR, Türkçe ve İngilizce kullanılabilir.
 
-The extension is built for Chrome, Edge and Firefox. Get it on the [Chrome Web Store](https://chromewebstore.google.com/detail/nolook/okjfipdooljmahifocdghkgbelmpnkik) for Chrome and Edge, the Firefox version is coming soon. The NoLook app also includes setup instructions for Brave, Opera, Opera GX and Vivaldi.
+## Tarayıcı eklentisi
 
-## Platforms
+Tarayıcı eklentisi tek başına da çalışır. NoLook uygulamasını kurmadan da açılır penceresinden engel oluşturabilir, anahtar kelime ve site ekleyebilir, her şeyi yönetebilirsin.
 
-| Platform | Features |
+Uygulamayı kurduğunda eklenti, uygulamada oluşturduğun engelleri kullanır. Böylece kilitler ve zamanlamalar gibi özelliklere erişirsin ve NoLook neyin engellendiğinin geçmişini tutabilir.
+
+Eklenti Chrome, Edge ve Firefox için hazırlandı; Brave, Opera, Opera GX ve Vivaldi için kurulum adımları da uygulamada var. Türkçe eklenti, uygulamanın kurulduğu klasördeki `extension` klasöründen yüklenir; uygulama içindeki **Ayarlar > Tarayıcı eklentileri** bölümü bunu adım adım gösterir.
+
+## Platformlar
+
+| Platform | Özellikler |
 |---|---|
-| Windows | Full app, app blocking and browser extension |
-| Android | App blocking, website blocking and content covers |
-| macOS | App and browser extension |
-| Linux | App and browser extension |
+| Windows | Tam uygulama, uygulama engelleme ve tarayıcı eklentisi |
+| Android | Uygulama engelleme, site engelleme ve içerik örtme |
+| macOS | Uygulama ve tarayıcı eklentisi |
+| Linux | Uygulama ve tarayıcı eklentisi |
 
-App blocking is currently only available on Windows and Android. The macOS and Linux builds are still awaiting testing on physical machines.
+Uygulama engelleme şu an yalnızca Windows ve Android'de var. Bu Türkçe çatalın hazır kurulum dosyası şimdilik yalnızca **Windows** için yayımlanıyor; diğer platformlar için aşağıdaki "Kaynaktan derleme" bölümüne bak.
 
-![NoLook on Android](docs/images/phone.png)
+![Android'de NoLook](docs/images/phone.png)
 
-### Android permissions
+### Android izinleri
 
-NoLook uses Android's Accessibility service to check browser addresses, detect blocked apps and cover matching content on screen. This is required for its blocking features to work.
+NoLook, tarayıcı adreslerini kontrol etmek, engellenen uygulamaları algılamak ve ekrandaki eşleşen içeriği örtmek için Android'in Erişilebilirlik hizmetini kullanır. Engelleme özelliklerinin çalışması için bu gereklidir.
 
-Android may also ask you to allow restricted settings when installing NoLook from an APK. If it does, open NoLook's App info, tap the three dots in the top right and choose **Allow restricted settings**.
+NoLook'u APK'dan kurarken Android kısıtlanmış ayarlara izin vermeni isteyebilir. İsterse NoLook'un Uygulama bilgisi sayfasını aç, sağ üstteki üç noktaya dokun ve **Kısıtlanmış ayarlara izin ver**'i seç.
 
-## Download
+## İndirme
 
-Get the latest version from [nolook.itszedk.com](https://nolook.itszedk.com) or [GitHub Releases](https://github.com/ItsZedK/NoLook/releases).
+Son sürümü [GitHub Releases](https://github.com/ronaldinho62/NoLook-TR/releases/latest) sayfasından indir.
 
-| Platform | Download |
+| Dosya | Açıklama |
 |---|---|
-| Windows | `NoLook-setup.exe` |
-| Android (alpha) | `NoLook-android.apk` |
-| macOS (beta) | `NoLook-macos.dmg` |
-| Linux (beta) | `NoLook-linux.AppImage` or `NoLook-linux.tar.gz` |
-| Chrome / Edge | [Chrome Web Store](https://chromewebstore.google.com/detail/nolook/okjfipdooljmahifocdghkgbelmpnkik) |
-| Firefox | Firefox Add-ons (coming soon) |
+| `NoLook-setup.exe` | Windows kurulum sihirbazı (önerilen) |
+| `NoLook-windows.zip` | Kurulumsuz Windows sürümü |
 
-The NoLook app includes instructions for installing and connecting the browser extension.
+**Windows:** Kurulum sihirbazını çalıştır. NoLook ilk kurulumda sana yol gösterir. Kurulum dosyası dijital olarak imzalı olmadığı için Windows SmartScreen "Windows bilgisayarınızı korudu" uyarısı gösterebilir; **Ek bilgi > Yine de çalıştır** ile devam edebilirsin.
 
-**A few platform notes:**
+Özgün NoLook ile bu Türkçe sürümü aynı bilgisayarda birlikte kurma. İkisi aynı ayar klasörünü ve aynı tarayıcı bağlantısını kullanır.
 
-- **Windows:** Run the installer. NoLook guides you through the initial setup.
-- **Android:** Install the APK and enable the Accessibility service during setup.
-- **macOS:** Open the DMG and move NoLook into Applications. The current build isn't signed with an Apple Developer ID, so macOS may show a security warning.
-- **Linux:** Make the AppImage executable before opening it. If it doesn't start, you may need FUSE 2. The `.tar.gz` package is another option.
+## Gizlilik
 
-## Privacy
+NoLook hesap gerektirmez ve engellerini saklamak için bir sunucu kullanmaz.
 
-NoLook doesn't require an account or use a server to store your blocks.
+Engellerin, ayarların ve geçmişin cihazında tutulur. Cihazları eşleştirdiğinde engeller doğrudan yerel Wi-Fi ağın üzerinden paylaşılır.
 
-Your blocks, settings and history are kept on your device. When you pair devices, they exchange blocks directly over your local Wi-Fi.
+Uygulama güncellemeler için GitHub'ı denetler. Gezinme etkinliğin ve engellenen içerik hiçbir sunucuya gönderilmez.
 
-The app checks GitHub for updates. Your browsing activity and blocked content aren't sent to a NoLook server.
+## Kaynaktan derleme
 
-## Building from source
+NoLook, uygulama ve ortak mantık için Flutter ve Dart, tarayıcı eklentisi için TypeScript kullanır.
 
-NoLook uses Flutter and Dart for its app and shared logic, and TypeScript for the browser extension.
-
-### Requirements
+### Gereksinimler
 
 - Flutter 3.47.9
-- Node.js 22 or newer
-- Android SDK and Java for Android builds
-- The platform-specific build tools required by Flutter
+- Node.js 22 veya daha yenisi
+- Android derlemeleri için Android SDK ve Java
+- Flutter'ın istediği platforma özel derleme araçları
+- Windows kurulum sihirbazı için Inno Setup 6
 
-### Builds
+### Derleme
 
-Build the browser extension:
+Tarayıcı eklentisini derle:
 
 ```bash
 cd extension
@@ -135,24 +138,24 @@ npm ci
 npm run build
 ```
 
-Release packaging scripts are in `tools/`, and the macOS and Linux build workflows are in `.github/workflows/`.
+Sürüm paketleme betikleri `tools/` klasöründe. `v` ile başlayan bir etiket (ör. `v0.1.1`) gönderildiğinde `.github/workflows/desktop.yml` Windows, macOS ve Linux derlemelerini yapar ve Windows dosyalarını otomatik olarak bir GitHub sürümüne ekler.
 
-### Project structure
+### Proje yapısı
 
-| Folder | Contents |
+| Klasör | İçerik |
 |---|---|
-| `app/` | Flutter application and Android blocker |
-| `core/` | Shared blocking rules, matching, locks, schedules and sync |
-| `extension/` | Chrome, Edge and Firefox browser extension |
-| `host/` | Native messaging helper connecting the app to the extension |
-| `tools/` | Build and release scripts |
+| `app/` | Flutter uygulaması ve Android engelleyicisi |
+| `core/` | Ortak engelleme kuralları, eşleştirme, kilitler, zamanlamalar ve eşitleme |
+| `extension/` | Chrome, Edge ve Firefox tarayıcı eklentisi |
+| `host/` | Uygulamayı eklentiye bağlayan yerel mesajlaşma yardımcısı |
+| `tools/` | Derleme ve sürüm betikleri |
 
-## License
+## Lisans
 
-NoLook is free and open source under the [GNU General Public License v3.0](LICENSE).
+NoLook, [GNU Genel Kamu Lisansı v3.0](LICENSE) altında özgür ve açık kaynaklıdır. Bu Türkçe çatal da aynı lisansla dağıtılır; özgün yazar [ItsZedK](https://github.com/ItsZedK)'dir.
 
-The Outfit and Syne fonts are licensed under the SIL Open Font License. Material Symbols icons are licensed under Apache License 2.0.
+Outfit ve Syne yazı tipleri SIL Open Font License, Material Symbols simgeleri Apache License 2.0 ile lisanslıdır.
 
-## Support
+## Destek
 
-Found a bug or have a suggestion? [Open an issue](https://github.com/ItsZedK/NoLook/issues).
+Bir hata mı buldun ya da önerin mi var? Bu Türkçe sürümle ilgili sorunlar için [buradan bir issue aç](https://github.com/ronaldinho62/NoLook-TR/issues).

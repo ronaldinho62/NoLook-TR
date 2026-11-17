@@ -90,12 +90,12 @@ class BlockCard extends StatelessWidget {
           ? [...b.sites, ...b.apps.map((a) => a.name)].join(', ')
           : Describe.contents(b),
       BlockCardStyle.list => off
-          ? (b.isPaused(now) ? tr('Unlocked early', 'Korábban feloldva') : tr('Off', 'Kikapcsolva'))
+          ? (b.isPaused(now) ? tr('Unlocked early', 'Erken açıldı') : tr('Off', 'Kapalı'))
           : !b.schedule.contains(now)
-              ? tr('Turns on at ${Describe.time(b.schedule.nextStart(now) ?? now)}', '${Describe.time(b.schedule.nextStart(now) ?? now)}-kor bekapcsol')
+              ? tr('Turns on at ${Describe.time(b.schedule.nextStart(now) ?? now)}', 'Saat ${Describe.at(b.schedule.nextStart(now) ?? now)} açılır')
               : !b.schedule.always
-                  ? tr('Running now', 'Most fut')
-                  : tr('$hidden hidden today', 'Ma $hidden elrejtve'),
+                  ? tr('Running now', 'Şu an çalışıyor')
+                  : tr('$hidden hidden today', 'Bugün $hidden gizlendi'),
     };
 
     return Opacity(
@@ -120,7 +120,7 @@ class BlockCard extends StatelessWidget {
               NlSwitch(
                 value: b.isOn(now),
                 locked: locked,
-                tooltip: locked ? tr('Locked, click to unlock early', 'Zárolva, kattints a korábbi feloldáshoz') : null,
+                tooltip: locked ? tr('Locked, click to unlock early', 'Kilitli, erken açmak için tıkla') : null,
                 onTap: preview ? null : () => tapSwitch(context, app, b),
               ),
             ]),
@@ -131,7 +131,7 @@ class BlockCard extends StatelessWidget {
               Row(crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic, children: [
                 Text('$hidden', style: display(30, color: fg)),
                 const SizedBox(width: 6),
-                Text(tr('hidden today', 'elrejtve ma'), style: body(14, color: fg)),
+                Text(tr('hidden today', 'bugün gizlendi'), style: body(14, color: fg)),
               ]),
             ] else
               _meta(context, fg),
@@ -180,20 +180,20 @@ class BlockCard extends StatelessWidget {
       if (items.length > shown)
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          child: Text(tr('+${items.length - shown} more', '+${items.length - shown} további'), style: body(14, color: fg.withValues(alpha: .7))),
+          child: Text(tr('+${items.length - shown} more', '+${items.length - shown} tane daha'), style: body(14, color: fg.withValues(alpha: .7))),
         ),
-      if (items.isEmpty) Text(tr('Nothing in it yet', 'Még üres'), style: body(14, color: fg.withValues(alpha: .7))),
+      if (items.isEmpty) Text(tr('Nothing in it yet', 'Henüz içinde bir şey yok'), style: body(14, color: fg.withValues(alpha: .7))),
     ]);
   }
 
   Widget _meta(BuildContext context, Color fg) {
     final b = block;
     final pills = <(IconData, String)>[
-      if (b.wordCount > 0) (Symbols.text_fields_rounded, tr('${b.wordCount} keyword${b.wordCount == 1 ? '' : 's'}', '${b.wordCount} kulcsszó')),
+      if (b.wordCount > 0) (Symbols.text_fields_rounded, tr('${b.wordCount} keyword${b.wordCount == 1 ? '' : 's'}', '${b.wordCount} anahtar kelime')),
       if (b.sites.length == 1) (Symbols.language_rounded, b.sites.single),
-      if (b.sites.length > 1) (Symbols.language_rounded, tr('${b.sites.length} sites', '${b.sites.length} oldal')),
+      if (b.sites.length > 1) (Symbols.language_rounded, tr('${b.sites.length} sites', '${b.sites.length} site')),
       if (b.apps.length == 1) (Symbols.apps_rounded, b.apps.single.name),
-      if (b.apps.length > 1) (Symbols.apps_rounded, tr('${b.apps.length} apps', '${b.apps.length} app')),
+      if (b.apps.length > 1) (Symbols.apps_rounded, tr('${b.apps.length} apps', '${b.apps.length} uygulama')),
       if (!b.schedule.always) (Symbols.schedule_rounded, b.schedule.describe()),
     ];
     final pillBg = b.color == BlockColor.grey ? context.nl.surfaceHigh : context.nl.wash;
@@ -208,7 +208,7 @@ class BlockCard extends StatelessWidget {
             Text(t, style: body(13, color: fg)),
           ]),
         ),
-      if (pills.isEmpty) Text(tr('Nothing in it yet', 'Még üres'), style: body(13, color: fg.withValues(alpha: .7))),
+      if (pills.isEmpty) Text(tr('Nothing in it yet', 'Henüz içinde bir şey yok'), style: body(13, color: fg.withValues(alpha: .7))),
     ]);
   }
 }

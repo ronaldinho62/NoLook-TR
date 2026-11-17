@@ -30,8 +30,8 @@ class _AppBlocked extends StatelessWidget {
     final now = app.now;
     final (bg, fg) = c.block(b.color);
     final lockLine = b.isLocked(now) && b.lock == LockKind.untilDate
-        ? tr('${b.name} is locked until ${Describe.day(b.lockedUntil!, now)}', '${b.name}: zárolva ${Describe.until(b.lockedUntil!, now)}')
-        : tr('${b.name} is on', '${b.name} be van kapcsolva');
+        ? tr('${b.name} is locked until ${Describe.day(b.lockedUntil!, now)}', '${b.name} engeli ${Describe.until(b.lockedUntil!, now)} kilitli')
+        : tr('${b.name} is on', '${b.name} engeli açık');
     final times = notice.timesToday;
     return Material(
       color: c.surface,
@@ -52,7 +52,7 @@ class _AppBlocked extends StatelessWidget {
                   child: BlockIcon(b, size: 56, color: fg),
                 ),
                 const SizedBox(height: 24),
-                Text(tr('${notice.appName} is blocked', '${notice.appName} letiltva'),
+                Text(tr('${notice.appName} is blocked', '${notice.appName} engellendi'),
                     textAlign: TextAlign.center, style: display(context.isPhone ? 30 : 38, color: c.onSurface, height: 1.1)),
                 const SizedBox(height: 14),
                 Row(mainAxisSize: MainAxisSize.min, children: [
@@ -63,14 +63,14 @@ class _AppBlocked extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                     notice.site
-                        ? (times <= 1 ? tr('NoLook sent your browser back', 'A NoLook visszaküldte a böngészőt') : tr("You've tried it $times times today", 'Ma már ${times}x próbáltad'))
-                        : (times <= 1 ? tr('NoLook closed it', 'A NoLook bezárta') : tr("You've opened it $times times today", 'Ma már ${times}x megnyitottad')),
+                        ? (times <= 1 ? tr('NoLook sent your browser back', 'NoLook tarayıcını geri gönderdi') : tr("You've tried it $times times today", 'Bugün $times kez denedin'))
+                        : (times <= 1 ? tr('NoLook closed it', 'NoLook onu kapattı') : tr("You've opened it $times times today", 'Bugün $times kez açtın')),
                     style: body(15, color: c.onSurfaceVariant)),
                 const SizedBox(height: 32),
                 Wrap(alignment: WrapAlignment.center, spacing: 8, runSpacing: 8, children: [
-                  Btn(tr('OK', 'Rendben'), big: true, onPressed: () => Navigator.pop(context)),
+                  Btn(tr('OK', 'Tamam'), big: true, onPressed: () => Navigator.pop(context)),
                   if (b.isLocked(now))
-                    Btn(tr('Unlock early', 'Feloldás korábban'), kind: BtnKind.text, big: true, onPressed: () {
+                    Btn(tr('Unlock early', 'Kilidi erken aç'), kind: BtnKind.text, big: true, onPressed: () {
                       final nav = Navigator.of(context);
                       nav.pop();
                       showUnlock(nav.context, app, b);

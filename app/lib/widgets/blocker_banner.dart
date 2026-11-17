@@ -35,13 +35,13 @@ class _BlockerBannerState extends State<BlockerBanner> {
         if (on != false) return const SizedBox.shrink();
         final c = context.nl;
         final phone = context.isPhone;
-        final button = Btn(tr('Turn on', 'Bekapcsolás'), onPressed: AndroidLink.openBlockerSettings);
+        final button = Btn(tr('Turn on', 'Aç'), onPressed: AndroidLink.openBlockerSettings);
         final text = Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(tr('The blocker is off', 'A tiltó ki van kapcsolva'), style: body(16, weight: FontWeight.w600, color: c.onPeachContainer)),
+          Text(tr('The blocker is off', 'Engelleyici kapalı'), style: body(16, weight: FontWeight.w600, color: c.onPeachContainer)),
           const SizedBox(height: 2),
           Text(
             tr("Nothing gets blocked or covered on this phone until it's on in Accessibility settings.",
-                'Ezen a telefonon semmi sincs tiltva vagy eltakarva, amíg be nem kapcsolod a Kisegítő lehetőségekben.'),
+                'Erişilebilirlik ayarlarından açılana kadar bu telefonda hiçbir şey engellenmez veya örtülmez.'),
             style: body(14, color: c.onPeachContainer),
           ),
         ]);

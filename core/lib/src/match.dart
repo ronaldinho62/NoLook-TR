@@ -61,7 +61,9 @@ class SiteRule {
 
 /// keyword matching.
 ///
-/// case insensitive, word start, plural/possessive ok. spaces also match - _ or nothing
+/// case insensitive, word start, plural/possessive ok. spaces also match - _ or nothing.
+/// Türkçe: "final*" gibi sonu * ile biten kelime ekli halleri de yakalar (finali, finalde),
+/// büyük/küçük İ-i ve I-ı birbirini tutar.
 class KeywordMatcher {
   KeywordMatcher(Iterable<String> keywords)
       : _entries = [
@@ -75,11 +77,17 @@ class KeywordMatcher {
 
   /// keep it js compatible
   static String patternFor(String keyword) {
-    final parts = keyword.trim().replaceAll('’', "'").split(RegExp(r'[\s\-_]+')).where((p) => p.isNotEmpty).map((p) {
-      return RegExp.escape(p).replaceAll("'", "['’]");
+    var k = keyword.trim().replaceAll('’', "'");
+    final bare = k.replaceFirst(RegExp(r'\*+$'), '');
+    final stem = bare != k && bare.trim().isNotEmpty;
+    if (stem) k = bare;
+    final parts = k.split(RegExp(r'[\s\-_]+')).where((p) => p.isNotEmpty).map((p) {
+      return RegExp.escape(p).replaceAllMapped(RegExp('[iIıİ]'), (m) => _dotted[m[0]]!).replaceAll("'", "['’]");
     });
-    return r'(?<![\p{L}\p{N}])' + parts.join(r'[\s\-_.]*') + r"(?:['’]s|s|es)?(?![\p{L}\p{N}])";
+    return r'(?<![\p{L}\p{N}])' + parts.join(r'[\s\-_.]*') + (stem ? '' : r"(?:['’]s|s|es)?(?![\p{L}\p{N}])");
   }
+
+  static const _dotted = {'i': '[iİ]', 'I': '[Iı]', 'ı': '[ıI]', 'İ': '[İi]'};
 
   List<String> find(String text) => [
         for (final (k, re) in _entries)

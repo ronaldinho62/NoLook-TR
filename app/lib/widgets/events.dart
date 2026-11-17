@@ -18,29 +18,29 @@ String eventTitle(HistoryEvent e) {
   final covered = e.where == 'this phone';
   return switch (e.kind) {
     EventKind.blurred when covered => n == 1
-        ? tr('Covered a post on ${e.target}', 'Eltakart poszt: ${e.target}')
-        : tr('Covered $n posts on ${e.target}', '$n eltakart poszt: ${e.target}'),
+        ? tr('Covered a post on ${e.target}', '${e.target} üzerinde bir gönderi örtüldü')
+        : tr('Covered $n posts on ${e.target}', '${e.target} üzerinde $n gönderi örtüldü'),
     EventKind.blurred when e.target.contains('youtube') =>
-      n == 1 ? tr('Blurred a YouTube video', 'Elrejtett YouTube-videó') : tr('Blurred $n YouTube videos', '$n elrejtett YouTube-videó'),
+      n == 1 ? tr('Blurred a YouTube video', 'Bir YouTube videosu bulanıklaştırıldı') : tr('Blurred $n YouTube videos', '$n YouTube videosu bulanıklaştırıldı'),
     EventKind.blurred => n == 1
-        ? tr('Blurred a post on ${e.target}', 'Elrejtett poszt: ${e.target}')
-        : tr('Blurred $n posts on ${e.target}', '$n elrejtett poszt: ${e.target}'),
-    EventKind.blocked => tr('Blocked ${e.target}', 'Letiltva: ${e.target}'),
+        ? tr('Blurred a post on ${e.target}', '${e.target} üzerinde bir gönderi bulanıklaştırıldı')
+        : tr('Blurred $n posts on ${e.target}', '${e.target} üzerinde $n gönderi bulanıklaştırıldı'),
+    EventKind.blocked => tr('Blocked ${e.target}', '${e.target} engellendi'),
     EventKind.closedApp => elsewhere
-        ? tr('Closed ${e.target} on ${e.where}', 'Bezárva: ${e.target} (${e.where})')
-        : tr('Closed ${e.target}', 'Bezárva: ${e.target}'),
-    EventKind.unlocked => tr('Unlocked ${e.blockName} early', '${e.blockName} korábban feloldva'),
-    EventKind.emergency => tr('Emergency unlock for ${e.blockName}', 'Vészfeloldás: ${e.blockName}'),
+        ? tr('Closed ${e.target} on ${e.where}', '${e.target} kapatıldı (${e.where})')
+        : tr('Closed ${e.target}', '${e.target} kapatıldı'),
+    EventKind.unlocked => tr('Unlocked ${e.blockName} early', '${e.blockName} engelinin kilidi erken açıldı'),
+    EventKind.emergency => tr('Emergency unlock for ${e.blockName}', '${e.blockName} için acil kilit açma'),
   };
 }
 
-String _quoted(List<String> m) => m.map((k) => isHu ? '„$k”' : '"$k"').join(', ');
+String _quoted(List<String> m) => m.map((k) => '"$k"').join(', ');
 
 /// event subtitle
 String eventSubtitle(HistoryEvent e, {required bool sayKeyword, bool withBlock = true, bool withWhere = false}) {
   final parts = <String>[
     if (withBlock && e.blockName.isNotEmpty && !e.isUnlock) e.blockName,
-    if (e.matched.isNotEmpty && sayKeyword) tr('matched ${_quoted(e.matched)}', 'találat: ${_quoted(e.matched)}'),
+    if (e.matched.isNotEmpty && sayKeyword) tr('matched ${_quoted(e.matched)}', 'eşleşen: ${_quoted(e.matched)}'),
     if (e.isUnlock && e.note.isNotEmpty) e.note,
     if (withWhere && e.where.isNotEmpty && !e.isUnlock) where(e.where),
   ];
@@ -49,24 +49,24 @@ String eventSubtitle(HistoryEvent e, {required bool sayKeyword, bool withBlock =
 }
 
 String where(String w) {
-  if (!isHu) return const {'Chrome', 'Edge', 'Firefox'}.contains(w) ? 'in $w' : 'on $w';
+  if (!isTr) return const {'Chrome', 'Edge', 'Firefox'}.contains(w) ? 'in $w' : 'on $w';
   return switch (w) {
-    'this PC' => 'ezen a gépen',
-    'this phone' => 'ezen a telefonon',
-    'Chrome' => 'Chrome-ban',
-    'Edge' => 'Edge-ben',
-    'Firefox' => 'Firefoxban',
-    _ => '$w eszközön',
+    'this PC' => 'bu bilgisayarda',
+    'this phone' => 'bu telefonda',
+    'Chrome' => "Chrome'da",
+    'Edge' => "Edge'de",
+    'Firefox' => "Firefox'ta",
+    _ => '$w cihazında',
   };
 }
 
 /// short age string
 String ago(DateTime t, DateTime now) {
   final d = now.difference(t);
-  if (d.inMinutes < 1) return tr('now', 'most');
-  if (d.inMinutes < 60) return tr('${d.inMinutes} min', '${d.inMinutes} perce');
-  if (d.inHours < 24) return tr('${d.inHours} h', '${d.inHours} órája');
-  return tr('${d.inDays} d', '${d.inDays} napja');
+  if (d.inMinutes < 1) return tr('now', 'şimdi');
+  if (d.inMinutes < 60) return tr('${d.inMinutes} min', '${d.inMinutes} dk');
+  if (d.inHours < 24) return tr('${d.inHours} h', '${d.inHours} sa');
+  return tr('${d.inDays} d', '${d.inDays} gün');
 }
 
 class EventRow extends StatelessWidget {

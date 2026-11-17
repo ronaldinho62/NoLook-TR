@@ -53,9 +53,9 @@ class _KeywordEditorState extends State<KeywordEditor> {
     final shown = _all ? list : list.take(widget.limit).toList();
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       NlField(
-        label: widget.label ?? tr('Add a keyword', 'Kulcsszó hozzáadása'),
+        label: widget.label ?? tr('Add a keyword', 'Anahtar kelime ekle'),
         icon: Symbols.add_rounded,
-        hint: widget.hint ?? tr('e.g. trailer', 'pl. trailer'),
+        hint: widget.hint ?? tr('e.g. trailer', 'ör. fragman'),
         controller: _ctl,
         onSubmitted: _add,
         fill: widget.fill,
@@ -64,7 +64,7 @@ class _KeywordEditorState extends State<KeywordEditor> {
       Wrap(spacing: 8, runSpacing: 8, children: [
         for (final k in shown) ItemChip(k, onRemove: widget.canRemove ? () => widget.onChanged([...list]..remove(k)) : null),
         if (list.length > widget.limit)
-          NlChip(_all ? tr('Show fewer', 'Kevesebb') : tr('Show all ${list.length}', 'Mind a ${list.length}'),
+          NlChip(_all ? tr('Show fewer', 'Daha az göster') : tr('Show all ${list.length}', '${list.length} tanesinin tümünü göster'),
               onTap: () => setState(() => _all = !_all)),
       ]),
     ]);
@@ -95,7 +95,7 @@ class _WordsEditorState extends State<WordsEditor> {
     final b = widget.block;
     final contextCount = b.spoilerWords.length + b.topicWords.length;
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      if (widget.headings) SubHead(Symbols.text_fields_rounded, tr('Keywords', 'Kulcsszavak'), b.keywords.length),
+      if (widget.headings) SubHead(Symbols.text_fields_rounded, tr('Keywords', 'Anahtar kelimeler'), b.keywords.length),
       KeywordEditor(
         keywords: b.keywords,
         canRemove: widget.canRemove,
@@ -119,13 +119,13 @@ class _WordsEditorState extends State<WordsEditor> {
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(
                       contextCount == 0
-                          ? tr('Words that need context', 'Szavak, amikhez kell a téma')
-                          : tr('Words that need context, $contextCount', 'Szavak, amikhez kell a téma: $contextCount'),
+                          ? tr('Words that need context', 'Bağlam gerektiren kelimeler')
+                          : tr('Words that need context, $contextCount', 'Bağlam gerektiren kelimeler, $contextCount'),
                       style: body(15, weight: FontWeight.w500, color: c.onSurface),
                     ),
                     Text(
                       tr('Like "ending", only hidden when the post is about your topic',
-                          'Mint az „ending”, csak akkor rejtve, ha a poszt a témádról szól'),
+                          '"final*" gibi, yalnızca gönderi konunla ilgiliyse gizlenir. Sondaki * ekli halleri de yakalar'),
                       style: body(13, color: c.onSurfaceVariant),
                     ),
                   ]),
@@ -149,25 +149,25 @@ class _WordsEditorState extends State<WordsEditor> {
                     child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                       Text(
                         tr('A spoiler word only hides a post that also has a topic word or a keyword, so "dies" is hidden in "Lucia dies in the prologue" but not in other posts.',
-                            'A spoilerszó csak akkor rejt el egy posztot, ha témaszó vagy kulcsszó is van benne, így a „dies” el lesz rejtve a „Lucia dies in the prologue” posztban, máshol nem.'),
+                            'Spoiler kelimesi bir gönderiyi yalnızca içinde bir konu kelimesi veya anahtar kelime de varsa gizler; yani "ölüyor", "Lucia girişte ölüyor" gönderisinde gizlenir ama başka gönderilerde gizlenmez.'),
                         style: body(13, color: c.onSurfaceVariant, height: 1.4),
                       ),
-                      SubHead(Symbols.warning_rounded, tr('Spoiler words', 'Spoilerszavak'), b.spoilerWords.length),
+                      SubHead(Symbols.warning_rounded, tr('Spoiler words', 'Spoiler kelimeleri'), b.spoilerWords.length),
                       KeywordEditor(
                         keywords: b.spoilerWords,
                         canRemove: widget.canRemove,
                         fill: c.surfaceHigh,
-                        label: tr('Add a spoiler word', 'Spoilerszó hozzáadása'),
-                        hint: tr('e.g. ending', 'pl. ending'),
+                        label: tr('Add a spoiler word', 'Spoiler kelimesi ekle'),
+                        hint: tr('e.g. ending', 'ör. final*'),
                         onChanged: (s) => widget.onChanged(b.keywords, s, b.topicWords),
                       ),
-                      SubHead(Symbols.tag_rounded, tr('Topic words', 'Témaszavak'), b.topicWords.length),
+                      SubHead(Symbols.tag_rounded, tr('Topic words', 'Konu kelimeleri'), b.topicWords.length),
                       KeywordEditor(
                         keywords: b.topicWords,
                         canRemove: widget.canRemove,
                         fill: c.surfaceHigh,
-                        label: tr('Add a topic word', 'Témaszó hozzáadása'),
-                        hint: tr('e.g. GTA', 'pl. GTA'),
+                        label: tr('Add a topic word', 'Konu kelimesi ekle'),
+                        hint: tr('e.g. GTA', 'ör. GTA'),
                         onChanged: (t) => widget.onChanged(b.keywords, b.spoilerWords, t),
                       ),
                     ]),
@@ -236,7 +236,7 @@ class _SiteEditorState extends State<SiteEditor> {
       final s = SiteRule.normalize(part);
       if (s == null) {
         setState(() => _error = tr("\"$part\" doesn't look like a site. Try something like reddit.com or reddit.com/r/GTA6.",
-            '„$part” nem tűnik oldalnak. Próbáld így: reddit.com vagy reddit.com/r/GTA6.'));
+            '"$part" bir siteye benzemiyor. reddit.com veya reddit.com/r/GTA6 gibi bir şey dene.'));
         return;
       }
       if (have.add(s.toLowerCase())) added.add(s);
@@ -253,12 +253,12 @@ class _SiteEditorState extends State<SiteEditor> {
     final list = widget.sites;
     final shown = _all ? list : list.take(limit).toList();
     void remove(String s) => widget.onChanged([...list]..remove(s));
-    final more = _all ? tr('Show fewer', 'Kevesebb') : tr('Show all ${list.length}', 'Mind a ${list.length}');
+    final more = _all ? tr('Show fewer', 'Daha az göster') : tr('Show all ${list.length}', '${list.length} tanesinin tümünü göster');
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       NlField(
-        label: tr('Add a site', 'Oldal hozzáadása'),
+        label: tr('Add a site', 'Site ekle'),
         icon: Symbols.add_rounded,
-        hint: widget.hint ?? tr('e.g. gtaforums.com', 'pl. gtaforums.com'),
+        hint: widget.hint ?? tr('e.g. gtaforums.com', 'ör. gtaforums.com'),
         controller: _ctl,
         onSubmitted: _add,
         fill: widget.fill,
@@ -285,10 +285,10 @@ class _SiteEditorState extends State<SiteEditor> {
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(s, style: body(15, color: c.onSurface)),
                   if (s.contains('/') && !s.contains('?'))
-                    Text(tr('and everything under it', 'és minden alatta'), style: body(13, color: c.onSurfaceVariant)),
+                    Text(tr('and everything under it', 've altındaki her şey'), style: body(13, color: c.onSurfaceVariant)),
                 ]),
               ),
-              if (widget.canRemove) IconBtn(Symbols.close_rounded, tooltip: tr('Remove', 'Eltávolítás'), onPressed: () => remove(s)),
+              if (widget.canRemove) IconBtn(Symbols.close_rounded, tooltip: tr('Remove', 'Kaldır'), onPressed: () => remove(s)),
             ]),
           )
       else

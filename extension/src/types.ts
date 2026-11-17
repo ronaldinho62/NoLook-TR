@@ -28,9 +28,9 @@ export interface Rules {
     blurStrength: 'light' | 'strong';
     twoClickReveal: boolean;
     sayKeyword: boolean;
-    lang?: 'en' | 'hu';
-    /** 'system' | 'en' | 'hu' */
-    language?: 'system' | 'en' | 'hu';
+    lang?: 'en' | 'tr';
+    /** 'system' | 'en' | 'tr' */
+    language?: 'system' | 'en' | 'tr';
   };
   blocks: RuleBlock[];
 }
