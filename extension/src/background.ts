@@ -251,6 +251,16 @@ chrome.runtime.onMessage.addListener((m: ToBackground, sender, reply) => {
         post({ type: 'setting', key: m.key, value: m.value });
       }
       break;
+    case 'exception':
+      if (mode === 'local') {
+        void changeLocal((d) => {
+          const list = (d.settings.exceptions ?? []).filter((e) => e.toLowerCase() !== m.site.toLowerCase());
+          d.settings.exceptions = m.remove ? list : [...list, m.site];
+        });
+      } else {
+        post({ type: 'exception', site: m.site, remove: m.remove === true });
+      }
+      break;
     case 'tabInfo':
       reply({ counts: tabCounts.get(m.tabId) ?? {} });
       return true;

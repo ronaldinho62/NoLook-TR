@@ -332,6 +332,15 @@ class NoLook extends ChangeNotifier {
         case 'newBlock':
           showWindow?.call();
           newBlockRequest.value = c['site'] as String? ?? '';
+        case 'exception':
+          // eklentiden: kanal/profil istisnası ekle ya da kaldır. alan adının tamamı kabul edilmez
+          final site = SiteRule.normalize(c['site'] as String? ?? '');
+          if (site != null && site.contains('/')) {
+            final list = state.settings.exceptions;
+            list.removeWhere((e) => e.toLowerCase() == site.toLowerCase());
+            if (c['remove'] != true) list.add(site);
+            save();
+          }
       }
     }
     return changed;

@@ -318,6 +318,10 @@ function renderSettings(saved: Saved) {
       <div class="set"><div class="lbl">${esc(t.revealWith)}</div>${seg('twoClickReveal', [[false, t.oneClick], [true, t.twoClicks]], value('twoClickReveal', false))}</div>
       <div class="set row"><div><div class="lbl">${esc(t.sayKeyword)}</div><div class="sub">${esc(t.sayKeywordSub)}</div></div>
         <button class="switch" role="switch" id="say" aria-checked="${value('sayKeyword', true)}"><span class="th"></span></button></div>
+      <div class="set"><div class="lbl">${esc(t.exceptions)}</div><div class="sub">${esc(t.exceptionsSub)}</div>
+        ${(s?.exceptions ?? []).map((e) => `<div class="exc"><span>${esc(e)}</span><button class="icon-btn exc-rm" data-site="${esc(e)}" title="${esc(t.remove)}">${icon('close', 18)}</button></div>`).join('')}
+        <button class="btn outlined has-ic" id="exc-add">${icon('add', 18)}${esc(t.addException)}</button>
+        <div class="exc-msg" id="exc-msg"></div></div>
     </div>` : `<div class="note">${esc(t.settingsNeedApp)}</div>`}
     <div class="pfoot"><button class="btn outlined has-ic" id="more">${icon(local ? 'download' : 'open_in_new', 18)}${esc(local ? t.getApp : t.moreSettings)}</button></div>`);
 
@@ -335,6 +339,25 @@ function renderSettings(saved: Saved) {
     ),
   );
   document.getElementById('say')?.addEventListener('click', () => change('sayKeyword', !value('sayKeyword', true)));
+  app.querySelectorAll<HTMLElement>('.exc-rm').forEach((b) =>
+    b.addEventListener('click', () => void send({ type: 'exception', site: b.dataset.site!, remove: true })),
+  );
+  document.getElementById('exc-add')?.addEventListener('click', async () => {
+    const msg = document.getElementById('exc-msg')!;
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    let site: string | null = null;
+    try {
+      if (tab?.id !== undefined) site = ((await chrome.tabs.sendMessage(tab.id, { type: 'exceptionCandidate' })) as { site: string | null } | undefined)?.site ?? null;
+    } catch {
+      // içerik betiği yok (yeni sekme, chrome:// sayfası)
+    }
+    if (!site) {
+      msg.textContent = t.noException;
+      return;
+    }
+    await send({ type: 'exception', site });
+    msg.textContent = t.exceptionAdded(site);
+  });
   document.getElementById('back')!.addEventListener('click', () => {
     view = 'main';
     void render();

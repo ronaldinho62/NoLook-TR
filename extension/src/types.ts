@@ -31,6 +31,8 @@ export interface Rules {
     lang?: 'en' | 'tr';
     /** 'system' | 'en' | 'tr' */
     language?: 'system' | 'en' | 'tr';
+    /** istisnalar: bu kanal/profil adreslerinin içerikleri gizlenmez */
+    exceptions?: string[];
   };
   blocks: RuleBlock[];
 }
@@ -57,7 +59,11 @@ export type ToBackground =
   | { type: 'newBlock'; site: string }
   | { type: 'open'; tab?: 'settings' }
   | { type: 'setting'; key: SettingKey; value: string | boolean }
-  | { type: 'tabInfo'; tabId: number };
+  | { type: 'tabInfo'; tabId: number }
+  | { type: 'exception'; site: string; remove?: boolean };
+
+/** popup -> content script: bu sayfanın kanal/profil adresi (istisna önerisi), yoksa null */
+export type ToContent = { type: 'exceptionCandidate' };
 
 export interface TabInfo {
   counts: Record<string, number>;

@@ -154,6 +154,7 @@ class BrowserRules {
           'sayKeyword': state.settings.sayKeyword,
           'lang': currentLang.name,
           'language': state.settings.language.name,
+          'exceptions': state.settings.exceptions,
         },
         'blocks': [
           for (final b in state.blocks)

@@ -12,11 +12,12 @@ import '../platform/updates.dart';
 import '../shell.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
+import '../widgets/lists.dart' show SiteEditor;
 import 'devices.dart';
 import 'extension_setup.dart';
 import 'unlock.dart' show showNlDialog;
 
-const appVersion = '0.1.1';
+const appVersion = '0.1.2';
 const repoUrl = 'https://github.com/ronaldinho62/NoLook-TR';
 
 class SettingsPage extends StatelessWidget {
@@ -98,6 +99,26 @@ class SettingsPage extends StatelessWidget {
               if (onAndroid && s.notifyWaitOver) AndroidLink.askNotifications(force: true);
             })),
       ]),
+      _Group(tr('Exceptions', 'İstisnalar'), [
+        Padding(
+          padding: const EdgeInsets.only(top: 4, bottom: 12),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            Text(
+                tr("Posts and videos from these channels and profiles are never hidden in your browser, for example your own YouTube channel or X account.",
+                    'Bu kanal ve profillerin gönderi ve videoları tarayıcında hiç gizlenmez; örneğin kendi YouTube kanalın veya X hesabın. Kendi kanal sayfanda da hiçbir şey gizlenmez.'),
+                style: body(14, color: context.nl.onSurfaceVariant)),
+            const SizedBox(height: 12),
+            SiteEditor(
+              sites: s.exceptions,
+              rows: true,
+              requirePath: true,
+              label: tr('Add a channel or profile', 'Kanal veya profil ekle'),
+              hint: tr('e.g. youtube.com/@yourchannel or x.com/you', 'ör. youtube.com/@kanalin veya x.com/hesabin'),
+              onChanged: (v) => set(() => s.exceptions = v),
+            ),
+          ]),
+        ),
+      ]),
       if (onWindows)
         _Group(tr('On this PC', 'Bu bilgisayarda'), [
           _Opt(Symbols.power_settings_new_rounded, tr('Start with Windows', 'Windows ile başlat'),
@@ -106,9 +127,20 @@ class SettingsPage extends StatelessWidget {
                 value: s.startWithSystem,
                 onTap: () {
                   set(() => s.startWithSystem = !s.startWithSystem);
-                  setStartWithWindows(s.startWithSystem);
+                  setStartWithWindows(s.startWithSystem, hidden: s.startHidden);
                 },
               )),
+          if (s.startWithSystem)
+            _Opt(Symbols.minimize_rounded, tr('Start in the tray', 'Sistem tepsisinde başlat'),
+                sub: tr("When Windows starts, NoLook runs in the tray without opening its window",
+                    'Windows açılınca pencere gösterilmez, NoLook sistem tepsisinde çalışır'),
+                control: NlSwitch(
+                  value: s.startHidden,
+                  onTap: () {
+                    set(() => s.startHidden = !s.startHidden);
+                    setStartWithWindows(true, hidden: s.startHidden);
+                  },
+                )),
           _Opt(Symbols.shield_rounded, tr('Stop NoLook being closed', 'NoLook\'un kapatılmasını engelle'),
               sub: tr('While any block is locked', 'Herhangi bir engel kilitliyken'),
               control: NlSwitch(

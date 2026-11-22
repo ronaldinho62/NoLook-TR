@@ -1,9 +1,9 @@
 // finds matches and blurs the containing post
 // DOM api not html strings, for Trusted Types sites (youtube)
 import { hiddenIcon } from './icons.gen';
-import { BlockMatcher } from './match';
+import { BlockMatcher, SiteRule, normalizeSite } from './match';
 import { stringsFor, type Strings } from './strings';
-import type { RuleBlock, Rules, Saved } from './types';
+import type { RuleBlock, Rules, Saved, ToContent } from './types';
 
 interface Active {
   block: RuleBlock;
@@ -84,6 +84,84 @@ function tiktokOnScreen(): HTMLElement | null {
   return null;
 }
 
+// İstisnalar: listedeki kanal/profillerin içerikleri gizlenmez (ör. youtube.com/@kanal, x.com/hesap)
+
+const isX = /(^|\.)(x|twitter)\.com$/.test(location.hostname);
+let exceptions: SiteRule[] = [];
+
+function excepted(url: string | null | undefined): boolean {
+  return !!url && exceptions.some((e) => e.matches(url));
+}
+
+/** youtube izleme sayfasında videonun sahibi olan kanalın linki */
+function ownerLink(): HTMLAnchorElement | null {
+  return document.querySelector<HTMLAnchorElement>('ytd-watch-metadata #owner a[href], ytd-video-owner-renderer a[href]');
+}
+
+/** sayfanın kendisi istisna mı: kendi kanal sayfan. X'te profil sayfasında başkalarının retweetleri de olduğu için gönderi gönderi bakılır */
+let exceptedFor = '';
+let exceptedPage = false;
+function pageExcepted(): boolean {
+  if (!exceptions.length || isX) return false;
+  if (exceptedFor !== location.href) {
+    exceptedFor = location.href;
+    exceptedPage = excepted(location.href);
+  }
+  return exceptedPage;
+}
+
+/** gönderinin/videonun yazarı istisna listesinde mi */
+function containerExcepted(c: Element): boolean {
+  if (!exceptions.length) return false;
+  // izleme sayfası: oynatıcı ve video bilgisi, videonun sahibine göre
+  if (isYouTube && location.pathname === '/watch' && (c === playerBox() || c.closest('ytd-watch-metadata') || c.querySelector('ytd-watch-metadata'))) {
+    return excepted(ownerLink()?.href);
+  }
+  // X: yalnızca gönderinin yazarı (bahsedilen ya da alıntılanan hesaplar değil)
+  if (isX) {
+    const author = c.querySelector('[data-testid="User-Name"]');
+    if (author) return [...author.querySelectorAll<HTMLAnchorElement>('a[href]')].some((a) => excepted(a.href));
+  }
+  return [...c.querySelectorAll<HTMLAnchorElement>('a[href]')].some((a) => excepted(a.href));
+}
+
+/** iki parçalı profil yolları: youtube.com/channel/UC.., reddit.com/r/x, reddit.com/user/x */
+const TWO_PART = new Set(['channel', 'c', 'user', 'u', 'r']);
+/** profil olmayan sayfalar */
+const NOT_PROFILE = new Set(['watch', 'results', 'feed', 'shorts', 'playlist', 'home', 'explore', 'search', 'notifications', 'messages', 'i', 'settings', 'hashtag', 'compose', 'gaming', 'premium']);
+
+function profileOf(url: string): string | null {
+  try {
+    const u = new URL(url);
+    const parts = u.pathname.split('/').filter(Boolean);
+    const first = parts[0];
+    if (!first || NOT_PROFILE.has(first.toLowerCase())) return null;
+    const path = TWO_PART.has(first.toLowerCase()) ? (parts[1] ? `${first}/${parts[1]}` : null) : first;
+    return path ? normalizeSite(`${u.host}/${path}`) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** bu sayfadaki kanal/profil, popup'taki "Bu kanalı istisna yap" için */
+function exceptionCandidate(): string | null {
+  if (isYouTube && location.pathname === '/watch') {
+    const owner = ownerLink();
+    return owner ? profileOf(owner.href) : null;
+  }
+  if (isYouTube && location.pathname.startsWith('/shorts')) {
+    const owner = document.querySelector<HTMLAnchorElement>('ytd-reel-video-renderer[is-active] a[href^="/@"], ytd-reel-video-renderer a[href^="/@"]');
+    return owner ? profileOf(owner.href) : null;
+  }
+  return profileOf(location.href);
+}
+
+chrome.runtime.onMessage.addListener((m: ToContent, _sender, reply) => {
+  if (m?.type !== 'exceptionCandidate' || window.top !== window) return false;
+  reply({ site: exceptionCandidate() });
+  return false;
+});
+
 function load(rules: Rules | undefined) {
   settings = rules?.settings ?? settings;
   t = stringsFor(rules);
@@ -91,6 +169,8 @@ function load(rules: Rules | undefined) {
     .filter((b) => b.active)
     .map((block) => ({ block, matcher: new BlockMatcher(block) }))
     .filter((a) => !a.matcher.isEmpty);
+  exceptedFor = '';
+  exceptions = (settings.exceptions ?? []).map((e) => SiteRule.parse(e)).filter((e): e is SiteRule => !!e && e.path !== '');
   document.documentElement.style.setProperty('--nl-blur', settings.blurStrength === 'light' ? '7px' : '14px');
 }
 
@@ -115,8 +195,9 @@ function checkPiece(text: string, at: Element) {
     else if (a.matcher.spoilers.any(text)) maybe.push(a);
   }
   if (!strong.length && !maybe.length) return;
+  if (pageExcepted()) return;
   const c = containerFor(at);
-  if (!c) return;
+  if (!c || containerExcepted(c)) return;
   let hits = strong;
   if (maybe.length) {
     const post = postText(c);
@@ -519,6 +600,18 @@ function flush() {
   const nodes = pending;
   pending = [];
   for (const n of nodes) if (n.isConnected) scan(n);
+  releaseOwnVideo();
+}
+
+/** izleme sayfası: videonun sahibi sonradan yüklenir, kendi videonsa erken örtüleni geri aç */
+function releaseOwnVideo() {
+  if (!exceptions.length || !isYouTube || location.pathname !== '/watch' || !excepted(ownerLink()?.href)) return;
+  for (const e of [playerBox(), document.querySelector<HTMLElement>('ytd-watch-metadata')]) {
+    if (e?.hasAttribute('data-nl-hidden')) {
+      playerKeepPaused = false;
+      reveal(e);
+    }
+  }
 }
 
 /**

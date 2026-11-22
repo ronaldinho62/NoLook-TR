@@ -203,7 +203,17 @@ class SubHead extends StatelessWidget {
 
 /// site input, normalised on add
 class SiteEditor extends StatefulWidget {
-  const SiteEditor({super.key, required this.sites, required this.onChanged, this.canRemove = true, this.rows = false, this.fill, this.hint});
+  const SiteEditor({
+    super.key,
+    required this.sites,
+    required this.onChanged,
+    this.canRemove = true,
+    this.rows = false,
+    this.fill,
+    this.hint,
+    this.label,
+    this.requirePath = false,
+  });
 
   final List<String> sites;
   final ValueChanged<List<String>> onChanged;
@@ -213,6 +223,10 @@ class SiteEditor extends StatefulWidget {
   final bool rows;
   final Color? fill;
   final String? hint;
+  final String? label;
+
+  /// istisnalar: alan adının tamamı değil, bir kanal/profil yolu gerekir (ör. x.com/hesap)
+  final bool requirePath;
 
   @override
   State<SiteEditor> createState() => _SiteEditorState();
@@ -239,6 +253,11 @@ class _SiteEditorState extends State<SiteEditor> {
             '"$part" bir siteye benzemiyor. reddit.com veya reddit.com/r/GTA6 gibi bir şey dene.'));
         return;
       }
+      if (widget.requirePath && !s.contains('/')) {
+        setState(() => _error = tr('"$part" is a whole site. Add a channel or profile address instead, like youtube.com/@yourchannel.',
+            '"$part" bir sitenin tamamı. Bunun yerine bir kanal veya profil adresi ekle, ör. youtube.com/@kanalin ya da x.com/hesabin.'));
+        return;
+      }
       if (have.add(s.toLowerCase())) added.add(s);
     }
     _ctl.clear();
@@ -256,7 +275,7 @@ class _SiteEditorState extends State<SiteEditor> {
     final more = _all ? tr('Show fewer', 'Daha az göster') : tr('Show all ${list.length}', '${list.length} tanesinin tümünü göster');
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       NlField(
-        label: tr('Add a site', 'Site ekle'),
+        label: widget.label ?? tr('Add a site', 'Site ekle'),
         icon: Symbols.add_rounded,
         hint: widget.hint ?? tr('e.g. gtaforums.com', 'ör. gtaforums.com'),
         controller: _ctl,

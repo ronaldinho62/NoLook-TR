@@ -69,6 +69,11 @@ const en = {
   getAppButton: 'Get the app',
   notNow: 'Not now',
   appExtras: 'Locks and schedules are in the NoLook app.',
+  exceptions: 'Exceptions',
+  exceptionsSub: 'Posts and videos from these channels and profiles are never hidden.',
+  addException: 'Make this channel an exception',
+  noException: 'Open a YouTube channel, one of its videos or an X profile, then try again.',
+  exceptionAdded: (s: string) => `${s} is now an exception.`,
 };
 
 const trStrings: typeof en = {
@@ -139,6 +144,11 @@ const trStrings: typeof en = {
   getAppButton: 'Uygulamayı edin',
   notNow: 'Şimdi değil',
   appExtras: 'Kilitler ve zamanlamalar NoLook uygulamasında.',
+  exceptions: 'İstisnalar',
+  exceptionsSub: 'Bu kanal ve profillerin gönderi ve videoları hiç gizlenmez.',
+  addException: 'Bu kanalı istisna yap',
+  noException: 'Bir YouTube kanalını, kanalın bir videosunu ya da bir X profilini açıp tekrar dene.',
+  exceptionAdded: (s: string) => `${s} artık istisna.`,
 };
 
 export type Strings = typeof en;

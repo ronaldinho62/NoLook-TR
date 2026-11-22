@@ -26,8 +26,10 @@ class Settings {
     this.notifyWaitOver = true,
     this.weeklySummary = false,
     this.startWithSystem = true,
+    this.startHidden = true,
     this.guard = true,
-  });
+    List<String>? exceptions,
+  }) : exceptions = exceptions ?? [];
 
   ThemeChoice theme;
   LangChoice language;
@@ -43,7 +45,13 @@ class Settings {
   bool weeklySummary;
   bool startWithSystem;
 
+  /// Windows ile açılınca pencere gösterilmez, sistem tepsisinde başlar
+  bool startHidden;
+
   bool guard;
+
+  /// istisnalar: bu kanal/profil adreslerinin içerikleri hiç gizlenmez (ör. youtube.com/@kanal, x.com/hesap)
+  List<String> exceptions;
 
   Map<String, Object?> toJson() => {
         'theme': theme.name,
@@ -57,7 +65,9 @@ class Settings {
         'notifyWaitOver': notifyWaitOver,
         'weeklySummary': weeklySummary,
         'startWithSystem': startWithSystem,
+        'startHidden': startHidden,
         'guard': guard,
+        'exceptions': exceptions,
       };
 
   factory Settings.fromJson(Map<String, Object?>? j) {
@@ -75,7 +85,9 @@ class Settings {
       notifyWaitOver: j['notifyWaitOver'] as bool? ?? true,
       weeklySummary: j['weeklySummary'] as bool? ?? false,
       startWithSystem: j['startWithSystem'] as bool? ?? true,
+      startHidden: j['startHidden'] as bool? ?? true,
       guard: j['guard'] as bool? ?? true,
+      exceptions: [for (final e in (j['exceptions'] as List? ?? const [])) if (e is String) e],
     );
   }
 }

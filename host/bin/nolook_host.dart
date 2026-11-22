@@ -141,6 +141,9 @@ class Host {
       case 'newBlock':
         store.appendCommand({'type': 'newBlock', 'site': m['site'], 'browser': browser});
         _wakeApp();
+      case 'exception':
+        store.appendCommand({'type': 'exception', 'site': m['site'], 'remove': m['remove'] == true, 'browser': browser});
+        _wakeApp(show: false);
       case 'ping':
         send({'type': 'pong'});
     }

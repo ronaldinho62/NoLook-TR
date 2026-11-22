@@ -75,7 +75,7 @@ Future<void> main(List<String> args) async {
       }, onDone: socket.destroy, onError: (_) => socket.destroy());
     });
     unawaited(registerBrowserHelper());
-    if (app.state.settings.startWithSystem) unawaited(setStartWithWindows(true));
+    if (app.state.settings.startWithSystem) unawaited(setStartWithWindows(true, hidden: app.state.settings.startHidden));
   }
 
   app.start();

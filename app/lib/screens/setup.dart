@@ -139,7 +139,7 @@ class _SetupFlowState extends State<SetupFlow> {
       ..guard = _guard
       ..notifyUnlock = _notify
       ..setupDone = true;
-    if (Platform.isWindows) setStartWithWindows(_startWithSystem);
+    if (Platform.isWindows) setStartWithWindows(_startWithSystem, hidden: s.startHidden);
     // open the editor once the shell is up
     if (_makesOwn) app.newBlockRequest.value = '';
     app.save();
