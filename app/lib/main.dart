@@ -13,6 +13,7 @@ import 'controller.dart';
 import 'platform/android_link.dart';
 import 'platform/browser_link.dart';
 import 'platform/startup.dart';
+import 'platform/updates.dart' show clearStaleUpdateMarker;
 import 'screens/setup.dart';
 import 'shell.dart';
 import 'theme.dart';
@@ -74,6 +75,7 @@ Future<void> main(List<String> args) async {
         if (String.fromCharCodes(data).contains('show')) app.showWindow?.call();
       }, onDone: socket.destroy, onError: (_) => socket.destroy());
     });
+    clearStaleUpdateMarker();
     unawaited(registerBrowserHelper());
     if (app.state.settings.startWithSystem) unawaited(setStartWithWindows(true, hidden: app.state.settings.startHidden));
   }

@@ -17,7 +17,7 @@ import 'devices.dart';
 import 'extension_setup.dart';
 import 'unlock.dart' show showNlDialog;
 
-const appVersion = '0.1.2';
+const appVersion = '0.1.3';
 const repoUrl = 'https://github.com/ronaldinho62/NoLook-TR';
 
 class SettingsPage extends StatelessWidget {

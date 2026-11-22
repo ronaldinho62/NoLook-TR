@@ -84,27 +84,49 @@ Future<bool> installWindowsUpdate(Update u, {void Function(double)? progress, St
     if (unzip.exitCode != 0 || !File('$files\\nolook.exe').existsSync()) return false;
 
     final home = installDir ?? File(Platform.resolvedExecutable).parent.path;
+    // PowerShell, pencere açmadan. Eski "tasklist | find" döngüsü bazen find'da asılı kalıyordu.
+    // Eski uygulamanın kapanması en fazla 60 sn beklenir, sonra zorla kapatılır.
     // helper may still be running, can rename a running exe but not overwrite it
-    final script = File('${dir.path}\\update.cmd');
-    script.writeAsStringSync([
-      '@echo off',
+    String q(String s) => "'${s.replaceAll("'", "''")}'";
+    final dirQ = q(home);
+    final script = File('${dir.path}\\update.ps1');
+    script.writeAsStringSync('﻿${[
+      r"$ErrorActionPreference = 'SilentlyContinue'",
+      '\$dir = $dirQ',
       // marker so the helper doesn't start us mid copy
-      'echo.>"$home\\updating"',
-      ':wait',
-      'tasklist /fi "PID eq $pid" | find "$pid" >nul && (ping -n 2 127.0.0.1 >nul & goto wait)',
+      r"New-Item -ItemType File -Force -Path (Join-Path $dir 'updating') | Out-Null",
+      'Wait-Process -Id $pid -Timeout 60',
       // older helpers don't know the marker, so kill both. the browser restarts the helper
-      'taskkill /f /im nolook.exe >nul 2>&1',
-      'taskkill /f /im nolook_host.exe >nul 2>&1',
-      'del /q "$home\\nolook_host.old*.exe" 2>nul',
-      'if exist "$home\\nolook_host.exe" move /y "$home\\nolook_host.exe" "$home\\nolook_host.old%RANDOM%.exe" >nul',
-      'robocopy "$files" "$home" /e /r:5 /w:1 /njh /njs /ndl /nfl >nul',
+      'Stop-Process -Name nolook, nolook_host -Force',
+      'Start-Sleep -Milliseconds 800',
+      r"Remove-Item -Force -Path (Join-Path $dir 'nolook_host.old*.exe')",
+      r"$host_ = Join-Path $dir 'nolook_host.exe'",
+      r"if (Test-Path $host_) { Rename-Item -Path $host_ -NewName ('nolook_host.old' + (Get-Random) + '.exe') }",
+      'robocopy ${q(files)} \$dir /e /r:5 /w:1 /njh /njs /ndl /nfl | Out-Null',
       // bump the version in Apps & features
-      'reg query "$_uninstallKey" >nul 2>&1 && reg add "$_uninstallKey" /v DisplayVersion /d "${u.version}" /f >nul',      'del /q "$home\\updating" 2>nul',
-      if (restart) 'start "" "$home\\nolook.exe"',
-    ].join('\r\n'));
-    await Process.start('cmd', ['/c', script.path], mode: ProcessStartMode.detached);
+      '\$key = ${q(_uninstallKey.replaceFirst(r'HKCU\', r'HKCU:\'))}',
+      'if (Test-Path \$key) { Set-ItemProperty -Path \$key -Name DisplayVersion -Value ${q(u.version)} }',
+      r"Remove-Item -Force -Path (Join-Path $dir 'updating')",
+      if (restart) r"Start-Process -FilePath (Join-Path $dir 'nolook.exe')",
+    ].join('\r\n')}\r\n');
+    await Process.start(
+      'powershell',
+      ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-WindowStyle', 'Hidden', '-File', script.path],
+      mode: ProcessStartMode.detached,
+    );
     return true;
   } catch (_) {
     return false;
   }
+}
+
+/// yarım kalmış bir güncellemenin "updating" işareti kaldıysa sil, yoksa tarayıcı yardımcısı uygulamayı hiç başlatmaz
+void clearStaleUpdateMarker() {
+  if (!Platform.isWindows) return;
+  try {
+    final marker = File('${File(Platform.resolvedExecutable).parent.path}${Platform.pathSeparator}updating');
+    if (marker.existsSync() && DateTime.now().difference(marker.lastModifiedSync()) > const Duration(minutes: 5)) {
+      marker.deleteSync();
+    }
+  } catch (_) {}
 }
