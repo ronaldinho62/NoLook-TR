@@ -74,6 +74,9 @@ const en = {
   addException: 'Make this channel an exception',
   noException: 'Open a YouTube channel, one of its videos or an X profile, then try again.',
   exceptionAdded: (s: string) => `${s} is now an exception.`,
+  addPageException: (s: string) => `Add to exceptions: ${s}`,
+  removePageException: (s: string) => `Remove from exceptions: ${s}`,
+  exceptionRemoved: (s: string) => `${s} is no longer an exception.`,
 };
 
 const trStrings: typeof en = {
@@ -149,6 +152,9 @@ const trStrings: typeof en = {
   addException: 'Bu kanalı istisna yap',
   noException: 'Bir YouTube kanalını, kanalın bir videosunu ya da bir X profilini açıp tekrar dene.',
   exceptionAdded: (s: string) => `${s} artık istisna.`,
+  addPageException: (s: string) => `İstisnalara ekle: ${s}`,
+  removePageException: (s: string) => `İstisnalardan çıkar: ${s}`,
+  exceptionRemoved: (s: string) => `${s} artık istisna değil.`,
 };
 
 export type Strings = typeof en;

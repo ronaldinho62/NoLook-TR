@@ -139,6 +139,7 @@ async function render() {
         .join('')}
     </div>
     ${nudge}
+    <div class="pexc" id="pexc" hidden><button class="btn outlined has-ic" id="exc-page"></button><div class="exc-msg" id="exc-page-msg"></div></div>
     <div class="pfoot">
       <button class="btn tonal has-ic" id="block-site" ${host ? '' : 'disabled'}>${icon('add', 18)}${esc(t.blockSite)}</button>
       ${local
@@ -175,10 +176,42 @@ async function render() {
     view = 'settings';
     void render();
   });
+  void wirePageException(saved);
   document.getElementById('block-site')!.addEventListener('click', () => {
     void send({ type: 'newBlock', site: host }).then(() => {
       if (!local) window.close();
     });
+  });
+}
+
+/** açık sekmedeki kanal/profil (youtube kanalı, videonun sahibi, X profili), yoksa null */
+async function pageCandidate(): Promise<string | null> {
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (tab?.id === undefined) return null;
+    return ((await chrome.tabs.sendMessage(tab.id, { type: 'exceptionCandidate' })) as { site: string | null } | undefined)?.site ?? null;
+  } catch {
+    // içerik betiği yok (yeni sekme, chrome:// sayfası)
+    return null;
+  }
+}
+
+/** ana görünüm: "Bu siteyi engelle"nin üstünde, sayfanın kanalını istisnalara ekle/çıkar */
+async function wirePageException(saved: Saved) {
+  const t = stringsFor(saved.rules);
+  const site = await pageCandidate();
+  const row = document.getElementById('pexc');
+  const btn = document.getElementById('exc-page') as HTMLButtonElement | null;
+  const msg = document.getElementById('exc-page-msg');
+  if (!site || !row || !btn || !msg) return;
+  const listed = (saved.rules?.settings?.exceptions ?? []).some((e) => e.toLowerCase() === site.toLowerCase());
+  setHtml(btn, `${icon(listed ? 'close' : 'add', 18)}<span>${esc(listed ? t.removePageException(site) : t.addPageException(site))}</span>`);
+  btn.title = listed ? t.removePageException(site) : t.addPageException(site);
+  row.hidden = false;
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    await send({ type: 'exception', site, remove: listed });
+    msg.textContent = listed ? t.exceptionRemoved(site) : t.exceptionAdded(site);
   });
 }
 
@@ -344,13 +377,7 @@ function renderSettings(saved: Saved) {
   );
   document.getElementById('exc-add')?.addEventListener('click', async () => {
     const msg = document.getElementById('exc-msg')!;
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    let site: string | null = null;
-    try {
-      if (tab?.id !== undefined) site = ((await chrome.tabs.sendMessage(tab.id, { type: 'exceptionCandidate' })) as { site: string | null } | undefined)?.site ?? null;
-    } catch {
-      // içerik betiği yok (yeni sekme, chrome:// sayfası)
-    }
+    const site = await pageCandidate();
     if (!site) {
       msg.textContent = t.noException;
       return;
